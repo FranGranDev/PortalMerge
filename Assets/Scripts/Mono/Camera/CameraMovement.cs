@@ -4,20 +4,33 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    [SerializeField] private float CameraFollowSpeed;
-    [Range(1, 25)]
-    [SerializeField] private float CameraFriction;
+    private float CameraFollowSpeed;
+    private float CameraFriction;
+    private bool LockSideMove;
+    private float SideMove()
+    {
+        return LockSideMove ? 0 : 1;
+    }
+
     private Camera _camera;
     private float CameraSpeed;
     public const float MAX_SPEED = 100;
     private bool isMoving;
     private Vector3 PrevPos;
 
+    private void ApplySettings()
+    {
+        PrevPos = transform.position;
+
+        CameraFollowSpeed = GameManagement.MainData.CameraFollowSpeed;
+        CameraFriction = GameManagement.MainData.CameraFriction;
+        LockSideMove = GameManagement.MainData.LockSideMove;
+    }
     private void CameraSwipeMove(Vector3 Point, Vector3 StartPoint)
     {
         isMoving = true;
-        Point = new Vector3(Point.x, 0, Point.z);
-        StartPoint = new Vector3(StartPoint.x, 0, StartPoint.z);
+        Point = new Vector3(Point.x * SideMove(), 0, Point.z);
+        StartPoint = new Vector3(StartPoint.x * SideMove(), 0, StartPoint.z);
         Vector3 Direction = StartPoint - Point;
         Vector3 CurrantOffset = Direction + transform.position;
 
@@ -26,8 +39,8 @@ public class CameraMovement : MonoBehaviour
     private void CameraSwipeEnd(Vector3 Point, Vector3 StartPoint)
     {
         isMoving = false;
-        Point = new Vector3(Point.x, 0, Point.z);
-        StartPoint = new Vector3(StartPoint.x, 0, StartPoint.z);
+        Point = new Vector3(Point.x * SideMove(), 0, Point.z);
+        StartPoint = new Vector3(StartPoint.x * SideMove(), 0, StartPoint.z);
         Vector3 Direction = (StartPoint - Point).normalized;
 
         StartCoroutine(CameraEndFlyCour(Direction, CameraSpeed > MAX_SPEED ? MAX_SPEED : CameraSpeed));
@@ -57,12 +70,14 @@ public class CameraMovement : MonoBehaviour
         CalculateSpeed();   
     }
 
-    private void Awake()
+    private void Start()
     {
+        ApplySettings();
+
         InputManagement.OnSwipeMove += CameraSwipeMove;
         InputManagement.OnSwipeEnd += CameraSwipeEnd;
 
-        PrevPos = transform.position;
+       
     }
     private void OnDisable()
     {

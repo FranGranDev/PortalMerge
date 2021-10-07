@@ -9,13 +9,11 @@ public class Cube : MonoBehaviour, ICube
     public int Number { get => _number; private set => _number = value; }
 
     [Header("Physics")]
-    [Range(0, 1f)]
-    [SerializeField] private float DragSpeed;
-    [Range(0, 1f)]
-    [SerializeField] private float DragAcceleration;
-    [Range(0, 1f)]
-    [SerializeField] private float MinDistanceToMove = 0.5f;
-    [SerializeField] private bool OffGravityOnTake;
+    private float DragSpeed;
+    private float DragAcceleration;
+    private float MinDistanceToMove = 0.5f;
+    private float CubeHeightOnMove = 0.5f;
+    private bool OffGravityOnTake;
 
     #region Callbacks
     public delegate void OnCubeAction(ICube cube);
@@ -24,7 +22,6 @@ public class Cube : MonoBehaviour, ICube
     public OnCubeAction OnCubeLeaveGround;
     public delegate void OnCubeMergeAction(ICube cube1, ICube cube2);
     public OnCubeMergeAction OnCubesMerge;
-
 
     public void SubscribeForDestroyed(OnCubeAction action, bool Unsubscribe = false)
     {
@@ -38,7 +35,6 @@ public class Cube : MonoBehaviour, ICube
         }
 
     }
-
     public void SubscribeForEnterPortal(OnCubeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
@@ -50,7 +46,6 @@ public class Cube : MonoBehaviour, ICube
             OnCubeEnterPortal += action;
         }
     }
-
     public void SubscribeForLeaveGround(OnCubeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
@@ -62,7 +57,6 @@ public class Cube : MonoBehaviour, ICube
             OnCubeLeaveGround += action;
         }
     }
-
     public void SubscribeForMerge(OnCubeMergeAction action, bool Unsubscribe = false)
     {
         if(Unsubscribe)
@@ -77,25 +71,27 @@ public class Cube : MonoBehaviour, ICube
     }
 
     #endregion
-    public Transform CubeTransform { get => transform; }
-    public GameObject CubeObject { get => gameObject; }
-    public Rigidbody CubeRig { get => _rig; }
 
     [Header("Components")]
     [SerializeField] private Rigidbody _rig;
     [SerializeField] private MeshRenderer _meshRenderer;
     private Material _material;
+    public Transform CubeTransform { get => transform; }
+    public GameObject CubeObject { get => gameObject; }
+    public Rigidbody CubeRig { get => _rig; }
+
+
 
     [Header("States")]
     private IPortal PrevPortal;
+    private Transform PrevParent;
     public ICube PrevCube { get; private set; }
     private bool isMoving;
     [SerializeField]private bool inAir;
 
     #region Action
     public void TryMerge(ICube other)
-    {
-
+    { 
         if(Number == other.Number)
         {
             if (other.PrevCube == null)
@@ -119,6 +115,10 @@ public class Cube : MonoBehaviour, ICube
     {
         PrevPortal = null;
     }
+    public void SetNullParent()
+    {
+        transform.parent = PrevParent;
+    }
     public void DestroyCube()
     {
         OnCubeDestroyed?.Invoke(this);
@@ -137,11 +137,11 @@ public class Cube : MonoBehaviour, ICube
     }
     public void Drag(Vector3 Point)
     {
-        Point += Vector3.up * transform.localScale.y * 0.5f;
+        Point += Vector3.up * transform.localScale.y * CubeHeightOnMove;
         Vector3 Direction = (Point - transform.position);
         if (Direction.magnitude > MinDistanceToMove)
         {
-            float AirRatio = inAir ? 1f : 0f;
+            float AirRatio = inAir && OffGravityOnTake ? 1f : 0f;
             Vector3 NewSpeed = Direction.normalized * DragSpeed / (AirRatio + 1) * 50 + Physics.gravity * AirRatio;
             _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
         }
@@ -163,6 +163,11 @@ public class Cube : MonoBehaviour, ICube
     public void AddImpulse(Vector3 Impulse)
     {
         _rig.velocity += Impulse;
+    }
+    public void AddImpulse(Vector3 Impulse, Vector3 Angular)
+    {
+        _rig.velocity += Impulse;
+        _rig.angularVelocity += Angular;
     }
     private void OnEnterGround()
     {
@@ -189,6 +194,8 @@ public class Cube : MonoBehaviour, ICube
     #region Init
     private void SetComponents()
     {
+        PrevParent = transform.parent;
+
         if (_rig == null)
         {
             _rig = GetComponent<Rigidbody>();
@@ -206,25 +213,31 @@ public class Cube : MonoBehaviour, ICube
     {
         _material.color = GameManagement.MainData.GetCubeColor(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
     }
-
+    private void ApplySettings()
+    {
+        DragSpeed = GameManagement.MainData.CubeDragSpeed;
+        DragAcceleration = GameManagement.MainData.CubeDragAcceleration;
+        MinDistanceToMove = GameManagement.MainData.MinDistanceToMove;
+        OffGravityOnTake = GameManagement.MainData.OffGravityOnTake;
+        CubeHeightOnMove = GameManagement.MainData.CubeHeightOnMove;
+    }
     public void InitCube()
     {
         SetComponents();
         SetView();
+        ApplySettings();
     }
     public void InitCube(int num)
     {
         Number = num;
-        SetComponents();
-        SetView();
+        InitCube();
     }
-    public void InitCube(int num, Vector3 Impulse)
+    public void InitCube(int num, Vector3 Impulse, Vector3 Angular)
     {
         Number = num;
-        SetComponents();
-        SetView();
+        InitCube();
 
-        AddImpulse(Impulse);
+        AddImpulse(Impulse, Angular);
     }
     #endregion
     private void OnTriggerStay(Collider other)
@@ -290,6 +303,7 @@ public interface ICube
 
     Rigidbody CubeRig { get; }
 
+    void SetNullParent();
     void Take();
 
     void Drag(Vector3 Point);
@@ -304,7 +318,7 @@ public interface ICube
 
     void InitCube(int num);
 
-    void InitCube(int num, Vector3 Impulse);
+    void InitCube(int num, Vector3 Impulse, Vector3 Angular);
 
     ICube PrevCube { get; }
 

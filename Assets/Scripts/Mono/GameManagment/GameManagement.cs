@@ -11,6 +11,14 @@ public class GameManagement : MonoBehaviour
     public static DataGameMain MainData {get => active._data; }
     [SerializeField]private List<ICube> Cubes;
 
+    public static float RandomOne()
+    {
+        return Random.Range(0, 2) == 0 ? 1 : -1 * (Random.Range(0.5f, 1f));
+    }
+    public static float RandomOne(float from)
+    {
+        return Random.Range(0, 2) == 0 ? 1 : -1 * (Random.Range(from, 1f));
+    }
 
     private void GetAllCubesOnScene()
     {
@@ -43,6 +51,7 @@ public class GameManagement : MonoBehaviour
         UnsubscribeForCube(cube);
         if(Cubes.Exists(item => item == cube))
         {
+            //Some action
             Cubes.Remove(cube);
         }
     }
@@ -54,12 +63,14 @@ public class GameManagement : MonoBehaviour
     {
         int CubeSum = cube1.Number + cube2.Number;
         Vector3 CubePosition = (cube1.CubeTransform.position + cube2.CubeTransform.position) / 2;
-        Vector3 CubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) / 2;
+        Vector3 CubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
+        CubeImpulse += Vector3.up * MainData.VerticalForceOnMerge;
+        Vector3 CubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
         cube1.DestroyCube();
         cube2.DestroyCube();
 
         ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
-        newCube.InitCube(CubeSum, CubeImpulse);
+        newCube.InitCube(CubeSum, CubeImpulse, CubeAngular);
         Cubes.Add(newCube);
 
         SubscribeForCube(newCube);

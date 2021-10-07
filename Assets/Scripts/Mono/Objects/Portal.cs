@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Portal : MonoBehaviour, IPortal
+public class Portal : MonoBehaviour, IPortal, IActivate
 {
     [SerializeField] private Portal SecondPortal;
     [SerializeField] private IPortal PairPortal => SecondPortal;
@@ -34,7 +34,7 @@ public class Portal : MonoBehaviour, IPortal
         cube.CubeRig.velocity = cube.CubeRig.velocity.magnitude * transform.up;
         cube.CubeTransform.localPosition = DeltaPosition;
 
-        prevCube.CubeTransform.parent = null;
+        prevCube.SetNullParent();
     }
 
     private void OnTeleported()
@@ -71,6 +71,10 @@ public class Portal : MonoBehaviour, IPortal
         }
     }
 
+    public void Activate(bool on = true)
+    {
+        Debug.Log("Portal: " + on);
+    }
 }
 public interface IPortal
 {
