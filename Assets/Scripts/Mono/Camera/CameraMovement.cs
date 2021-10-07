@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public static CameraMovement active { get; private set; }
+
     private float CameraFollowSpeed;
     private float CameraFriction;
     private bool LockSideMove;
@@ -57,6 +59,22 @@ public class CameraMovement : MonoBehaviour
         }
         yield break;
     }
+    private void MoveToCube(ICube cube)
+    {
+        Vector3 Point = cube.CubeTransform.position + Vector3.forward * -5;
+
+        StartCoroutine(MoveToCour(Point));
+    }
+    private IEnumerator MoveToCour(Vector3 Target)
+    {
+        while (Mathf.Abs(transform.position.z - Target.z) > 1)
+        {
+            Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? transform.position.x : Target.x, transform.position.y, Target.z);
+            transform.position = Vector3.Lerp(transform.position, newPoint, 0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+        yield break;
+    }
     private void CalculateSpeed()
     {
         CameraSpeed = (transform.position - PrevPos).magnitude / Time.deltaTime;
@@ -64,12 +82,20 @@ public class CameraMovement : MonoBehaviour
 
     }
 
+    public void SubcribeToCube(ICube cube, bool Unsubscribe = false)
+    {
+        cube.SubscribeForEnterPortal(MoveToCube, Unsubscribe);
+    }
 
     private void Update()
     {
         CalculateSpeed();   
     }
 
+    private void Awake()
+    {
+        active = this;
+    }
     private void Start()
     {
         ApplySettings();

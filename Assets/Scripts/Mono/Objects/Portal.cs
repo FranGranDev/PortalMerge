@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour, IPortal, IActivate
 {
+    [Header("Pair")]
     [SerializeField] private Portal SecondPortal;
     [SerializeField] private IPortal PairPortal => SecondPortal;
     private ICube prevCube;
@@ -17,10 +18,29 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void OnCubeEntered(ICube cube)
     {
-        if (prevCube == null)
+        if(PairPortal != null)
         {
-            PairPortal.Teleport(cube);
+            if (prevCube == null)
+            {
+                PairPortal.Teleport(cube);
+            }
         }
+        else
+        {
+            DontLetCube(cube);
+            Debug.Log("Нет ссылки на парный портал!");
+        }
+        
+    }
+
+    private void DontLetCube(ICube cube)
+    {
+        cube.CubeRig.velocity *= -0.2f;
+        Vector3 CubeImpulse = Vector3.up * 5;
+        Vector3 CubeAngular = new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 5;
+        cube.AddImpulse(CubeImpulse, CubeAngular);
+        ClearPrevCube();
+        cube.ClearPrevPortal();
     }
 
     public void Teleport(ICube cube)
@@ -31,7 +51,8 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         
 
         prevCube = cube;
-        cube.CubeRig.velocity = cube.CubeRig.velocity.magnitude * transform.up;
+        cube.CubeRig.velocity = (cube.CubeRig.velocity.magnitude + GameManagement.MainData.AddVelocityOnExitPortal)
+        * (transform.forward + Vector3.up * 0.25f) * GameManagement.MainData.SaveVelocityOnExitPortal;
         cube.CubeTransform.localPosition = DeltaPosition;
 
         prevCube.SetNullParent();
@@ -49,6 +70,11 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     public void ClearPrevCube()
     {
         prevCube = null;
+    }
+
+    public void Activate(bool on = true)
+    {
+        Debug.Log("Portal: " + on);
     }
 
     private void Awake()
@@ -69,11 +95,6 @@ public class Portal : MonoBehaviour, IPortal, IActivate
                 OnTeleported();
             }
         }
-    }
-
-    public void Activate(bool on = true)
-    {
-        Debug.Log("Portal: " + on);
     }
 }
 public interface IPortal

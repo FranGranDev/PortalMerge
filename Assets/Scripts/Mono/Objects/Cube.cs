@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Cube : MonoBehaviour, ICube
 {
@@ -79,7 +80,8 @@ public class Cube : MonoBehaviour, ICube
     public Transform CubeTransform { get => transform; }
     public GameObject CubeObject { get => gameObject; }
     public Rigidbody CubeRig { get => _rig; }
-
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI[] TextNumber;
 
 
     [Header("States")]
@@ -221,11 +223,20 @@ public class Cube : MonoBehaviour, ICube
         OffGravityOnTake = GameManagement.MainData.OffGravityOnTake;
         CubeHeightOnMove = GameManagement.MainData.CubeHeightOnMove;
     }
+    private void SetNumbers()
+    {
+        for(int i = 0; i < TextNumber.Length; i++)
+        {
+            TextNumber[i].text = Number.ToString();
+        }
+    }
+
     public void InitCube()
     {
         SetComponents();
         SetView();
         ApplySettings();
+        SetNumbers();
     }
     public void InitCube(int num)
     {
@@ -279,6 +290,7 @@ public class Cube : MonoBehaviour, ICube
             case "Ground":
                 OnLeaveGround();
                 break;
+
         }
     }
 
@@ -313,6 +325,8 @@ public interface ICube
     void DestroyCube();
 
     void AddImpulse(Vector3 Impulse);
+
+    void AddImpulse(Vector3 Impulse, Vector3 Angular);
 
     void InitCube();
 

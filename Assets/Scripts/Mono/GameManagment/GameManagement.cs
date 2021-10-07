@@ -38,12 +38,22 @@ public class GameManagement : MonoBehaviour
         cube.SubscribeForMerge(OnCubesMerge);
         cube.SubscribeForEnterPortal(OnCubeEnterPortal);
         cube.SubscribeForDestroyed(OnCubeDestroyed);
+
+        if(MainData.MoveToCubeOnEnterPortal)
+        {
+            CameraMovement.active.SubcribeToCube(cube);
+        }
     }
     private void UnsubscribeForCube(ICube cube)
     {
         cube.SubscribeForMerge(OnCubesMerge, true);
         cube.SubscribeForEnterPortal(OnCubeEnterPortal, true);
         cube.SubscribeForDestroyed(OnCubeDestroyed, true);
+
+        if (MainData.MoveToCubeOnEnterPortal)
+        {
+            CameraMovement.active.SubcribeToCube(cube, true);
+        }
     }
 
     private void OnCubeDestroyed(ICube cube)

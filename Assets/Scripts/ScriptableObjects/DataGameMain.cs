@@ -18,8 +18,8 @@ public class DataGameMain : ScriptableObject
     public float CubeDragAcceleration;
     [Range(0.1f, 1f)]
     public float CubeFriction;
-    [Range(0, 0.6f)] //Если куб будет слишком высоко, то код будет сличтать, что он в воздухе и отпускать его
-    public float CubeHeightOnMove;
+    [Range(0, 0.6f)] 
+    public float CubeHeightOnMove; //Если куб будет слишком высоко, то код будет сличтать, что он в воздухе и отпускать его, поэтому ограничение 0.6
     [Range(0, 1f)]
     public float MinDistanceToMove;
     public bool OffGravityOnTake;
@@ -29,6 +29,12 @@ public class DataGameMain : ScriptableObject
     public float CameraFollowSpeed;
     [Range(1, 25)]
     public float CameraFriction;
+    public bool MoveToCubeOnEnterPortal;
+    [Header("Настройка телепортов")]
+    [Range(0, 1f)]
+    public float SaveVelocityOnExitPortal;
+    [Range(0, 5f)]
+    public float AddVelocityOnExitPortal;
     [Header("Настройка активаторов")]
     public float DelayTime;
     [Header("Префабы")]

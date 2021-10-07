@@ -21,9 +21,13 @@ MonoBehaviour:
   CubeHeightOnMove: 0.6
   MinDistanceToMove: 0.5
   OffGravityOnTake: 0
-  LockSideMove: 0
+  LockSideMove: 1
   CameraFollowSpeed: 10
   CameraFriction: 2
+  MoveToCubeOnEnterPortal: 1
+  SaveVelocityOnExitPortal: 0.5
+  AddVelocityOnExitPortal: 2
+  DelayTime: 0
   Cube: {fileID: 8574350159135478060, guid: 12ed66078c93e844eba7efea9db2b814, type: 3}
   CubeColor:
   - {r: 0.7216981, g: 1, b: 0.9234468, a: 1}

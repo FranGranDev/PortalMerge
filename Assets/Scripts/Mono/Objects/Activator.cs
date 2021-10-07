@@ -21,6 +21,8 @@ public class Activator : MonoBehaviour
 
     private void Activate(bool on)
     {
+        if (Target == null)
+            return;
         if(ActivateCoroutine != null)
         {
             StopCoroutine(ActivateCoroutine);
