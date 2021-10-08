@@ -6,9 +6,15 @@ public class Activator : MonoBehaviour
 {
     [SerializeField] private GameObject _target;
     [SerializeField] private IActivate Target;
+    [SerializeField] private bool Disactivate;
+    [SerializeField] private bool ActiveOnes;
     public bool _activated { get; private set; }
     private float DelayTime;
     private Coroutine ActivateCoroutine;
+    [Header("Components")]
+    private const string ANIM_BOOL = "Active";
+    private Animator _anim;
+    private bool HaveAnimator;
 
     private void Init()
     {
@@ -17,6 +23,7 @@ public class Activator : MonoBehaviour
             Target = _target.GetComponent<IActivate>();
         }
         DelayTime = GameManagement.MainData.DelayTime;
+        HaveAnimator = transform.TryGetComponent<Animator>(out _anim);
     }
 
     private void Activate(bool on)
@@ -32,8 +39,13 @@ public class Activator : MonoBehaviour
     private IEnumerator ActivateCour(bool on)
     {
         yield return new WaitForSeconds(DelayTime);
-        Target.Activate(on);
+        Target.Activate(Disactivate ? !on : on);
         _activated = on;
+        if (HaveAnimator)
+        {
+            _anim.SetBool(ANIM_BOOL, on);
+        }
+        ActivateCoroutine = null;
         yield break;
     }
 
@@ -50,6 +62,8 @@ public class Activator : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        if (ActiveOnes)
+            return;
         if (other.tag == "Cube")
         {
             if (_activated)

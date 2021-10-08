@@ -7,9 +7,8 @@ using System;
 public class LevelManagement : MonoBehaviour
 {
     #region Singletone
-    private static LevelManagement _default;
-    public static LevelManagement Default { get => _default; }
-    public LevelManagement() => _default = this;
+    public static LevelManagement Default { get; private set; }
+    public LevelManagement() => Default = this;
     #endregion
 
     const string PREFS_KEY_LEVEL_ID = "CurrentLevelCount";
@@ -26,23 +25,27 @@ public class LevelManagement : MonoBehaviour
 
     public void Start()
     {
-        #if UNITY_EDITOR
-        #else
+#if UNITY_EDITOR
+#else
             editorMode = false;
-        #endif
-        if (!editorMode) SelectLevel(PlayerPrefs.GetInt(PREFS_KEY_LAST_INDEX, 0), false);
+#endif
+        if (!editorMode)
+        {
+            SelectLevel(PlayerPrefs.GetInt(PREFS_KEY_LAST_INDEX, 0), false);
+        }
     }
 
     public void StartGame()
     {
         //SendStart();
-        //GameManager.Instance.StartGame();
+        GameManagement.Active.StartGame();
     }
 
     public void RestartLevel()
     {
-        //SendRestart();
         SelectLevel(CurrentLevelIndex, false);
+
+        GameManagement.Active.StartGame();
     }
 
     public void clearListAtIndex(int levelIndex)
@@ -65,17 +68,18 @@ public class LevelManagement : MonoBehaviour
 
         if (level.LevelPrefab)
         {
-            SelLevelParams(level);
+            SetLevelParams(level);
             CurrentLevelIndex = levelIndex;
         }
     }
 
     public void NextLevel() 
     {
-        //SendComplete();
         if (!editorMode) 
             PlayerPrefs.SetInt(PREFS_KEY_LEVEL_ID, (PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0) + 1) );
         SelectLevel(CurrentLevelIndex + 1);
+
+        GameManagement.Active.StartGame();
     }
 
     public void PrevLevel() =>
@@ -83,26 +87,36 @@ public class LevelManagement : MonoBehaviour
     private int GetCorrectedIndex(int levelIndex)
     {
         if (editorMode)
+        {
             return levelIndex > Levels.Count - 1 || levelIndex <= 0 ? 0 : levelIndex;
+        }  
         else
         {
             int levelId = PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0);
             if (levelId > Levels.Count - 1) 
             {
-                if (Levels.Count > 1) 
+                if (Levels.Count > 1)
                 {
-                    while (true) 
-                    {
-                        levelId = UnityEngine.Random.Range(0, Levels.Count - 1);
-                        if (levelId != CurrentLevelIndex) return levelId;
-                    }
+                    levelId = UnityEngine.Random.Range(0, Levels.Count - 1);
+                    
+                    //Вроде все правильно, но каждый раз юнити крашилась, не знаю почему, пока так
+
+                    //while (levelId == CurrentLevelIndex)
+                    //{
+                    //    levelId = UnityEngine.Random.Range(0, Levels.Count - 1);
+                    //}
+
+                    return levelId;
                 }
-                else return UnityEngine.Random.Range(0, Levels.Count - 1);
+                else
+                {
+                    return UnityEngine.Random.Range(0, Levels.Count - 1);
+                }
             }
             return levelId;
         }
     }
-    private void SelLevelParams(Level level)
+    private void SetLevelParams(Level level)
     {
         if (level.LevelPrefab)
         {
@@ -179,6 +193,5 @@ public class LevelManagement : MonoBehaviour
 public class Level
 {
     public GameObject LevelPrefab;
-    [SerializeField]
     public Material SkyboxMaterial; 
 }

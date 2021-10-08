@@ -228,10 +228,6 @@ public class InputManagement : MonoBehaviour
 
 
     }
-    private void MovementMobile()
-    {
-
-    }
     private void ActionExecute()
     {
         switch (CurrantAction)
@@ -243,7 +239,10 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 {
-                    CurrantCube.Drag(CurrantTap.Point);
+                    if (!CurrantCube.isNull)
+                    {
+                        CurrantCube.Drag(CurrantTap.Point);
+                    }
                 }
                 break;
             case ActionType.OnSwipe:
@@ -260,8 +259,10 @@ public class InputManagement : MonoBehaviour
     }
     private void Update()
     {
-        Movement();
-
-        ActionExecute();
+        if (GameManagement.isGameStarted)
+        {
+            Movement();
+            ActionExecute();
+        }
     }
 }

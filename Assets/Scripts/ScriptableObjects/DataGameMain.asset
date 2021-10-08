@@ -15,8 +15,8 @@ MonoBehaviour:
   SpeedSumOnMerge: 0.1
   VerticalForceOnMerge: 7.5
   RotationOnMerge: 10
-  CubeDragSpeed: 0.75
-  CubeDragAcceleration: 0.5
+  CubeDragSpeed: 1
+  CubeDragAcceleration: 0.25
   CubeFriction: 0.5
   CubeHeightOnMove: 0.6
   MinDistanceToMove: 0.5
@@ -25,8 +25,11 @@ MonoBehaviour:
   CameraFollowSpeed: 10
   CameraFriction: 2
   MoveToCubeOnEnterPortal: 1
+  MoveToPortalSpeed: 0.25
   SaveVelocityOnExitPortal: 0.5
   AddVelocityOnExitPortal: 2
+  DestroyDelay: 0
+  ObstacleAcceleration: 0.25
   DelayTime: 0
   Cube: {fileID: 8574350159135478060, guid: 12ed66078c93e844eba7efea9db2b814, type: 3}
   CubeColor:

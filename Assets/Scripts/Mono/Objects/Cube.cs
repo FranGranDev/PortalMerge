@@ -76,7 +76,9 @@ public class Cube : MonoBehaviour, ICube
     [Header("Components")]
     [SerializeField] private Rigidbody _rig;
     [SerializeField] private MeshRenderer _meshRenderer;
+    [SerializeField] private Collider _collider;
     private Material _material;
+    public Collider CubeCol { get => _collider; }
     public Transform CubeTransform { get => transform; }
     public GameObject CubeObject { get => gameObject; }
     public Rigidbody CubeRig { get => _rig; }
@@ -85,9 +87,10 @@ public class Cube : MonoBehaviour, ICube
 
 
     [Header("States")]
-    private IPortal PrevPortal;
     private Transform PrevParent;
     public ICube PrevCube { get; private set; }
+    public bool isNull => Equals(null);
+
     private bool isMoving;
     [SerializeField]private bool inAir;
 
@@ -104,18 +107,13 @@ public class Cube : MonoBehaviour, ICube
         }
         
     }
-    public void EnterPortal(IPortal portal)
+    public void OnEnterPortal()
     {
-        if(portal != null && portal != PrevPortal)
-        {
-            portal.OnCubeEntered(this);
-            OnCubeEnterPortal?.Invoke(this);
-            PrevPortal = portal;
-        }
+        OnCubeEnterPortal?.Invoke(this);
     }
-    public void ClearPrevPortal()
+    public void OnEnterTrap()
     {
-        PrevPortal = null;
+        OnCubeLeaveGround?.Invoke(this);
     }
     public void SetNullParent()
     {
@@ -187,9 +185,17 @@ public class Cube : MonoBehaviour, ICube
     private Coroutine OnLeaveGroundCoroutine;
     private IEnumerator OnLeaveGroundCour()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.025f);
+        if (Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //есть ли под нами земля?
+            yield break;
+        if(isMoving)
+        {
+            CubeRig.velocity = new Vector3(CubeRig.velocity.x * 0.5f, CubeRig.velocity.y - 5, CubeRig.velocity.z * 0.5f);
+            CubeRig.useGravity = true;
+            isMoving = false;
+        }
         OnCubeLeaveGround?.Invoke(this);
-        CubeRig.useGravity = true;
+        OnLeaveGroundCoroutine = null;
         yield break;
     }
     #endregion
@@ -277,10 +283,6 @@ public class Cube : MonoBehaviour, ICube
             case "Death":
                 DestroyCube();
                 break;
-            case "Portal":
-                IPortal portal = other.GetComponent<IPortal>();
-                EnterPortal(portal);
-                break;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -307,6 +309,8 @@ public class Cube : MonoBehaviour, ICube
 
 public interface ICube
 {
+    bool isNull { get; }
+
     int Number { get; }
 
     Transform CubeTransform { get; }
@@ -314,6 +318,8 @@ public interface ICube
     GameObject CubeObject { get; }
 
     Rigidbody CubeRig { get; }
+
+    Collider CubeCol { get; }
 
     void SetNullParent();
     void Take();
@@ -323,6 +329,10 @@ public interface ICube
     void Throw();
 
     void DestroyCube();
+
+    void OnEnterPortal();
+
+    void OnEnterTrap();
 
     void AddImpulse(Vector3 Impulse);
 
@@ -335,8 +345,6 @@ public interface ICube
     void InitCube(int num, Vector3 Impulse, Vector3 Angular);
 
     ICube PrevCube { get; }
-
-    void ClearPrevPortal();
 
     void SubscribeForDestroyed(Cube.OnCubeAction action, bool Unsubscribe = false);
 

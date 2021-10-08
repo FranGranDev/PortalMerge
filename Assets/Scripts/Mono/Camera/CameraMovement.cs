@@ -19,6 +19,7 @@ public class CameraMovement : MonoBehaviour
     public const float MAX_SPEED = 100;
     private bool isMoving;
     private Vector3 PrevPos;
+    private Coroutine MoveToCoroutine;
 
     private void ApplySettings()
     {
@@ -37,6 +38,11 @@ public class CameraMovement : MonoBehaviour
         Vector3 CurrantOffset = Direction + transform.position;
 
         transform.position = Vector3.Lerp(transform.position, CurrantOffset, CameraFollowSpeed * Time.deltaTime);
+
+        if(MoveToCoroutine != null)
+        {
+            StopCoroutine(MoveToCoroutine);
+        }
     }
     private void CameraSwipeEnd(Vector3 Point, Vector3 StartPoint)
     {
@@ -62,15 +68,18 @@ public class CameraMovement : MonoBehaviour
     private void MoveToCube(ICube cube)
     {
         Vector3 Point = cube.CubeTransform.position + Vector3.forward * -5;
-
-        StartCoroutine(MoveToCour(Point));
+        if(MoveToCoroutine != null)
+        {
+            StopCoroutine(MoveToCoroutine);
+        }
+        MoveToCoroutine = StartCoroutine(MoveToCour(Point));
     }
     private IEnumerator MoveToCour(Vector3 Target)
     {
-        while (Mathf.Abs(transform.position.z - Target.z) > 1)
+        while (Mathf.Abs(transform.position.z - Target.z) > 0.25f)
         {
             Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? transform.position.x : Target.x, transform.position.y, Target.z);
-            transform.position = Vector3.Lerp(transform.position, newPoint, 0.1f);
+            transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToPortalSpeed * 0.1f);
             yield return new WaitForFixedUpdate();
         }
         yield break;

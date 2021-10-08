@@ -4,12 +4,35 @@ using UnityEngine;
 
 public class GameManagement : MonoBehaviour
 {
-    private static GameManagement active;
+    public static GameManagement Active { get; private set; }
     [SerializeField] private DataGameMain _data;
     [SerializeField] private Transform _level;
+    [SerializeField] private LevelManagement levelManagement;
     private Transform GetLevelTransform => _level.GetChild(0);
-    public static DataGameMain MainData {get => active._data; }
+    public static DataGameMain MainData {get => Active._data; }
     [SerializeField]private List<ICube> Cubes;
+    private bool isPower2(int num)
+    {
+        if (num > 1)
+        {
+            return (Mathf.Round(Mathf.Log(num, 2)) == Mathf.Log(num, 2));
+        }
+        else
+        {
+            return false;
+        }
+    }
+    [Header("Game States")]
+    private int TargetNum;
+    public static bool isGameStarted;
+
+    #region Callbacks
+    public delegate void OnGameAction();
+    public static OnGameAction OnGameWin;
+    public static OnGameAction OnGameFailed;
+    public static OnGameAction OnGameStarted;
+
+    #endregion
 
     public static float RandomOne()
     {
@@ -20,10 +43,16 @@ public class GameManagement : MonoBehaviour
         return Random.Range(0, 2) == 0 ? 1 : -1 * (Random.Range(from, 1f));
     }
 
+    public void Init()
+    {
+
+        GetAllCubesOnScene();
+    }
+
     private void GetAllCubesOnScene()
     {
         Cubes = new List<ICube>();
-
+        TargetNum = 0;
         GameObject[] obj = GameObject.FindGameObjectsWithTag("Cube");
         for(int i = 0; i < obj.Length; i++)
         {
@@ -31,6 +60,11 @@ public class GameManagement : MonoBehaviour
             Cubes.Add(cube);
             SubscribeForCube(cube);
             cube.InitCube();
+            TargetNum += cube.Number;
+        }
+        if(!isPower2(TargetNum))
+        {
+            Debug.Log("На сцене должно быть кубиков кратно степени двойки!!!");
         }
     }
     private void SubscribeForCube(ICube cube)
@@ -56,13 +90,22 @@ public class GameManagement : MonoBehaviour
         }
     }
 
+    private void DestroyCube(ICube cube)
+    {
+        UnsubscribeForCube(cube);
+        if (Cubes.Exists(item => item == cube))
+        {
+            Cubes.Remove(cube);
+            Destroy(cube.CubeObject);
+        }
+    }
     private void OnCubeDestroyed(ICube cube)
     {
         UnsubscribeForCube(cube);
         if(Cubes.Exists(item => item == cube))
         {
-            //Some action
             Cubes.Remove(cube);
+            GameFailed();
         }
     }
     private void OnCubeEnterPortal(ICube cube)
@@ -76,21 +119,46 @@ public class GameManagement : MonoBehaviour
         Vector3 CubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
         CubeImpulse += Vector3.up * MainData.VerticalForceOnMerge;
         Vector3 CubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
-        cube1.DestroyCube();
-        cube2.DestroyCube();
+        DestroyCube(cube1);
+        DestroyCube(cube2);
 
         ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
         newCube.InitCube(CubeSum, CubeImpulse, CubeAngular);
         Cubes.Add(newCube);
 
         SubscribeForCube(newCube);
+
+        if(newCube.Number == TargetNum)
+        {
+            GameWin();
+        }
     }
 
+    public void StartGame()
+    {
+        isGameStarted = true;
+
+        GetAllCubesOnScene();
+        OnGameStarted?.Invoke();
+    }
+    private void GameFailed()
+    {
+        if (!isGameStarted)
+            return;
+        isGameStarted = false;
+        OnGameFailed?.Invoke();
+    }
+    private void GameWin()
+    {
+        if (!isGameStarted)
+            return;
+        isGameStarted = false;
+        OnGameWin?.Invoke();
+    }
 
     private void Awake()
     {
-        active = this;
-        GetAllCubesOnScene();
+        Active = this;
     }
     private void Start()
     {

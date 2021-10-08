@@ -28,7 +28,9 @@ Transform:
   m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
-  m_Children: []
+  m_Children:
+  - {fileID: 1090141032003962953}
+  - {fileID: 1090141031783469440}
   m_Father: {fileID: 1090141033188616273}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
@@ -104,12 +106,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090141031783469443}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1090141033188616273}
-  m_RootOrder: 2
+  m_Father: {fileID: 1090141031401867270}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1090141031783469454
 ParticleSystem:
@@ -4916,12 +4918,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1090141032003962952}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1090141033188616273}
-  m_RootOrder: 1
+  m_Father: {fileID: 1090141031401867270}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1090141032003963063
 ParticleSystem:
@@ -9656,6 +9658,7 @@ GameObject:
   - component: {fileID: 1090141033188616273}
   - component: {fileID: 1090141033188616287}
   - component: {fileID: 1090141033188616286}
+  - component: {fileID: 513668569979736011}
   m_Layer: 11
   m_Name: Portal_Green
   m_TagString: Portal
@@ -9675,8 +9678,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1090141031401867270}
-  - {fileID: 1090141032003962953}
-  - {fileID: 1090141031783469440}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9693,6 +9694,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SecondPortal: {fileID: 0}
+  isActive: 1
+  Effect: {fileID: 1090141031401867289}
 --- !u!65 &1090141033188616286
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9706,3 +9709,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 5, z: 0}
   m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!95 &513668569979736011
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090141033188616272}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d65ea3998d1ccfd47b2f1a11e9d3a788, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

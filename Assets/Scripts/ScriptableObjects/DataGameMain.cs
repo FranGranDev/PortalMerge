@@ -30,11 +30,17 @@ public class DataGameMain : ScriptableObject
     [Range(1, 25)]
     public float CameraFriction;
     public bool MoveToCubeOnEnterPortal;
+    [Range(0.1f, 1f)]
+    public float MoveToPortalSpeed;
     [Header("Настройка телепортов")]
     [Range(0, 1f)]
     public float SaveVelocityOnExitPortal;
     [Range(0, 5f)]
     public float AddVelocityOnExitPortal;
+    [Header("Настройка ловушек")]
+    public float DestroyDelay;
+    [Range(0.1f, 1f)]
+    public float ObstacleAcceleration;
     [Header("Настройка активаторов")]
     public float DelayTime;
     [Header("Префабы")]
