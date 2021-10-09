@@ -43,10 +43,13 @@ public class DataGameMain : ScriptableObject
     public float ObstacleAcceleration;
     [Header("Настройка активаторов")]
     public float DelayTime;
+    [Header("Партиклы")]
+    public ParticleSystem CubeDestroyed;
+    public ParticleSystem CubesMerge;
     [Header("Префабы")]
     public GameObject Cube;
     [Header("Цвета")]
-    [SerializeField ]private Color[] CubeColor;
+    [SerializeField] private Color[] CubeColor;
     public Color GetCubeColor(int num)
     {
         if(num > CubeColor.Length - 1 || num < 0)

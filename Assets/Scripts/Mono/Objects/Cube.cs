@@ -8,6 +8,8 @@ public class Cube : MonoBehaviour, ICube
     [Header("Settings")]
     [SerializeField]private int _number;
     public int Number { get => _number; private set => _number = value; }
+    private Color CurrantColor;
+    public Color CubeColor { get => CurrantColor; }
 
     [Header("Physics")]
     private float DragSpeed;
@@ -121,8 +123,26 @@ public class Cube : MonoBehaviour, ICube
     }
     public void DestroyCube()
     {
+        CreateDestroyParticle();
+
         OnCubeDestroyed?.Invoke(this);
         Destroy(gameObject);
+    }
+    #endregion
+    #region Particle
+    public void CreateDestroyParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeDestroyed, transform.position, transform.rotation);
+        ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
+        partilceRender.material.color = CurrantColor;
+
+    }
+    public void CreateMergeParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubesMerge, transform.position, transform.rotation, transform);
+        ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
+        partilceRender.material.color = CurrantColor;
+
     }
     #endregion
     #region Movement
@@ -219,7 +239,8 @@ public class Cube : MonoBehaviour, ICube
     }
     private void SetView()
     {
-        _material.color = GameManagement.MainData.GetCubeColor(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
+        CurrantColor = GameManagement.MainData.GetCubeColor(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
+        _material.color = CurrantColor;
     }
     private void ApplySettings()
     {
@@ -313,6 +334,8 @@ public interface ICube
 
     int Number { get; }
 
+    Color CubeColor { get; }
+
     Transform CubeTransform { get; }
 
     GameObject CubeObject { get; }
@@ -333,6 +356,10 @@ public interface ICube
     void OnEnterPortal();
 
     void OnEnterTrap();
+
+    void CreateMergeParticle();
+
+    void CreateDestroyParticle();
 
     void AddImpulse(Vector3 Impulse);
 

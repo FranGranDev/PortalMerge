@@ -124,8 +124,8 @@ public class GameManagement : MonoBehaviour
 
         ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
         newCube.InitCube(CubeSum, CubeImpulse, CubeAngular);
+        newCube.CreateMergeParticle();
         Cubes.Add(newCube);
-
         SubscribeForCube(newCube);
 
         if(newCube.Number == TargetNum)
