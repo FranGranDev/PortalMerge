@@ -89,12 +89,12 @@ public class Cube : MonoBehaviour, ICube
 
 
     [Header("States")]
+    [SerializeField] private bool inAir;
+    [SerializeField] private bool isMoving;
     private Transform PrevParent;
     public ICube PrevCube { get; private set; }
     public bool isNull => Equals(null);
 
-    private bool isMoving;
-    [SerializeField]private bool inAir;
 
     #region Action
     public void TryMerge(ICube other)

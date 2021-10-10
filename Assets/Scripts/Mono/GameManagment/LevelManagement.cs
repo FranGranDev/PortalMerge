@@ -75,11 +75,17 @@ public class LevelManagement : MonoBehaviour
 
     public void NextLevel() 
     {
-        if (!editorMode) 
-            PlayerPrefs.SetInt(PREFS_KEY_LEVEL_ID, (PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0) + 1) );
-        SelectLevel(CurrentLevelIndex + 1);
+        if (!editorMode)
+        {            
+            PlayerPrefs.SetInt(PREFS_KEY_LEVEL_ID, (PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0) + 1));
+        }
 
-        GameManagement.Active.StartGame();
+        SelectLevel(CurrentLevelIndex + 1); //fix Бутерброд из ифов 
+
+        if(!editorMode)
+        {
+            GameManagement.Active.StartGame();
+        }
     }
 
     public void PrevLevel() =>

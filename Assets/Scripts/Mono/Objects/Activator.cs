@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Activator : MonoBehaviour
 {
+    //2 реализации: либо давать ссылку на объект Target, либо в класе объекта подисаться на событие OnActivate
+
     [SerializeField] private GameObject _target;
     [SerializeField] private IActivate Target;
     [SerializeField] private bool Disactivate;
@@ -11,10 +13,26 @@ public class Activator : MonoBehaviour
     public bool _activated { get; private set; }
     private float DelayTime;
     private Coroutine ActivateCoroutine;
+
+    public delegate void OnActivateEvent(bool on);
+    private OnActivateEvent OnActivate; 
+    public void Subscribe(OnActivateEvent action, bool unsubscribe = false)
+    {
+        if(unsubscribe)
+        {
+            OnActivate -= action;
+        }
+        else
+        {
+            OnActivate += action;
+        }
+    }
+
     [Header("Components")]
     private const string ANIM_BOOL = "Active";
     private Animator _anim;
     private bool HaveAnimator;
+
 
     private void Init()
     {
@@ -28,8 +46,6 @@ public class Activator : MonoBehaviour
 
     private void Activate(bool on)
     {
-        if (Target == null)
-            return;
         if(ActivateCoroutine != null)
         {
             StopCoroutine(ActivateCoroutine);
@@ -39,8 +55,9 @@ public class Activator : MonoBehaviour
     private IEnumerator ActivateCour(bool on)
     {
         yield return new WaitForSeconds(DelayTime);
-        Target.Activate(Disactivate ? !on : on);
+        Target?.Activate(Disactivate ? !on : on);
         _activated = on;
+        OnActivate?.Invoke(Disactivate ? !on : on);
         if (HaveAnimator)
         {
             _anim.SetBool(ANIM_BOOL, on);
