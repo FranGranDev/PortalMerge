@@ -1,0 +1,451 @@
+{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Consolas;}{\f2\fnil\fcharset0 Consolas;}{\f3\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sl276\slmult1\qc\lang9\ul\b\f0\fs56 RayFire for Unity 1.15\par
+Documentation \fs48\par
+\pard\ri-22\sl276\slmult1\tx8662\tx8946\ulnone\b0\fs28\par
+=============================================================\par
+\pard\sl276\slmult1\qc\ul\b\fs56\par
+RayFire Man component\fs36\par
+\pard\sl276\slmult1\ulnone\b0\fs22\par
+RayFireMan script works as a manager for all simulated objects. You can create it and setup your own properties. it will be created automatically and use default properties if you didn't created it before.\par
+\pard\sl276\slmult1\qc\par
+\pard\sl276\slmult1\lang1033\b\fs48\tab Gravity \fs28\par
+\fs22\par
+Set gravity\b0 : \lang9 Enables custom gravity multiplier.\lang1033\par
+\par
+\b Multiplier\b0 : \lang9 Multiplier for gravity force.\par
+\par
+\pard\sl276\slmult1\qc\lang1033\fs28\tab\par
+\pard\sl276\slmult1\b\fs48\tab Infinite Fall\par
+\fs22\par
+Destroy\b0 : Allows to destroy simulated objects if they fall too far from their original position.\par
+\par
+\b Distance\b0 : Defines maximum distance over Y axis between original and current position.\par
+\par
+\pard\sl276\slmult1\qc\fs28\par
+\pard\sl276\slmult1\b\fs48\tab Materials\fs56\par
+\b0\fs22\par
+\b Minimum Mass\b0 : Minimum mass for rigid body.\par
+\b Maximum Mass\b0 : Maximum mass for rigid body.\par
+\lang9\fs44\par
+Material Presets\lang1033\b\fs22\par
+\par
+Destructible\b0 : Object will be possible to demolish only if Destructible state is On.\par
+\b Solidity\b0 : Material Solidity multiplier. Decreae to make objects more fragile.\par
+\b\par
+Density\b0 : Defines object mass by it's volume. \par
+\b Drag\b0 : Defines\par
+\b Angular Drag\b0 : Defines\par
+\par
+\b Material\b0 : Defines\par
+\b Dynamic Friction\b0 : Defines\par
+\b Static Friction\b0 : Defines\par
+\b Bounciness\b0 : Defines\fs28\par
+\par
+\b\fs56\tab\fs48 Demolition\fs28\par
+\fs22\par
+Global Solidity\b0 : \lang9 Global solidity multiplier for all RayFireRigid scripts. \par
+\par
+\lang1033\b Time Quota\b0 : \lang9 Defines allows time pre frame for single demolition. If Object was demolished and it took more time than this value then no more demolitions will be allowed at this frame.\par
+\par
+\fs44 Advanced Demolition Properties\lang1033\b\fs22\par
+\par
+\lang9\fs28\tab Post Demolition\b0\fs32\par
+\lang1033\b\fs22\par
+Demolished Object\b0 :\lang9  Defines what will happen with demolished object.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\lang1033\b Deactivate\b0 :\lang9  Object will be deactivated and stay in scene.\par
+\lang1033\b{\pntext\f3\'B7\tab}Destroy\b0 :\lang9  Object will be deactivated and destroyed after \b Destroy Delay \b0 time.\par
+\pard\sl276\slmult1\par
+\b Destroy Delay\lang1033\b0 :\lang9  Deactivated demolished object wull stay in scene this time and then will be destroyed.\par
+\par
+\par
+\b\fs28\tab Fragments\b0\fs22\par
+\par
+\lang1033\b Parent\b0 :\lang9  Defines parent for demolition fragments.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\lang1033\b Manager\b0 :\lang9  Fragments will use Manager'g gameobject as parent.\par
+\lang1033\b{\pntext\f3\'B7\tab}Parent\b0 :\lang9  Fragments will use original object as parent.\par
+\pard\sl276\slmult1\lang1033\b\par
+Maximum Amount\b0 :\lang9  O\lang1033 bject will not be demolished if  current amount of all new created fragments is more than \b Maximum Amount\b0 , you can see current \b fragments amount \b0 value on top of RayFireMan component\lang9 .\par
+\lang1033\b\par
+Bad Mesh Try\b0 : \lang9 Defines amount of attempts to demolish object. During demolition object can be marked as "Bad Mesh" in case it's mesh was impossible to fragment for some reason. If mesh was defined as "Bad" at Input step - it always will be marked as "Bad" at Input step. If object was fragmented but some of it's fragments has some problem with mesh it also will be marked as "Bad Mesh", but with different fragmentation properties it still could be fragmented with no problems. Using \lang1033\b Bad Mesh Try\b0  \lang9 property you can define how many times object will try to fragment itself before it will be marked as "Undemolishable". After this it will not try to demolish itself anymore. \par
+\lang1033\par
+\lang9\par
+\b\fs28\tab Shadow Casting\par
+\lang1033\fs22\par
+Size Threshold\b0 :\lang9  Objects with bounding size less than this will not cast shadows.\par
+\lang1033\par
+\fs28\tab\par
+\b\fs48\tab Fragment pooling\par
+\fs22\par
+Enable Pooling\b0 : \lang9 Enables fragment pooling  to decrease demolition time. Demolished object creates new gameobject for every fragment, after this it has to add all necessary components to it. Using pooling you can prevent this, in this case there always will be some amount of gameobjects with all components and Demolished object will need only to take it and apply mesh data and other Rigid properties. After this pool will restore amount of "dummy" fragments. It is especially useful when you use Precache demolition type with high amount of precached meshes.\par
+\lang1033\par
+\b Pool Limit\b0 : \lang9 Defines amount "dummy" fragments.\par
+\par
+\par
+\fs28 ===========================================================\par
+\ul\b\fs36\par
+RayFire Cluster component\par
+\lang1033\ulnone\b0\fs22\par
+Clusters component can be used to create parent/child hierarchy in Editor mode which can be used for demolition in Play mode. Also clusters allows to simulate dynamic concave objects which is impossible to do for now (2018.3) in Unity with regular rigid bodies.\par
+\par
+\fs28\tab Properties group\lang9\b\fs22\par
+\lang1033\b0\par
+\lang9\b Type\lang1033\b0 : Defines clustering algorithm.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1 By Point Cloud: Creates random Vector3 point cloud inside bounding box of all children meshes, and then create clusters based on this point cloud, every child sticks to closest point. This type allows to gather into one cluster objects with meshes which are not connected with each other.\par
+{\pntext\f3\'B7\tab}By Shared Area: Creates clusters starting from biggest, not clustered yet mesh and then start add neighbour mesh with biggest shared area, then do it again. This type is good for objects just fragmented using Shatter component. In this way clusters looks more natural.\par
+\pard\sl276\slmult1\par
+\b Depth\b0 : Defines how deep will go clustering. \par
+\b Seed\b0 : Random seed for all random values. \par
+\b Smooth Pass\b0 : Higher value smooth clusters and let them switch some fragments among each other to make border between clusters smoother.\par
+\par
+\fs28\tab By Point Cloud group\lang9\b\fs22\par
+\lang1033\b0\par
+\b Base Amount\b0 : Maximum amount child clusters. \par
+\b Depth Amount\b0 : Amount of shards in child clusters. \par
+\par
+\lang9\b Connectivity\b0 : \lang1033 Defines Connectivity algorithm for shards. \par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b By Bounding Box\b0 : Fast but not accurate. Check for connectivity using shard's bound boxes. Can be used with any kind of objects.\par
+\b{\pntext\f3\'B7\tab}By Mesh\b0 : Slow but accurate. Check for connectivity using shard's mesh. Can be used only with fragments which shares same triangles (Voronoi, Slabs, Splinters and Radial fragmentation types).\par
+\pard\sl276\slmult1\par
+\fs28\tab By Shared Area group\lang9\b\fs22\par
+\lang1033\b0\par
+\b Minimum Amount\b0 : Minimum amount of shards in cluster. \par
+\b Maximum Amount\b0 : Maximum amount of shards in cluster. \par
+\par
+\lang9\fs28\par
+===========================================================\par
+\par
+\ul\b\fs36\par
+RayFire Activator component\par
+\ulnone\b0\fs22\par
+\b\fs32{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=LIkdaM1BI8c"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=LIkdaM1BI8c}}}\lang1033\b0\f0\fs22\par
+\par
+Using Activator component you can activate (turn them to full dynamic objects) Inactive objects. \par
+\lang9\b\fs32\par
+\b0\fs28\tab Activation group\b\fs32\par
+\fs22\par
+Type\lang1033\b0 : Defines when Inactive object will be activated.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1 On Enter: Inactive object will be activated when Activator will Enter it's collider.\par
+{\pntext\f3\'B7\tab}On Exit:  Inactive object will be activated when Activator will Exit it's collider.\par
+\pard\sl276\slmult1\b\par
+Delay\b0 : Delay in seconds after which object will be activated.\par
+\par
+\b\fs28\tab\lang9\b0 Animation group\par
+\b\fs22\par
+\lang1033 Duration\b0 : Defines position animation duration in seconds.\par
+\par
+\b Scale Animation\b0 : Allows to animate Scale.\par
+\lang9\b\par
+Position Animation\lang1033\b0 : Defines the way position will be animated for Activator.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b By Position List\b0 : Activator will use positions which were defined by user manually using Add Position button. \par
+\b{\pntext\f3\'B7\tab}By Static Line\b0 : Activator will be animated along Line renderer define for \b Line \b0 variable, if line will be moved during animation Activator will not be affected. \par
+\b{\pntext\f3\'B7\tab}By Dynamic Line\b0 : Activator will be animated along Line renderer define for \b Line \b0 variable, if line will be moved during animation Activator will be moved as well.\par
+\pard\sl276\slmult1\b\par
+Line\b0 : Line Renderer component which will be used for position animation\par
+\b\par
+Position List\b0 : List of positions defined manually.\par
+\par
+Animation can be triggered by public method:\par
+\cf1\f1\fs19 public\cf2  \cf1 void\cf2  TriggerAnimation()\cf0\f0\fs22\par
+\par
+stopped by :\par
+\cf1\f1\fs19 public\cf2  \cf1 void\cf2  StopAnimation()\par
+\cf0\f0\fs22\par
+and reset by:\par
+\cf1\f1\fs19 public\cf2  \cf1 void\cf2  ResetAnimation()\par
+\par
+\cf0\lang9\f0\fs28\par
+===========================================================\par
+\par
+\ul\b\fs36\par
+RayFire Gun component\par
+\lang1033\ulnone\b0\fs22\par
+\lang9\b\fs32{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=UstoNAaVav4"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=UstoNAaVav4}}}\lang1033\b0\f0\fs22\par
+\par
+Using Gun component you can shoot objects, demolish them at Impact point, create Impact Flash, Particle Debris and Dust, dynamically push them and activate.\par
+\par
+Single shot can be initiated by public method:\par
+\cf1\f1\fs19 public\cf2  \cf1 void\cf2  Shoot()\cf0\f0\fs22\par
+\par
+\lang9\fs28\tab Properties group\b\fs32\par
+\fs22\par
+Axis\lang1033\b0 : Defines local shooting axis of object with Gun component, in case Target is not defined.\par
+\par
+\lang9\b Max Distance\lang1033\b0 : Maximum distance to shoot.\par
+\par
+\lang9\b Target\lang1033\b0 : Transform component which will be used as target.\par
+\par
+\lang9\fs28\tab Burst group\b\fs32\par
+\fs22\par
+Rounds\lang1033\b0 : Amount of shots during single burst.\par
+\par
+\lang9\b Rate\lang1033\b0 : Defines delay in seconds until next shot.\par
+\par
+\lang9\fs28\tab Impact group\b\fs32\par
+\fs22\par
+Strength\lang1033\b0 : Defines strength of physical push which will get Impact target.\par
+\par
+\lang9\b Radius\lang1033\b0 : Defines radius in units around Impact point. Turned off when 0, in this case only Impact target will be pushed.\par
+\par
+\lang9\fs28\tab Damage group\b\fs32\par
+\fs22\par
+Damage\lang1033\b0 : Defines damage value which will be applied to object with Rigid component.\par
+\par
+\lang9\fs28\tab Impact particles group\b\fs32\par
+\fs22\par
+Debris\lang1033\b0 : Create particle debris in case of shot in object with Rigid component. Rigid component has to have Debris\\On Impact property enabled.\par
+\par
+\lang9\b Dust\lang1033\b0 : Create particle dust in case of shot in object with Rigid component. Rigid component has to have Dust\\On Impact property enabled.\par
+\par
+\lang9\fs28\tab Impact flash group\b\fs32\par
+\fs22\par
+Enable Impact Flash\lang1033\b0 : Create object with Light component for a moment at Impact point.\par
+\par
+\lang9\b Flash Strength\lang1033\b0 : Defines Light's intensity.\par
+\par
+\lang9\b Flash Range\lang1033\b0 : Defines Light's range.\par
+\par
+\lang9\b Flash Distance\lang1033\b0 : Defines offset in units from Impact point.\par
+\par
+\lang9\b Flash Color\lang1033\b0 : Defines Light's color.\par
+\par
+\lang9\fs28\tab Filters group\b\fs32\par
+\fs22\par
+Tag\lang1033\b0 : Gun will shoot only objects with picked Tag. You can pick only one Tag.\par
+\b\par
+Layer\b0 : Gun will shoot only objects with defined layer. You can define several Layers.\par
+\par
+\par
+\lang9\fs28 ===========================================================\par
+\ul\b\fs36\par
+RayFire Blade component\par
+\lang1033\ulnone\b0\fs22\par
+\lang9\b\fs32{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=wNgXlZS0mTA"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=wNgXlZS0mTA}}}\lang1033\b0\f0\fs22\par
+\par
+Using Blade component it is possible to slice objects to two pieces in runtime. \par
+Object with Blade component also should have Collider (Will be automated in next builds).\par
+\lang9\b\par
+Cut Type\lang1033\b0 : Defines when target object will be sliced.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b Exit\b0 : Target object will be sliced when \b Blade \b0 collider will \b exit \b0 target collider. Blade will use it's position and plane over axes defined by \b Slice Type \b0 property at \b Exit \b0 frame.\par
+\b{\pntext\f3\'B7\tab}Enter\b0 : Target object will be sliced when \b Blade \b0 collider will \b enter \b0 target collider. Blade will use it's position and plane over axes defined by \b Slice Type \b0 property at \b Enter \b0 frame.\par
+\b{\pntext\f3\'B7\tab}Enter Exit\b0 : Target object will be sliced when \b Blade \b0 collider will \b exit \b0 target collider. Blade will use average position and plane over axes defined by\b  Slice Type \b0 property at \b Enter and Exit \b0 frames.\par
+\pard\li360\sl276\slmult1\par
+\pard\sl276\slmult1\lang9\b Slice Type\lang1033\b0 : Defines slicing plane which will be used to slice target object.\par
+\pard\li360\sl276\slmult1\b XY\b0 : Plane will lay one X and Y axes. It's normal will point over Z axis.\par
+\b XZ\b0 : Plane will lay one X and Z axes. It's normal will point over Y axis.\par
+\b YZ\b0 : Plane will lay one Y and Z axes. It's normal will point over X axis.\par
+\par
+\pard\sl276\slmult1\lang9\fs28\tab Filters group\b\fs32\par
+\fs22\par
+Tag\lang1033\b0 : Blade will slice only objects with picked Tag. You can pick only one Tag.\par
+\b\par
+Layer\b0 : Blade will slice only objects with defined layer. You can define several Layers.\par
+\pard\li360\sl276\slmult1\par
+\pard\sl276\slmult1\par
+\lang9\fs28 ===========================================================\par
+\par
+\ul\b\fs36 RayFire Bomb component\par
+\lang1033\ulnone\b0\fs22\par
+Bomb explosion can be initiated by public method:\lang9\b\fs32\par
+\cf1\b0\f1\fs19 public\cf2  \cf1 void\cf2  Explode (\cf1 float\cf2  Delay = 0)\cf0\b\f0\fs32\par
+\lang1033\b0\fs22 Where \cf2\lang9\f1\fs19 Delay\lang1033\f2  \cf0\f0\fs22 is time delay in seconds.\lang9\b\fs32\par
+\par
+\tab\b0\fs28 Range group\b\fs32\par
+\fs22\par
+Range Type\lang1033\b0 : Defines explosion direction for objects. For now there is only one type, but later there will be more.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b Spherical\b0 : Explosion expands in all directions from explosion position. \par
+\pard\sl276\slmult1\par
+\b Fade Type\b0 : Defines how quickly explosion Strength fade out relative to distance from explosion position.\par
+\pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b Linear\b0 : Strength falloff linearly.\par
+\b{\pntext\f3\'B7\tab}Exponential\b0 : Strength falloff exponentially.\par
+\b{\pntext\f3\'B7\tab}None\b0 : Strength use maximum value for all objects in range.\par
+\pard\sl276\slmult1\lang9\b\par
+Range\lang1033\b0 : Explosion ranged in Units, all objects in Range value will be affected by explosion.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Impulse group\b\fs32\par
+\fs22\par
+Strength\lang1033\b0 : Maximum explosion strength at the center of explosion position.\par
+\par
+\b Variation\b0 : Strength Variation in percents.\par
+\par
+\lang9\b Chaos\lang1033\b0 : Random spinning strength for objects, high Chaos value makes objects spinning faster at explosion.\par
+\par
+\b Force By Mass\b0 : Allows to affect with higher Strength to small and light objects and with less Strength to big and Heavy objects.\par
+\b\par
+Affect Kinematik\b0 : Allows to explode Kinematik objects.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Detonation group\b\fs32\par
+\fs22\par
+Height Offset\lang1033\b0 : Allows to change Explosion position over global Y axis. Useful if you want to make explosion more spectacular and explode objects upper even though your object with Bomb component should explode them parallel to the ground.\par
+\par
+\b Delay\b0 : Delay in seconds after which Bomb will be exploded. Useful in case you want to trigger explosion via method but you want bomb to explode after some delay.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Damage group\b\fs32\par
+\fs22\par
+Apply Damage\lang1033\b0 : Allows to apply damage to objects with Rigid component and demolish them when Rigid's \b Current damage\b0  value will be more than \b Maximum damage\b0 .\par
+\b\par
+Damage Value\b0 : Damage which will applied to object with Rigid component.\par
+\par
+\lang9\fs28\tab Filters group\b\fs32\par
+\fs22\par
+Tag\lang1033\b0 : Explosion will affect only objects with picked Tag. You can pick only one Tag.\par
+\b\par
+Layer\b0 : Explosion will affect only objects with defined layer. You can define several Layers.\par
+\par
+\lang9\fs28\par
+===========================================================\par
+\par
+\ul\b\fs36 RayFire Wind component\par
+\ulnone\fs32\par
+\tab\b0\fs28 Gizmo group\lang1033\fs22\par
+\b\par
+Gizmo Size\b0 : Defines size of Wind Gizmo. Wind force can be applied to dynamic objects only inside gizmo.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Noise group\lang1033\fs22\par
+\lang9\b\par
+Global Scale\lang1033\b0 : Defines Global Noise scale. The higher Global Scale make wind more chaotic and dense.\par
+\b\par
+Length Scale\b0 : Defines Noise scale over Z (Wind direction) axis.\par
+\b\par
+Width Scale\b0 : Defines Noise scale over X axis.\par
+\b\par
+Speed\b0 : Defines speed of noise offset over Z (Wind direction) axis.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Strength group\b\fs32\par
+\fs22\par
+Minimum\lang1033\b0 : Minimum strength applied to dynamic object at position where noise strength is 0.\par
+\b\par
+Maximum\b0 : Maximum strength applied to dynamic object at position where noise strength 1.\par
+\b\par
+Torque\b0 : Defines rolling torque strength for dynamic objects.\par
+\b\par
+Force By Mass\b0 : Applies Wind strength to object by their mass.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Direction group\b\fs32\par
+\fs22\par
+Divirgency\lang1033\b0 : Defines angle spread for wind direction\par
+\b\par
+Turbulence\b0 : Defines how quickly \b Divergency \b0 is changing.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Preview group\lang1033\fs22\par
+\b\par
+Preview Density\b0 : Defines amount of Strength and Direction preview helpers.\par
+\b\par
+Preview Size\b0 : Defines size of Strength and Direction preview helpers.\par
+\par
+\par
+\lang9\fs28\tab Filters group\b\fs32\par
+\fs22\par
+Tag\lang1033\b0 : Wind will affect only objects with picked Tag. You can pick only one Tag.\par
+\b\par
+Layer\b0 : Wind will affect only objects with defined layer. You can define several Layers.\par
+\lang9\b\fs32\tab\lang1033\b0\fs22\par
+\lang9\fs28\par
+===========================================================\par
+\par
+\ul\b\fs36 RayFire Vortex component\par
+\ulnone\fs32\par
+\tab\b0\fs28 Anchor points group\lang1033\fs22\par
+\b\par
+Top Anchor\b0 : Position of Top anchor point.\par
+\b Bottom Anchor\b0 : Position of Bottom anchor point.\par
+\lang9\b\fs32\par
+\tab\b0\fs28 Gizmo group\par
+\lang1033\fs22\par
+\b Top Radius\b0 : Radius in Units for Top anchor.\par
+\b Bottom Radius\b0 : Radius in Units for Bottom anchor.\par
+\par
+\lang9\fs28\tab Eye group\lang1033\b\par
+\fs22\par
+Eye\b0 : Size of inner eye hole in percents to radius.\par
+\lang9\fs28\par
+\b\fs32\tab\b0\fs28 Strength group\par
+\lang1033\fs22\par
+\b Force By Mass\b0 : Applies Swirl strength by object's mass.\par
+\b Stiffness\b0 : Defines how hard object will try to reach it's local position inside Vortex.\par
+\b Swirl Strength\b0 : Defines swirl animation speed.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Torque group\lang1033\par
+\b\fs22\par
+Enable Torque\b0 : Enables object spinning around it's center of mass. \par
+\b Torque Strength\b0 : Defines spinning speed.\par
+\b Torque Variation\b0 : Defines \b Torque Strength \b0 variation.\par
+\par
+\lang9\b\fs32\tab\b0\fs28 Height bias group\lang1033\par
+\b\fs22\par
+Enable height Bias\b0  Enables object height animation inside Vortex.\par
+\b Bias Speed\b0 : Defines height animation speed.\par
+\b Bias Spread\b0 : Defines how far object will be animated from it's default position.\par
+\lang9\fs28\par
+\b\fs32\tab\b0\fs28 Seed group\lang1033\par
+\b\fs22\par
+Seed\b0 : Random seed for all random values. Affects on object's position in vortex, Swirl and Torque strength, etc.\lang9\fs28\par
+\par
+\b\fs32\tab\b0\fs28 Preview group\lang1033\fs22\par
+\par
+\b Circles\b0 : Defines amount of gizmo preview circles for Vortex\par
+\par
+\lang9\fs28\tab Filters group\b\fs32\par
+\fs22\par
+Tag\lang1033\b0 : Vortex will affect only objects with picked Tag. You can pick only one Tag.\par
+\b\par
+Layer\b0 : Vortex will affect only objects with defined layer. You can define several Layers.\par
+\par
+\lang9\fs28\par
+===========================================================\par
+\ul\b\fs36\par
+RayFire Recorder component\par
+\ulnone\fs32\par
+{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=5DaVEKn4raA"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=5DaVEKn4raA}}}\f0\fs32\par
+\par
+\tab\b0\fs28 Record properties group\lang1033\fs22\par
+\b\par
+Record On Start\b0 : Start recording on start. Otherwise recording can be started by "Start recording" button\par
+\par
+\b Clip Name\b0 : Animation clip asset name.\par
+\par
+\b Duration\b0 : Time in seconds. Recording can be stopped by "Stop record" button\par
+\par
+\b Rate\b0 : Defines amount of keys per second.\par
+\par
+\b Reduce keys\b0 : Remove keys with the same value as it's neighbour.\par
+\par
+\b Threshold\b0 : Remove keys by threshold value.\par
+\par
+\lang9\fs28\tab\par
+\tab Playback properties group\lang1033\fs22\par
+\par
+\b Play On Start\b0 : Start playing animation on start. Otherwise playback can be started by "Start play" button\par
+\par
+\b Animation Clip\b0 : Animation clip which will be played. \par
+IMPORTANT: Animation clip should be defined in controller.\par
+\par
+\b Controller\b0 : Controller with animation clip which should be played.\par
+\par
+\par
+\lang9\fs28\tab Rigid Playback group\lang1033\fs22\par
+\par
+\b Set to kinematic\b0 : Set all children's Rigid components simulation type to Kinematic.\par
+\lang9\fs28\par
+\par
+===========================================================\par
+\ul\b\fs36\par
+RayFire Snapshot component\par
+\par
+\ulnone\fs32{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=MDMwzzLndXQ"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=MDMwzzLndXQ}}}\ul\f0\fs36\par
+\ulnone\fs32\par
+\tab\b0\fs28 Save properties group\lang1033\fs22\par
+\b\par
+Asset name\b0 : Asset file name.\par
+\par
+\b Compress\b0 : Reduce asset size twice when On.\par
+\par
+\lang9\fs28\tab Load properties group\lang1033\fs22\par
+\b\par
+Snapshot Asset\b0 : Asset file which will be loaded.\par
+\par
+\b Size filter\b0 : Size filter to exclude loaded objects by size.\par
+\par
+\lang9\b\fs52\par
+}
+ 

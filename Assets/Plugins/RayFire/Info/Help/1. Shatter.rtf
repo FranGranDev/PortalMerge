@@ -1,0 +1,161 @@
+{\rtf1\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sl276\slmult1\lang1033\f0\fs22\par
+\pard\sl276\slmult1\qc\lang9\ul\b\fs52 RayFire Shatter\fs36\par
+\pard\sl276\slmult1\ulnone\fs32\par
+\b0\fs22 It's main purpose is \b Prefragmentation \b0 in Editor mode. For now it provides 7 fragmentation types: \b Voronoi\b0 , \b Splinters, Slabs, Radial, Custom, Slices\b0  and \b Tetrahedron \b0 based fragmentation.\par
+\lang1033\b\fs32{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=QOKCyC4hRho"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=QOKCyC4hRho}}}\f0\fs32\par
+\par
+\lang9\tab\lang1033\i\fs48 Fragments \lang9\i0\fs22\par
+\par
+Fragment Type\lang1033\b0 : Defines fragmentation type for object\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b Voronoi\b0 : Low poly, convex, physic s friendly fragments.\par
+\b{\pntext\f1\'B7\tab}Splinters\b0 : Low poly, convex, physics friendly fragments, stretched along one axis.\par
+\b{\pntext\f1\'B7\tab}Slabs\b0 : Low poly, convex, physics friendly fragments, stretched along two axes.\par
+\b{\pntext\f1\'B7\tab}Radial\b0 : Low poly, convex, physics friendly fragments, creates radial fragments pattern.\par
+\b{\pntext\f1\'B7\tab}Custom\b0 : Low poly, convex, physics friendly fragments, allows to use custom point cloud for fragments distribution.\par
+\b{\pntext\f1\'B7\tab}Slice\b0 : Slice object by planes.\par
+\b{\pntext\f1\'B7\tab}Tets\b0 : Tetrahedron based fragments, this type is mostly useless as is and should be used with Gluing, in this case it creates high poly concave fragments.\par
+\b{\pntext\f1\'B7\tab}Decompose\b0 : Detach every element (separated suface which is not connected with the rest of surface) into separate fragment.\par
+\pard\sl276\slmult1\lang9\i\fs44\par
+\b Voronoi\i0\fs32\par
+{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=KuCXYWvnSm4"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=KuCXYWvnSm4}}}\f0\fs32\par
+\fs22\par
+Amount\lang1033\b0 : Defines amount of points in point cloud, every point represent rough center of  fragment.\par
+\par
+\b Center Bias\b0 : Defines offset of points in point cloud towards \b Center\b0 . Using high value it is possible to create more tiny fragments closer to \b Center \b0 and less bigger fragments far from it.\par
+\par
+\lang9\i\fs44\par
+\b Splinters\i0\fs32\par
+\fs22\par
+Amount\lang1033\b0 : Defines amount of points in point cloud, every point represent rough center of  fragment.\par
+\par
+\lang9\b Strength\lang1033\b0 : Defines sharpness of stretched splinters.\par
+\par
+\b Center Bias\b0 : Defines offset of points in point cloud towards \b Center\b0 . Using high value it is possible to create more tiny fragments closer to \b Center \b0 and less bigger fragments far from it.\par
+\par
+\lang9\i\fs44\par
+\b Slabs\i0\fs32\par
+\fs22\par
+Amount\lang1033\b0 : Defines amount of points in point cloud, every point represent rough center of  fragment.\par
+\par
+\lang9\b Strength\lang1033\b0 : Defines sharpness of stretched slabs.\par
+\par
+\b Center Bias\b0 : Defines offset of points in point cloud towards \b Center\b0 . Using high value it is possible to create more tiny fragments closer to \b Center \b0 and less bigger fragments far from it.\par
+\par
+\lang9\b\fs32\tab\par
+\i\fs44 Radial\i0\fs32\par
+{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=bn2vhSdPj9g"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=bn2vhSdPj9g}}}\f0\fs32\par
+\fs22\par
+Radius\lang1033\b0 : Radius of radial fragmentation type.\par
+\b\par
+Divergence\b0 : Radial type creates point cloud which creates Voronoi fragments. Divergence property defines random offset for points in this point cloud. High divergence provides more chaotic fragments.\par
+\lang9\b\par
+Restrict\lang1033\b0 : Divergence offset points in all directions. If Restrict property is On points will be restricted to plane.\par
+\lang9\b\par
+Rings\lang1033\b0 : Defines amount of Rings.\par
+\b\par
+Focus\b0 : Defines bias to center for rings.\par
+\lang9\b\par
+Focus Str\lang1033\b0 : Defines Focus bias strength.\par
+\lang9\b\par
+Random Rings\lang1033\b0 : Add random offset to rings position.\par
+\b\par
+Rays\b0 : Defines amount of Rays.\par
+\lang9\b\par
+Random Rays\lang1033\b0 : Add random offset to rings direction.\par
+\lang9\b\par
+Twist\lang1033\b0 : Add rotation to rings relative to center.\par
+\par
+\lang9\b\fs32\tab\par
+\i\fs44 Custom\i0\fs32\par
+\fs22\par
+\lang1033\fs28\tab\i Point Cloud\lang9\i0\fs22\par
+\par
+Source\lang1033\b0 : Defines source of custom point cloud for fragments distribution\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\lang9\b Children Transform\lang1033\b0 : Every child object position represents one point in point cloud.\par
+\lang9\b{\pntext\f1\'B7\tab}Transform Array\lang1033\b0 : Array of object's transforms.\par
+\lang9\b{\pntext\f1\'B7\tab}Vector3 Array\lang1033\b0 : Array of Point 3 coorinates.\par
+\pard\sl276\slmult1\lang9\b\par
+Use As\lang1033\b0 : Defines source of custom point cloud for fragments distribution\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\lang9\b Volume Points\lang1033\b0 : Every point offspring additional ponts around so total amount of points in cloud will be equal to Amount property in Volume group.\lang9\b\par
+{\pntext\f1\'B7\tab}Point Cloud\lang1033\b0 : Every point cloud is used as approximate center for fragment.\lang9\b\par
+\pard\sl276\slmult1\lang1033\par
+\fs28\tab\i Volume\i0\par
+\fs22\par
+Amount\b0 : Total amount of points in point cloud if Use As set to Volume Points .\par
+\b Radius\b0 : Every Volume point generates  new points around it in dedined Radius.\b\fs28\tab\par
+\tab\par
+\tab\i Preview\i0\par
+\fs22\par
+Enable\b0 : Show point cloud in viewport.\par
+\b Size\b0 : Size of preview point.\par
+\par
+\b\fs28\tab\i Arrays\i0\par
+\fs22\par
+Transforms\b0 : Array of object transforms in case Source set to Transform Array.\par
+\b Vector 3\b0 : Array of global Vector 3 coordinates in case Source set to Vector3 Array.\lang9\b\fs32\par
+\par
+\b0\i\fs44 Slice\b\i0\fs32\par
+\fs22\par
+Plane\lang1033\b0 : Defines slicing plane by two axes.\par
+\b\par
+Slice List\b0 : List with transforms for slice planes.\par
+\par
+\lang9\b\fs32\tab\par
+\b0\i\fs44 Tets\b\i0\fs32\par
+{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=8I00u-ivckQ"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=8I00u-ivckQ}}}\f0\fs32\par
+\fs22\par
+Density\lang1033\b0 : Defines density of tetrahedron cage. \par
+\b\par
+Noise\b0 : Add noise for tetrahedrons\par
+\lang9\b\par
+Mult\lang1033\b0 : Multiplier for \b Density\b0 .\par
+\par
+\fs28\tab\par
+\tab\b\fs44 Common Properties\fs32\par
+{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=KuCXYWvnSm4"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=KuCXYWvnSm4}}}\lang9\f0\fs22\par
+\par
+Mode\lang1033\b0 : Seed.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\lang9\b Runtime\lang1033\b0 : Seed.\lang9\b\par
+{\pntext\f1\'B7\tab}Editor\lang1033\b0 : Seed.\lang9\b\par
+\pard\sl276\slmult1\par
+Seed\lang1033\b0 : Seed for all random parameters.\lang9\b\par
+\par
+Decompose\lang1033\b0 : Decompose fragments to several meshes by connectivity of the original mesh.\par
+\b\par
+Remove Collinear\b0 : Copy.\b\par
+\pard\sl276\slmult1\tx8662\par
+\pard\sl276\slmult1 Copy Components\b0 : Copy components from fragmented object to fragments.\par
+\par
+\lang9\fs28\par
+\lang1033\b\i\fs48\tab Properties\lang9\i0\fs22\par
+\lang1033\fs32\par
+\lang9\fs22 Mode\b0 : Defines fragmentation mode.\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sl276\slmult1\b Runtime\lang1033\b0 : Can be used to test if object can be fragmented in Runtime by Rigid component. Optimized for Runtime fragmentation. Sensitive to input mesh topology. Object won't be fragmented if mesh has open edges (not closed volume), not welded vertices or double faces. Meshes with such issues if fragmented will produce fragments with the same issues and attempt to generate convex hull for collider or simulate such object may show error and in some rare cases even crash Unity engine. To prevent this all meshes with such meshes will show Bad Mesh warning and will not be fragmented.\lang9\fs28\par
+\b\fs22{\pntext\f1\'B7\tab}Editor\lang1033\b0 : Should be used in Editor for prefragmentation. Not sensitive to input mesh and can fragment meshes with open edges and other issues but will provide fragments with the same issues. In this case such fragments can be tested in Editor and refragmented if there are any simulation issues detected. Also provides advanced properties which allows to automatically fix some issues like capping open edges. Takes more time then Runtime mode for fragmentation because of additional mesh checks and fixes.\lang9\fs28\par
+\pard\li360\sl276\slmult1\par
+\pard\sl276\slmult1\lang1033\fs22\par
+\lang9\i\fs44 Material\b\i0\fs32\par
+{\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=fMPGXiLJDo0"}}{\fldrslt{\ul\cf1 https://www.youtube.com/watch?v=fMPGXiLJDo0}}}\f0\fs32\par
+\fs22\par
+Inner material\b0 : \lang1033 Allows to define material for fragment's inner surface. If not applied RayFire will use original object material for inner surface.\par
+\lang9\b\par
+\pard\li360\sl276\slmult1 Mapping Scale\b0 : \lang1033 Defines mapping scale for inner surface. Using this property you can increase or decrease size of texture for inner surface.\par
+\par
+\pard\sl276\slmult1\lang9\i\fs44 Clusters\b\i0\fs32\par
+\fs22\par
+Enable\b0 : \lang1033 Allows to glue groups of fragments into single mesh by deleting shared faces.\lang9\b\par
+\par
+Count\b0 : \lang1033 Defines total amount of glued groups.\par
+\lang9\b\par
+Seed\b0 : \lang1033 Seed for random parameters.\lang9\b\par
+\pard\li360\sl276\slmult1\par
+\pard\sl276\slmult1 Relax\b0 : Allows to smooth inner surface.\par
+\pard\li360\sl276\slmult1\par
+\pard\sl276\slmult1\i\fs44\par
+Advanced\par
+\b\i0\fs22 WIP\b0 : WIP\b\fs32\par
+\pard\li360\sl276\slmult1\b0\fs28\par
+}
+ 

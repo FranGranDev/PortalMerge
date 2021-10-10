@@ -278,6 +278,7 @@ public class Cube : MonoBehaviour, ICube
         AddImpulse(Impulse, Angular);
     }
     #endregion
+
     private void OnTriggerStay(Collider other)
     {
         switch (other.tag)

@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using System;
+using DG.Tweening;
 //using GameAnalyticsSDK;
 
 public class LevelManagement : MonoBehaviour
@@ -148,6 +149,8 @@ public class LevelManagement : MonoBehaviour
 
     private void ClearChilds()
     {
+        DOTween.Clear();
+
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject destroyObject = transform.GetChild(i).gameObject;
@@ -159,6 +162,16 @@ public class LevelManagement : MonoBehaviour
             else
             {
                 Destroy(destroyObject);
+            }
+        }
+
+        Transform rayFireMan = GameObject.Find("RayFireMan")?.transform;
+        if (rayFireMan != null)
+        {
+            foreach (Transform t in rayFireMan)
+            {
+                if (t.gameObject.name != "Pool_Fragments" && t.gameObject.name != "Pool_Particles")
+                    Destroy(t.gameObject);
             }
         }
     }
