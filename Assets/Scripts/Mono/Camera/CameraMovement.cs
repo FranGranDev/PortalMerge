@@ -6,6 +6,7 @@ public class CameraMovement : MonoBehaviour
 {
     public static CameraMovement active { get; private set; }
 
+    private float CameraCubeFollowSpeed;
     private float CameraFollowSpeed;
     private float CameraFriction;
     private bool LockSideMove;
@@ -25,10 +26,12 @@ public class CameraMovement : MonoBehaviour
     {
         PrevPos = transform.position;
 
+        CameraCubeFollowSpeed = GameManagement.MainData.FollowCubeSpeed;
         CameraFollowSpeed = GameManagement.MainData.CameraFollowSpeed;
         CameraFriction = GameManagement.MainData.CameraFriction;
         LockSideMove = GameManagement.MainData.LockSideMove;
     }
+
     private void CameraSwipeMove(Vector3 Point, Vector3 StartPoint)
     {
         isMoving = true;
@@ -65,6 +68,7 @@ public class CameraMovement : MonoBehaviour
         }
         yield break;
     }
+
     private void MoveToCube(ICube cube)
     {
         Vector3 Point = cube.CubeTransform.position + Vector3.forward * -5;
@@ -91,6 +95,22 @@ public class CameraMovement : MonoBehaviour
 
     }
 
+    private void CameraFollowCube(Vector3 Point, Vector3 TargetPoint)
+    {
+        isMoving = true;
+        Point = new Vector3(Point.x * SideMove(), transform.position.y, Point.z);
+        TargetPoint = new Vector3(TargetPoint.x * SideMove(), 0, TargetPoint.z);
+        float SpeedAdd = (0.1f + (TargetPoint - Point).magnitude / 2);
+        float SpeedNormilize = (transform.position - Point).magnitude;
+
+        transform.position = Vector3.Lerp(transform.position, Point, CameraCubeFollowSpeed * SpeedAdd / SpeedNormilize * Time.deltaTime);
+
+        if (MoveToCoroutine != null)
+        {
+            StopCoroutine(MoveToCoroutine);
+        }
+    }
+
     public void SubcribeToCube(ICube cube, bool Unsubscribe = false)
     {
         cube.SubscribeForEnterPortal(MoveToCube, Unsubscribe);
@@ -109,14 +129,16 @@ public class CameraMovement : MonoBehaviour
     {
         ApplySettings();
 
+
         InputManagement.OnSwipeMove += CameraSwipeMove;
         InputManagement.OnSwipeEnd += CameraSwipeEnd;
-
+        InputManagement.OnCubeFollow += CameraFollowCube;
        
     }
     private void OnDisable()
     {
         InputManagement.OnSwipeMove -= CameraSwipeMove;
         InputManagement.OnSwipeEnd -= CameraSwipeEnd;
+        InputManagement.OnCubeFollow -= CameraFollowCube;
     }
 }

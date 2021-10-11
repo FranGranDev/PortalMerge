@@ -19,12 +19,15 @@ public class InputManagement : MonoBehaviour
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
 
+    private bool FollowCube;
+
     private bool Touched;
     public static Vector2 LastTouch;
 
     #region Swipe
     private Vector3 StartTapPoint;
     public delegate void OnSwipeInput(Vector3 Point, Vector3 StartPoint);
+    public static OnSwipeInput OnCubeFollow;
     public static OnSwipeInput OnSwipeMove;
     public static OnSwipeInput OnSwipeEnd;
     #endregion
@@ -35,6 +38,7 @@ public class InputManagement : MonoBehaviour
     private class TapInfo
     {
         public readonly Vector3 Point;
+        public readonly Vector2 InputPos;
         public readonly string Tag;
         public readonly GameObject gameObject;
         public readonly ActionType TapActionInfo;
@@ -69,8 +73,6 @@ public class InputManagement : MonoBehaviour
 
         public TapInfo(ActionType NowClickInfo)
         {
-            Vector2 InputPos;
-
             if (Application.isMobilePlatform)
             {
                 if(Input.touchCount > 0)
@@ -173,6 +175,8 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 TryTakeCube(CurrantTap.gameObject);
+                CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"
+                StartTapPoint = CurrantTap.Point;
                 break;
             case ActionType.OnSwipe:
                 CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"
@@ -195,6 +199,7 @@ public class InputManagement : MonoBehaviour
                 break;
         }
         CurrantAction = ActionType.NotStarted;
+        FollowCube = false;
     }
 
     private void Movement()
@@ -235,6 +240,7 @@ public class InputManagement : MonoBehaviour
             case ActionType.NotStarted:
                 {
 
+
                 }
                 break;
             case ActionType.OnCube:
@@ -242,6 +248,14 @@ public class InputManagement : MonoBehaviour
                     if (!CurrantCube.isNull)
                     {
                         CurrantCube.Drag(CurrantTap.Point);
+
+                        CurrantTap = new TapInfo(ActionType.OnSwipe);
+
+                        Vector2 ScreenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
+                        if ((ScreenCenter - CurrantTap.InputPos).magnitude > GameManagement.MainData.FollowCubeMinDistance)
+                        {
+                            OnCubeFollow?.Invoke(CurrantTap.Point, CurrantCube.CubeTransform.position);
+                        }
                     }
                 }
                 break;

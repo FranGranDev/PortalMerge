@@ -25,11 +25,15 @@ public class DataGameMain : ScriptableObject
     public bool OffGravityOnTake;
     [Header("Физика камеры")]
     public bool LockSideMove;
-    [Range(1, 100)]
+    [Range(1, 100f)]
     public float CameraFollowSpeed;
-    [Range(1, 25)]
+    [Range(1, 25f)]
     public float CameraFriction;
     public bool MoveToCubeOnEnterPortal;
+    [Range(0, 150f)]
+    public float FollowCubeMinDistance;
+    [Range(0, 1f)]
+    public float FollowCubeSpeed;
     [Range(0.1f, 1f)]
     public float MoveToPortalSpeed;
     [Header("Настройка телепортов")]

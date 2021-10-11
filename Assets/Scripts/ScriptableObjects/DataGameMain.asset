@@ -25,6 +25,8 @@ MonoBehaviour:
   CameraFollowSpeed: 10
   CameraFriction: 2
   MoveToCubeOnEnterPortal: 1
+  FollowCubeMinDistance: 100
+  FollowCubeSpeed: 0.5
   MoveToPortalSpeed: 0.25
   SaveVelocityOnExitPortal: 0.5
   AddVelocityOnExitPortal: 2
