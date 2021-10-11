@@ -9659,7 +9659,7 @@ GameObject:
   - component: {fileID: 7612254121110798789}
   - component: {fileID: 8907960743180350847}
   - component: {fileID: 4716222745211055617}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Portal_Purple
   m_TagString: Portal
   m_Icon: {fileID: 0}
@@ -9695,7 +9695,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SecondPortal: {fileID: 0}
   isActive: 1
-  Effect: {fileID: 6943080441247591004}
 --- !u!65 &8907960743180350847
 BoxCollider:
   m_ObjectHideFlags: 0

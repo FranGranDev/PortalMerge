@@ -249,13 +249,17 @@ public class InputManagement : MonoBehaviour
                     {
                         CurrantCube.Drag(CurrantTap.Point);
 
-                        CurrantTap = new TapInfo(ActionType.OnSwipe);
-
-                        Vector2 ScreenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
-                        if ((ScreenCenter - CurrantTap.InputPos).magnitude > GameManagement.MainData.FollowCubeMinDistance)
+                        if((CurrantTap.Point - CurrantCube.CubeTransform.position).magnitude > GameManagement.MainData.FollowCubeMinDistance)
                         {
                             OnCubeFollow?.Invoke(CurrantTap.Point, CurrantCube.CubeTransform.position);
                         }
+                        //CurrantTap = new TapInfo(ActionType.OnSwipe);
+
+                        //Vector2 ScreenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
+                        //if ((ScreenCenter - CurrantTap.InputPos).magnitude > GameManagement.MainData.FollowCubeMinDistance)
+                        //{
+                        //    OnCubeFollow?.Invoke(CurrantTap.Point, CurrantCube.CubeTransform.position);
+                        //}
                     }
                 }
                 break;
