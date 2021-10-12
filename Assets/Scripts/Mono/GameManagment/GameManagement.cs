@@ -11,6 +11,7 @@ public class GameManagement : MonoBehaviour
     private Transform GetLevelTransform => _level.GetChild(0);
     public static DataGameMain MainData {get => Active._data; }
     [SerializeField]private List<ICube> Cubes;
+    [SerializeField] private List<ICollected> Gems;
     public static ICube LastCube;
     private bool isPower2(int num)
     {
@@ -24,15 +25,16 @@ public class GameManagement : MonoBehaviour
         }
     }
     [Header("Game States")]
-    private int TargetNum;
-    public static bool isGameStarted;
+    [SerializeField] private int TargetNum;
+    [SerializeField] private int GemCollected;
+    [SerializeField] private int MaxGems;
+    [SerializeField] public static bool isGameStarted;
 
     #region Callbacks
     public delegate void OnGameAction();
     public static OnGameAction OnGameWin;
     public static OnGameAction OnGameFailed;
     public static OnGameAction OnGameStarted;
-
     #endregion
 
     public static float RandomOne()
@@ -47,6 +49,7 @@ public class GameManagement : MonoBehaviour
     public void Init()
     {
         GetAllCubesOnScene();
+        GetAllGemsOnScene();
     }
 
     public void ShowCubesNumbers()
@@ -78,6 +81,34 @@ public class GameManagement : MonoBehaviour
             Debug.Log("На сцене должно быть кубиков кратно степени двойки!!!");
         }
     }
+    private void GetAllGemsOnScene()
+    {
+        Gems = new List<ICollected>();
+        MaxGems = 0;
+        GemCollected = 0;
+
+        GameObject[] obj = GameObject.FindGameObjectsWithTag("Gem");
+        for (int i = 0; i < obj.Length; i++)
+        {
+            ICollected gem = obj[i].GetComponent<ICollected>();
+            gem.Init();
+            Gems.Add(gem);
+            
+
+            SubscribeForGem(gem);
+            MaxGems++;
+        }
+    }
+
+    private void SubscribeForGem(ICollected gem)
+    {
+        gem.SubscribeFor(OnGemCollected);
+    }
+    private void UnsubscribeForGem(ICollected gem)
+    {
+        gem.SubscribeFor(OnGemCollected, true);
+    }
+
     private void SubscribeForCube(ICube cube)
     {
         cube.SubscribeForMerge(OnCubesMerge);
@@ -147,11 +178,23 @@ public class GameManagement : MonoBehaviour
         }
     }
 
+    private void OnGemCollected(ICollected gem)
+    {
+        UnsubscribeForGem(gem);
+        if(Gems.Exists(item => item == gem))
+        {
+            GemCollected++;
+            Gems.Remove(gem);
+        }
+
+    }
+
     public void StartGame()
     {
         isGameStarted = true;
 
         GetAllCubesOnScene();
+        GetAllGemsOnScene();
         OnGameStarted?.Invoke();
     }
     private void GameFailed()
