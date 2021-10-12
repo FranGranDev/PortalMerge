@@ -69,6 +69,11 @@ public class CameraMovement : MonoBehaviour
         yield break;
     }
 
+    private void CameraWinMove()
+    {
+        MoveToCube(GameManagement.LastCube);
+    }
+
     private void MoveToCube(ICube cube)
     {
         Vector3 Point = cube.CubeTransform.position + Vector3.forward * -5;
@@ -130,12 +135,15 @@ public class CameraMovement : MonoBehaviour
         InputManagement.OnSwipeMove += CameraSwipeMove;
         InputManagement.OnSwipeEnd += CameraSwipeEnd;
         InputManagement.OnCubeFollow += CameraFollowCube;
-       
+
+        GameManagement.OnGameWin += CameraWinMove;
     }
     private void OnDisable()
     {
         InputManagement.OnSwipeMove -= CameraSwipeMove;
         InputManagement.OnSwipeEnd -= CameraSwipeEnd;
         InputManagement.OnCubeFollow -= CameraFollowCube;
+
+        GameManagement.OnGameWin -= CameraWinMove;
     }
 }

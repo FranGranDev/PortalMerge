@@ -41,7 +41,6 @@ public class InputManagement : MonoBehaviour
             {
                 if (CurrantTap.InputDir.y > 0f)
                 {
-                    Debug.Log("Move");
                     OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, StartTapPoint);
                 }
             }
@@ -49,7 +48,6 @@ public class InputManagement : MonoBehaviour
             {
                 if (CurrantTap.InputDir.y < 0f)
                 {
-                    Debug.Log("Move");
                     OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, StartTapPoint);
                 }
             }

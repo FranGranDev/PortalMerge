@@ -11,6 +11,7 @@ public class GameManagement : MonoBehaviour
     private Transform GetLevelTransform => _level.GetChild(0);
     public static DataGameMain MainData {get => Active._data; }
     [SerializeField]private List<ICube> Cubes;
+    public static ICube LastCube;
     private bool isPower2(int num)
     {
         if (num > 1)
@@ -127,8 +128,9 @@ public class GameManagement : MonoBehaviour
         newCube.CreateMergeParticle();
         Cubes.Add(newCube);
         SubscribeForCube(newCube);
+        LastCube = newCube;
 
-        if(newCube.Number == TargetNum)
+        if (newCube.Number == TargetNum)
         {
             GameWin();
         }
