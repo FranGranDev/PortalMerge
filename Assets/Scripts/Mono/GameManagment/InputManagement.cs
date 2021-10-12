@@ -19,25 +19,20 @@ public class InputManagement : MonoBehaviour
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
 
-    private bool CanFollowCube;
     private bool FollowCube;
     private Vector3 TakeDelta;
-    private bool AbleToCubeFollow()
-    {
-        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        return (Mathf.Abs((CurrantTap.InputPos - ScreenCenter).y) < GameManagement.MainData.FollowCubeDeadZone);
-    }
+
     private void CameraFollowCubeExecute()
     {
         Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZone)
+        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp)
         {
             if (CurrantTap.InputDir.y > 0f)
             {
                 OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, new Vector2(0.25f, 0));
             }
         }
-        else if ((CurrantTap.InputPos - ScreenCenter).y < -GameManagement.MainData.FollowCubeDeadZone)
+        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown)
         {
             if (CurrantTap.InputDir.y < 0f)
             {
@@ -218,7 +213,6 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 TryTakeCube(CurrantTap.gameObject);
-                CanFollowCube = AbleToCubeFollow();
                 CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"
                 StartTapPoint = CurrantTap.Point;
                 break;
@@ -239,7 +233,6 @@ public class InputManagement : MonoBehaviour
                 if(CurrantCube != null)
                 {
                     CurrantCube.Throw();
-                    CanFollowCube = false;
                 }
                 TakeDelta = Vector3.zero;
                 break;

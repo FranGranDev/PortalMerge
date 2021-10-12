@@ -917,10 +917,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8574350159135478056}
+  - component: {fileID: 792610635773821448}
   - component: {fileID: 8963676003904134480}
   - component: {fileID: 1820322670699150646}
   - component: {fileID: 5030964331673786896}
-  - component: {fileID: 792610635773821448}
   - component: {fileID: 3998400470479139822}
   - component: {fileID: 6159475532772424825}
   - component: {fileID: 242999446009740211}
@@ -946,6 +946,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &792610635773821448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8574350159135478060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43315e78be56c1f4a8276fc3fbd4a0fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _number: 2
+  _rig: {fileID: 5030964331673786896}
+  _meshRenderer: {fileID: 1820322670699150646}
+  _collider: {fileID: 0}
+  TextNumber:
+  - {fileID: 1151610632857468139}
+  - {fileID: 5490188368392028389}
+  - {fileID: 7606709481727340267}
+  - {fileID: 1376512360465149818}
+  - {fileID: 3197386459812251754}
+  - {fileID: 408129927774343185}
+  inAir: 0
+  isMoving: 0
 --- !u!33 &8963676003904134480
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1009,31 +1034,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &792610635773821448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8574350159135478060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43315e78be56c1f4a8276fc3fbd4a0fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _number: 2
-  _rig: {fileID: 5030964331673786896}
-  _meshRenderer: {fileID: 1820322670699150646}
-  _collider: {fileID: 0}
-  TextNumber:
-  - {fileID: 1151610632857468139}
-  - {fileID: 5490188368392028389}
-  - {fileID: 7606709481727340267}
-  - {fileID: 1376512360465149818}
-  - {fileID: 3197386459812251754}
-  - {fileID: 408129927774343185}
-  inAir: 0
-  isMoving: 0
 --- !u!114 &3998400470479139822
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -139,12 +139,15 @@ public class LevelManagement : MonoBehaviour
 #else
             Instantiate(level.LevelPrefab, transform);
 #endif
+                
         }
 
         if (level.SkyboxMaterial)
         {
             RenderSettings.skybox = level.SkyboxMaterial;
         }
+
+
     }
 
     private void ClearChilds()

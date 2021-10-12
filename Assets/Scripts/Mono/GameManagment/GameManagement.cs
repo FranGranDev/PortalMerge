@@ -50,6 +50,18 @@ public class GameManagement : MonoBehaviour
         GetAllCubesOnScene();
     }
 
+    public void ShowCubesNumbers()
+    {
+        Cubes = new List<ICube>();
+        TargetNum = 0;
+        GameObject[] obj = GameObject.FindGameObjectsWithTag("Cube");
+        for (int i = 0; i < obj.Length; i++)
+        {
+            Cube cube = obj[i].GetComponent<Cube>();
+            cube.SetNumbers();
+        }
+    }
+
     private void GetAllCubesOnScene()
     {
         Cubes = new List<ICube>();
@@ -164,6 +176,6 @@ public class GameManagement : MonoBehaviour
     }
     private void Start()
     {
-        
+        Init();
     }
 }

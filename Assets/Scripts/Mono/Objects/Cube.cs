@@ -6,8 +6,8 @@ using TMPro;
 public class Cube : MonoBehaviour, ICube
 {
     [Header("Settings")]
-    [SerializeField]private int _number;
-    public int Number { get => _number; private set => _number = value; }
+    [SerializeField] private int _number;
+    [HideInInspector]public int Number { get => _number; private set => _number = value; }
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
 
@@ -252,11 +252,11 @@ public class Cube : MonoBehaviour, ICube
         OffGravityOnTake = GameManagement.MainData.OffGravityOnTake;
         CubeHeightOnMove = GameManagement.MainData.CubeHeightOnMove;
     }
-    private void SetNumbers()
+    public void SetNumbers()
     {
         for(int i = 0; i < TextNumber.Length; i++)
         {
-            TextNumber[i].text = Number.ToString();
+            TextNumber[i].text = _number.ToString();
         }
     }
 
@@ -325,7 +325,7 @@ public class Cube : MonoBehaviour, ICube
 
     private void Awake()
     {
-
+        
     }
     private void Start()
     {
