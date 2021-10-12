@@ -19,8 +19,6 @@ public class InputManagement : MonoBehaviour
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
 
-    private bool FollowCube;
-
     private bool Touched;
     public static Vector2 LastTouch;
 
@@ -199,7 +197,6 @@ public class InputManagement : MonoBehaviour
                 break;
         }
         CurrantAction = ActionType.NotStarted;
-        FollowCube = false;
     }
 
     private void Movement()
@@ -253,13 +250,6 @@ public class InputManagement : MonoBehaviour
                         {
                             OnCubeFollow?.Invoke(CurrantTap.Point, CurrantCube.CubeTransform.position);
                         }
-                        //CurrantTap = new TapInfo(ActionType.OnSwipe);
-
-                        //Vector2 ScreenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
-                        //if ((ScreenCenter - CurrantTap.InputPos).magnitude > GameManagement.MainData.FollowCubeMinDistance)
-                        //{
-                        //    OnCubeFollow?.Invoke(CurrantTap.Point, CurrantCube.CubeTransform.position);
-                        //}
                     }
                 }
                 break;
