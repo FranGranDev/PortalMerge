@@ -6,6 +6,9 @@ public class Man : MonoBehaviour, IMan
 {
     [Header("Settings")]
     [SerializeField] private float LieDelay;
+    [Header("States")]
+    private bool isRagdolled;
+    private bool inObject;
     [Header("Components")]
     [SerializeField] private Transform Main;
     private Vector3 MainStartPos;
@@ -19,6 +22,9 @@ public class Man : MonoBehaviour, IMan
     private Coroutine RagdollOnCoroutine;
     private Coroutine WakeUpCoroutine;
 
+    public Rigidbody ManRigidbody { get => _rig; }
+    public Transform ManTransform { get => transform; }
+    public Collider ManCollider{ get => _collider;}
 
     private void Init()
     {
@@ -57,6 +63,7 @@ public class Man : MonoBehaviour, IMan
 
     private void TurnRagdoll(bool on)
     {
+        isRagdolled = on;
         _animator.enabled = !on;
         _collider.isTrigger = on;
         if(on)
@@ -67,6 +74,8 @@ public class Man : MonoBehaviour, IMan
             }
             foreach(Rigidbody rig in RagdollRigibodies)
             {
+                rig.velocity = Vector3.zero;
+                rig.angularVelocity = Vector3.zero;
                 rig.isKinematic = false;
             }
         }
@@ -79,16 +88,19 @@ public class Man : MonoBehaviour, IMan
             foreach (Rigidbody rig in RagdollRigibodies)
             {
                 rig.isKinematic = true;
+                rig.velocity = _rig.velocity;
             }
         }
     }
 
-    private void TurnRagdollOff()
+    public void TurnRagdollOff()
     {
+        if (RagdollOnCoroutine != null)
+        {
+            StopCoroutine(RagdollOnCoroutine);
+        }
+
         TurnRagdoll(false);
-
-        
-
 
         _rig.useGravity = true;
         _rig.angularVelocity = Vector3.zero;
@@ -101,7 +113,7 @@ public class Man : MonoBehaviour, IMan
         Main.transform.localRotation = MainStartRot;
         _animator.Play(STAND_UP, 0, 0);
     }
-    private void TurnRagdollOn()
+    public void TurnRagdollOn()
     {
         TurnRagdoll(true);
 
@@ -115,28 +127,50 @@ public class Man : MonoBehaviour, IMan
         RagdollOnCoroutine = StartCoroutine(RagdollOnDelay());
     }
 
-    private IEnumerator WakeUpCour()
-    {
-
-        
-        WakeUpCoroutine = null;
-        yield break;
-    }
     private IEnumerator RagdollOnDelay()
     {
         yield return new WaitForSeconds(LieDelay);
+        while(inObject)
+        {
+            yield return new WaitForFixedUpdate();
+        }
         TurnRagdollOff();
         yield break;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void AddImpulse(Vector3 Impulse)
     {
-        if(collision.transform.tag == "Cube")
+        if(isRagdolled)
+        {
+
+        }
+        else
+        {
+            _rig.velocity += Impulse;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Cube")
         {
             TurnRagdollOn();
         }
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Cube")
+        {
+            inObject = false;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Cube")
+        {
+            inObject = true;
+        }
+    }
     private void Start()
     {
         Init();
@@ -144,6 +178,15 @@ public class Man : MonoBehaviour, IMan
 }
 public interface IMan
 {
+    Transform ManTransform { get; }
 
+    Collider ManCollider { get; }
+
+    Rigidbody ManRigidbody { get; }
+
+    void AddImpulse(Vector3 Impulse);
+
+    void TurnRagdollOff();
+    void TurnRagdollOn();
 }
 

@@ -17,19 +17,30 @@ public class TwistPaddle : MonoBehaviour
             cube.AddImpulse(Direction * TwistParent.Impulse());
             cube.OnEnterTrap();
 
-            StartCoroutine(Delay(cube));
+            StartCoroutine(Delay(cube.CubeCol));
         }
     }
-    private IEnumerator Delay(ICube cube)
+    private void OnManEntered(IMan man)
+    {
+        if (!NoAction)
+        {
+            Vector3 Direction = (-Normal.up + Vector3.up * 0.25f).normalized;
+            man.AddImpulse(Direction * TwistParent.Impulse());
+            man.TurnRagdollOn();
+
+            StartCoroutine(Delay(man.ManCollider));
+        }
+    }
+    private IEnumerator Delay(Collider Col)
     {
         NoAction = true;
-        Physics.IgnoreCollision(cube.CubeCol, _collider, true);
+        Physics.IgnoreCollision(Col, _collider, true);
         yield return new WaitForSeconds(0.25f);
         NoAction = false;
 
-        if(!cube.isNull)
+        if(Col != null)
         {
-            Physics.IgnoreCollision(cube.CubeCol, _collider, false);
+            Physics.IgnoreCollision(Col, _collider, false);
         }
         
         yield break;
@@ -55,6 +66,11 @@ public class TwistPaddle : MonoBehaviour
         {
             ICube cube = collider.GetComponent<ICube>();
             OnCubeEntered(cube);
+        }
+        else if (collider.tag == "Man")
+        {
+            IMan man = collider.GetComponent<IMan>();
+            OnManEntered(man);
         }
     }
 }

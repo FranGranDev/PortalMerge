@@ -286,6 +286,9 @@ public class Cube : MonoBehaviour, ICube
             case "Ground":
                 OnEnterGround();
                 break;
+            case "Man":
+                OnEnterGround();
+                break;
         }
     }
     private void OnTriggerEnter(Collider other)
