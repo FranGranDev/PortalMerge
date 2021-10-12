@@ -29,27 +29,19 @@ public class InputManagement : MonoBehaviour
     }
     private void CameraFollowCubeExecute()
     {
-        if (!CanFollowCube && AbleToCubeFollow())
+        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZone)
         {
-            CanFollowCube = true;
-        }
-
-        if (CanFollowCube)
-        {
-            Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-            if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZone)
+            if (CurrantTap.InputDir.y > 0f)
             {
-                if (CurrantTap.InputDir.y > 0f)
-                {
-                    OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, StartTapPoint);
-                }
+                OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, new Vector2(0.25f, 0));
             }
-            else if ((CurrantTap.InputPos - ScreenCenter).y < -GameManagement.MainData.FollowCubeDeadZone)
+        }
+        else if ((CurrantTap.InputPos - ScreenCenter).y < -GameManagement.MainData.FollowCubeDeadZone)
+        {
+            if (CurrantTap.InputDir.y < 0f)
             {
-                if (CurrantTap.InputDir.y < 0f)
-                {
-                    OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, StartTapPoint);
-                }
+                OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, new Vector2(1f, 0));
             }
         }
     }
