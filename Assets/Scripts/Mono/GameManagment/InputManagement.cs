@@ -25,14 +25,15 @@ public class InputManagement : MonoBehaviour
     private void CameraFollowCubeExecute()
     {
         Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp)
+        Debug.Log((CurrantTap.InputPos - ScreenCenter).y);
+        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
         {
             if (CurrantTap.InputDir.y > 0f)
             {
                 OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, new Vector2(0.25f, 0));
             }
         }
-        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown)
+        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
         {
             if (CurrantTap.InputDir.y < 0f)
             {
