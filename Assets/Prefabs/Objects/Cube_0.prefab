@@ -961,7 +961,7 @@ MonoBehaviour:
   _number: 2
   _rig: {fileID: 5030964331673786896}
   _meshRenderer: {fileID: 1820322670699150646}
-  _collider: {fileID: 0}
+  _collider: {fileID: 6159475532772424825}
   TextNumber:
   - {fileID: 1151610632857468139}
   - {fileID: 5490188368392028389}
@@ -1076,5 +1076,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
