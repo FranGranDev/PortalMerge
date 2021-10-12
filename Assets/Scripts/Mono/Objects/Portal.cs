@@ -71,10 +71,20 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         yield break;
     }
 
-    private void OnTeleported()
+    private void OnTeleported(ICube cube)
     {
+        StartCoroutine(OnTeleportedCour(cube));
+    }
+    private IEnumerator OnTeleportedCour(ICube cube)
+    {
+        float Lenght = (transform.position - cube.CubeTransform.position).magnitude;
+        while (Vector3.Distance(transform.position, cube.CubeTransform.position) < Lenght + 0.1f)
+        {
+            yield return new WaitForFixedUpdate();
+        }
         ClearPrevCube();
         PairPortal.ClearPrevCube();
+        yield break;
     }
 
     public void ClearPrevCube()
@@ -125,7 +135,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             ICube cube = other.GetComponent<ICube>();
             if(cube == prevCube)
             {
-                OnTeleported();
+                OnTeleported(cube);
             }
         }
     }
