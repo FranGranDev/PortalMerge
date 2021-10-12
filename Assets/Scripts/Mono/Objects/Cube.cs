@@ -135,6 +135,7 @@ public class Cube : MonoBehaviour, ICube
         ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeDestroyed, transform.position, transform.rotation);
         ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
         partilceRender.material.color = CurrantColor;
+        partilce.transform.localScale = transform.localScale * GameManagement.MainData.DestroyParticleSize;
 
     }
     public void CreateMergeParticle()
@@ -142,6 +143,7 @@ public class Cube : MonoBehaviour, ICube
         ParticleSystem partilce = Instantiate(GameManagement.MainData.CubesMerge, transform.position, transform.rotation, transform);
         ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
         partilceRender.material.color = CurrantColor;
+        partilce.transform.localScale = transform.localScale * GameManagement.MainData.MergeParticleSize;
 
     }
     #endregion

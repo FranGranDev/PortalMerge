@@ -29,10 +29,12 @@ public class DataGameMain : ScriptableObject
     public float CameraFollowSpeed;
     [Range(1, 25f)]
     public float CameraFriction;
+    [Header("Настройка камеры")]
     public bool MoveToCubeOnEnterPortal;
+    public bool CameraFollowCube;
     [Range(0, 150f)]
-    public float FollowCubeMinDistance;
-    [Range(0, 1f)]
+    public float FollowCubeDeadZone;
+    [Range(0, 10f)]
     public float FollowCubeSpeed;
     [Range(0.1f, 1f)]
     public float MoveToPortalSpeed;
@@ -48,6 +50,11 @@ public class DataGameMain : ScriptableObject
     [Header("Настройка активаторов")]
     public float DelayTime;
     [Header("Партиклы")]
+    [Range(0.25f, 2f)]
+    public float DestroyParticleSize;
+    [Range(0.25f, 2f)]
+    public float MergeParticleSize;
+
     public ParticleSystem CubeDestroyed;
     public ParticleSystem CubesMerge;
     [Header("Префабы")]

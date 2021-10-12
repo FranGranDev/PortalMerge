@@ -39,7 +39,9 @@ public class Activator : MonoBehaviour
         Target = new List<IActivate>();
         for(int i = 0; i < _target.Length; i++)
         {
-            IActivate temp = _target[i].GetComponent<IActivate>();
+            if (_target[i] == null)
+                continue;
+            IActivate temp = _target[i]?.GetComponent<IActivate>();
             if(temp != null)
             {
                 Target.Add(temp);

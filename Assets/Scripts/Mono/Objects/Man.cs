@@ -134,6 +134,7 @@ public class Man : MonoBehaviour, IMan
         {
             yield return new WaitForFixedUpdate();
         }
+        yield return new WaitForSeconds(0.25f);
         TurnRagdollOff();
         yield break;
     }

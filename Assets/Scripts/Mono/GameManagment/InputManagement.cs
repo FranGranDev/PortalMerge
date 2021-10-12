@@ -19,7 +19,42 @@ public class InputManagement : MonoBehaviour
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
 
+    private bool CanFollowCube;
+    private bool FollowCube;
     private Vector3 TakeDelta;
+    private bool AbleToCubeFollow()
+    {
+        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+        return (Mathf.Abs((CurrantTap.InputPos - ScreenCenter).y) < GameManagement.MainData.FollowCubeDeadZone);
+    }
+    private void CameraFollowCubeExecute()
+    {
+        if (!CanFollowCube && AbleToCubeFollow())
+        {
+            CanFollowCube = true;
+        }
+
+        if (CanFollowCube)
+        {
+            Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+            if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZone)
+            {
+                if (CurrantTap.InputDir.y > 0f)
+                {
+                    Debug.Log("Move");
+                    OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, StartTapPoint);
+                }
+            }
+            else if ((CurrantTap.InputPos - ScreenCenter).y < -GameManagement.MainData.FollowCubeDeadZone)
+            {
+                if (CurrantTap.InputDir.y < 0f)
+                {
+                    Debug.Log("Move");
+                    OnCubeFollow?.Invoke(CurrantCube.CubeTransform.position, StartTapPoint);
+                }
+            }
+        }
+    }
 
     private bool Touched;
     public static Vector2 LastTouch;
@@ -39,11 +74,14 @@ public class InputManagement : MonoBehaviour
     {
         public readonly Vector3 Point;
         public readonly Vector2 InputPos;
+        public readonly Vector2 InputDir;
         public readonly string Tag;
         public readonly GameObject gameObject;
         public readonly ActionType TapActionInfo;
 
         public static Vector3 PrevPoint;
+        private static Vector2 PrevTouch;
+        private static Vector3 PrevDir;
         public const string NULL_TAG = "NULL";
         private ActionType TagToActionInfo(string Tag)
         {
@@ -77,6 +115,8 @@ public class InputManagement : MonoBehaviour
             {
                 if(Input.touchCount > 0)
                 {
+
+
                     InputPos = Input.GetTouch(0).position;
                     LastTouch = InputPos;
 
@@ -90,6 +130,17 @@ public class InputManagement : MonoBehaviour
             {
                 InputPos = Input.mousePosition;
             }
+
+            if ((InputPos - PrevTouch).magnitude > 0.1f)
+            {
+                InputDir = (InputPos - PrevTouch).normalized;
+                PrevDir = InputDir;
+            }
+            else
+            {
+                InputDir = PrevDir;
+            }
+            PrevTouch = InputPos;
 
             Ray ray = Camera.main.ScreenPointToRay(InputPos);
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo))) 
@@ -177,6 +228,7 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 TryTakeCube(CurrantTap.gameObject);
+                CanFollowCube = AbleToCubeFollow();
                 CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"
                 StartTapPoint = CurrantTap.Point;
                 break;
@@ -197,6 +249,7 @@ public class InputManagement : MonoBehaviour
                 if(CurrantCube != null)
                 {
                     CurrantCube.Throw();
+                    CanFollowCube = false;
                 }
                 TakeDelta = Vector3.zero;
                 break;
@@ -232,8 +285,6 @@ public class InputManagement : MonoBehaviour
                 OnTapEnded();
             }
         }
-
-
     }
     private void ActionExecute()
     {
@@ -250,7 +301,10 @@ public class InputManagement : MonoBehaviour
                     if (!CurrantCube.isNull)
                     {
                         CurrantCube.Drag(CurrantTap.Point + TakeDelta);
-                        
+                        if (GameManagement.MainData.CameraFollowCube)
+                        {
+                            CameraFollowCubeExecute();
+                        }
                     }
                 }
                 break;

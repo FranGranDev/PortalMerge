@@ -95,15 +95,12 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    private void CameraFollowCube(Vector3 Point, Vector3 TargetPoint)
+    private void CameraFollowCube(Vector3 Point, Vector3 StartPoint)
     {
         isMoving = true;
         Point = new Vector3(Point.x * SideMove(), transform.position.y, Point.z);
-        TargetPoint = new Vector3(TargetPoint.x * SideMove(), 0, TargetPoint.z);
-        float SpeedAdd = (0.1f + (TargetPoint - Point).magnitude / 2);
-        float SpeedNormilize = (transform.position - Point).magnitude;
 
-        transform.position = Vector3.Lerp(transform.position, Point, CameraCubeFollowSpeed * SpeedAdd / SpeedNormilize * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, Point, CameraCubeFollowSpeed * Time.deltaTime);
 
         if (MoveToCoroutine != null)
         {
