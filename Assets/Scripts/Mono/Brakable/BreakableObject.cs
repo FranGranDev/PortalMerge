@@ -23,7 +23,7 @@ public class BreakableObject : MonoBehaviour, IBreakable
         if (_rig == null) _rig = GetComponent<Rigidbody>();
         if (_rayfire == null) _rayfire = GetComponent<RayfireRigid>();
         if (_colliders == null) _colliders = GetComponents<Collider>();
-        if(InnerMaterial != null) _rayfire.materials.innerMaterial = Instantiate(InnerMaterial);
+        if (InnerMaterial != null) _rayfire.materials.innerMaterial = Instantiate(InnerMaterial);
 
         _rayfire.initialization = RayfireRigid.InitType.AtStart;
         _rayfire.simulationType = SimType.Kinematic;
