@@ -6,8 +6,8 @@ public class Activator : MonoBehaviour
 {
     //2 реализации: либо давать ссылку на объект Target, либо в класе объекта подисаться на событие OnActivate
 
-    [SerializeField] private GameObject _target;
-    [SerializeField] private IActivate Target;
+    [SerializeField] private GameObject[] _target;
+    private List<IActivate> Target;
     [SerializeField] private bool Disactivate;
     [SerializeField] private bool ActiveOnes;
     public bool _activated { get; private set; }
@@ -36,10 +36,16 @@ public class Activator : MonoBehaviour
 
     private void Init()
     {
-        if (_target != null && _target.GetComponent<IActivate>() != null)
+        Target = new List<IActivate>();
+        for(int i = 0; i < _target.Length; i++)
         {
-            Target = _target.GetComponent<IActivate>();
+            IActivate temp = _target[i].GetComponent<IActivate>();
+            if(temp != null)
+            {
+                Target.Add(temp);
+            }
         }
+
         DelayTime = GameManagement.MainData.DelayTime;
         HaveAnimator = transform.TryGetComponent<Animator>(out _anim);
     }
@@ -55,7 +61,10 @@ public class Activator : MonoBehaviour
     private IEnumerator ActivateCour(bool on)
     {
         yield return new WaitForSeconds(DelayTime);
-        Target?.Activate(Disactivate ? !on : on);
+        foreach(IActivate activate in Target)
+        {
+            activate?.Activate(Disactivate ? !on : on);
+        }
         _activated = on;
         OnActivate?.Invoke(Disactivate ? !on : on);
         if (HaveAnimator)

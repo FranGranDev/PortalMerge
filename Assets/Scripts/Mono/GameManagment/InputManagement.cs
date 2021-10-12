@@ -19,6 +19,8 @@ public class InputManagement : MonoBehaviour
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
 
+    private Vector3 TakeDelta;
+
     private bool Touched;
     public static Vector2 LastTouch;
 
@@ -115,6 +117,8 @@ public class InputManagement : MonoBehaviour
         {
             CurrantCube.Take();
             SubscribeForCube();
+
+            TakeDelta = CurrantCube.CubeTransform.position - CurrantTap.Point;
         }
         else
         {
@@ -194,6 +198,7 @@ public class InputManagement : MonoBehaviour
                 {
                     CurrantCube.Throw();
                 }
+                TakeDelta = Vector3.zero;
                 break;
         }
         CurrantAction = ActionType.NotStarted;
@@ -244,12 +249,8 @@ public class InputManagement : MonoBehaviour
                 {
                     if (!CurrantCube.isNull)
                     {
-                        CurrantCube.Drag(CurrantTap.Point);
-
-                        if((CurrantTap.Point - CurrantCube.CubeTransform.position).magnitude > GameManagement.MainData.FollowCubeMinDistance)
-                        {
-                            OnCubeFollow?.Invoke(CurrantTap.Point, CurrantCube.CubeTransform.position);
-                        }
+                        CurrantCube.Drag(CurrantTap.Point + TakeDelta);
+                        
                     }
                 }
                 break;

@@ -7,6 +7,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     [Header("Pair")]
     [SerializeField] private Portal SecondPortal;
     [SerializeField] private IPortal PairPortal => SecondPortal;
+    private IPortal PrevPortal;
     [SerializeField] private bool isActive = true;
     public bool Activated { get => isActive; }
     private ICube prevCube;
@@ -17,7 +18,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void SetPair(Portal portal)
     {
-        SecondPortal = portal;
+        PrevPortal = portal;
     }
 
     public void OnCubeEntered(ICube cube)
@@ -54,7 +55,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     }
     private IEnumerator TeleportCour(ICube cube)
     {
-        cube.CubeTransform.parent = PairPortal.PortalTransform;
+        cube.CubeTransform.parent = PrevPortal.PortalTransform;
         yield return new WaitForFixedUpdate();
         Vector3 DeltaPosition = (cube.CubeTransform.localPosition);
         cube.CubeTransform.parent = transform;
