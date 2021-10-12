@@ -98,7 +98,7 @@ public class Cube : MonoBehaviour, ICube
 
     #region Action
     public void TryMerge(ICube other)
-    { 
+    {
         if(Number == other.Number)
         {
             if (other.PrevCube == null)
@@ -260,8 +260,17 @@ public class Cube : MonoBehaviour, ICube
         }
     }
 
+    private void ClearCallbacks()
+    {
+        OnCubeDestroyed = null;
+        OnCubeEnterPortal = null;
+        OnCubeLeaveGround = null;
+        OnCubesMerge = null;
+    }
     public void InitCube()
     {
+        ClearCallbacks();
+
         SetComponents();
         SetView();
         ApplySettings();

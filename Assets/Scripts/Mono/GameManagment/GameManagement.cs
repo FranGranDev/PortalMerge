@@ -46,14 +46,11 @@ public class GameManagement : MonoBehaviour
 
     public void Init()
     {
-
         GetAllCubesOnScene();
     }
 
     public void ShowCubesNumbers()
     {
-        Cubes = new List<ICube>();
-        TargetNum = 0;
         GameObject[] obj = GameObject.FindGameObjectsWithTag("Cube");
         for (int i = 0; i < obj.Length; i++)
         {
@@ -71,8 +68,9 @@ public class GameManagement : MonoBehaviour
         {
             ICube cube = obj[i].GetComponent<ICube>();
             Cubes.Add(cube);
-            SubscribeForCube(cube);
             cube.InitCube();
+
+            SubscribeForCube(cube);
             TargetNum += cube.Number;
         }
         if(!isPower2(TargetNum))
@@ -109,8 +107,8 @@ public class GameManagement : MonoBehaviour
         if (Cubes.Exists(item => item == cube))
         {
             Cubes.Remove(cube);
-            Destroy(cube.CubeObject);
         }
+        Destroy(cube.CubeObject);
     }
     private void OnCubeDestroyed(ICube cube)
     {
@@ -132,8 +130,6 @@ public class GameManagement : MonoBehaviour
         Vector3 CubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
         CubeImpulse += Vector3.up * MainData.VerticalForceOnMerge;
         Vector3 CubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
-        DestroyCube(cube1);
-        DestroyCube(cube2);
 
         ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
         newCube.InitCube(CubeSum, CubeImpulse, CubeAngular);
@@ -141,6 +137,9 @@ public class GameManagement : MonoBehaviour
         Cubes.Add(newCube);
         SubscribeForCube(newCube);
         LastCube = newCube;
+
+        DestroyCube(cube1);
+        DestroyCube(cube2);
 
         if (newCube.Number == TargetNum)
         {
