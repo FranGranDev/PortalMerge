@@ -21,9 +21,6 @@ public class LevelManagement : MonoBehaviour
     public int CurrentLevelIndex;
     public List<Level> Levels = new List<Level>();
 
-    public delegate void RestartDelegate();
-    public static event RestartDelegate onRestart;
-
     public void Start()
     {
 #if UNITY_EDITOR
@@ -128,17 +125,18 @@ public class LevelManagement : MonoBehaviour
         if (level.LevelPrefab)
         {
             ClearChilds();
-#if UNITY_EDITOR
-            if (Application.isPlaying)
-            {
-                Instantiate(level.LevelPrefab, transform);
-                onRestart?.Invoke();
-            }
-            else
-                PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
-#else
+
+            //Dont work when Android FIX
+            //if (Application.isPlaying)
+            //{
+            //    Instantiate(level.LevelPrefab, transform);
+            //}
+            //else
+            //{
+            //    PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
+            //}
+                
             Instantiate(level.LevelPrefab, transform);
-#endif
                 
         }
 
@@ -158,14 +156,7 @@ public class LevelManagement : MonoBehaviour
         {
             GameObject destroyObject = transform.GetChild(i).gameObject;
 
-            if (Application.isEditor)
-            {
-                DestroyImmediate(destroyObject);
-            }
-            else
-            {
-                Destroy(destroyObject);
-            }
+            DestroyImmediate(destroyObject);
         }
 
         Transform rayFireMan = GameObject.Find("RayFireMan")?.transform;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Active { get; private set; }
+
     [Header("Components")]
     private Animator _animator;
     private const string ANIM_ID = "State";
@@ -43,6 +45,12 @@ public class UIManager : MonoBehaviour
         SetState(UIState.Done);
     }
 
+    public void OnGemCollected(ICollected gem)
+    {
+        Vector2 Pos = Camera.main.WorldToScreenPoint(gem.GemTransform.position);
+        Debug.Log(Pos);
+    }
+
     private void SubscribeForAction()
     {
         GameManagement.OnGameFailed += OnGameFailed;
@@ -58,6 +66,7 @@ public class UIManager : MonoBehaviour
 
     private void Init()
     {
+        Active = this;
         _animator = GetComponent<Animator>();
     }
 
