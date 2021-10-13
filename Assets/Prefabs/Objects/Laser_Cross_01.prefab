@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5056044465925738169
+--- !u!1 &2527809364459935930
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,35 +8,61 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4195473569859954732}
+  - component: {fileID: 755721128212083869}
   m_Layer: 0
-  m_Name: Laser_Cross
+  m_Name: Laser_Cross_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4195473569859954732
+--- !u!4 &755721128212083869
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5056044465925738169}
+  m_GameObject: {fileID: 2527809364459935930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 96.258995, y: -326.10223, z: 26.875559}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5898653824873461113}
+  - {fileID: 2509866899111023112}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &6221304090503778962
+--- !u!114 &5079778226657213305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999122512605235378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de8ab7c351f7254a834601615e66e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OneMove: 0
+  isMoveToEnd: 1
+  Activated: 1
+  MoveToOnStop: 1
+  ActivatorTarget: {fileID: 0}
+  StartPoint: {fileID: 0}
+  StartRoadTime: 2
+  StartDelay: 1
+  StartEase: 4
+  EndPoint: {fileID: 0}
+  EndRoadTime: 2
+  EndDelay: 1
+  EndEase: 4
+  _rig: {fileID: 0}
+--- !u!1001 &2692712604572022243
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4195473569859954732}
+    m_TransformParent: {fileID: 755721128212083869}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c559e82e7662fa241b9d9c3c83c18ceb,
         type: 3}
@@ -93,16 +119,47 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8612983236383093357, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7469680708854645958, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0296
+      objectReference: {fileID: 0}
+    - target: {fileID: -48758400337602696, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0103
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c559e82e7662fa241b9d9c3c83c18ceb,
         type: 3}
       propertyPath: m_Name
       value: Laser_Cross
       objectReference: {fileID: 0}
+    - target: {fileID: 1577348887111670886, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0255
+      objectReference: {fileID: 0}
+    - target: {fileID: 4815742277084057322, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c559e82e7662fa241b9d9c3c83c18ceb, type: 3}
---- !u!4 &5898653824873461113 stripped
+--- !u!1 &2999122512605235378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2692712604572022243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2509866899111023112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c559e82e7662fa241b9d9c3c83c18ceb,
     type: 3}
-  m_PrefabInstance: {fileID: 6221304090503778962}
+  m_PrefabInstance: {fileID: 2692712604572022243}
   m_PrefabAsset: {fileID: 0}
