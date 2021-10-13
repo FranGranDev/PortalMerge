@@ -103,6 +103,8 @@ public class GameManagement : MonoBehaviour
     private void SubscribeForGem(ICollected gem)
     {
         gem.SubscribeFor(OnGemCollected);
+
+        gem.SubscribeFor(UIManager.Active.OnGemCollected);
     }
     private void UnsubscribeForGem(ICollected gem)
     {

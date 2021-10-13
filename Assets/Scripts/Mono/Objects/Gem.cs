@@ -16,6 +16,7 @@ public class Gem : MonoBehaviour, ICollected
     public delegate void OnColldected(ICollected gem);
     public OnColldected OnGemColldected;
 
+    public Transform GemTransform { get => transform; }
 
     public void SubscribeFor(OnColldected OnCollected, bool unsubscribeFor = false)
     {
@@ -34,10 +35,15 @@ public class Gem : MonoBehaviour, ICollected
     {
         OnGemColldected?.Invoke(this);
 
+        CreateCollectedParticle();
+
         Destroy(gameObject);
     }
-
-
+    private void CreateCollectedParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.GemCollected, transform.position, transform.rotation);
+        partilce.transform.localScale = transform.localScale;
+    }
 
     private IEnumerator AnimationCour()
     {
@@ -63,7 +69,6 @@ public class Gem : MonoBehaviour, ICollected
         }
     }
 
-
     public void Init()
     {
         OnGemColldected = null;
@@ -82,6 +87,8 @@ public class Gem : MonoBehaviour, ICollected
 }
 public interface ICollected
 {
+    Transform GemTransform { get; }
+
     void Init();
 
     void SubscribeFor(Gem.OnColldected OnCollected, bool unsubscribeFor = false);
