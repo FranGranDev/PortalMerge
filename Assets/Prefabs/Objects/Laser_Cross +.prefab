@@ -110,6 +110,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6560774105838410069, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 40b13d74ff240f84bbc44473f820d17b, type: 2}
+    - target: {fileID: -5603388941649220192, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 40b13d74ff240f84bbc44473f820d17b, type: 2}
+    - target: {fileID: -2058984517679337159, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 40b13d74ff240f84bbc44473f820d17b, type: 2}
     - target: {fileID: -48758400337602696, guid: c559e82e7662fa241b9d9c3c83c18ceb,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -125,6 +140,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser_Cross
       objectReference: {fileID: 0}
+    - target: {fileID: 1768128262616579819, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 40b13d74ff240f84bbc44473f820d17b, type: 2}
     - target: {fileID: 2992784272205578099, guid: c559e82e7662fa241b9d9c3c83c18ceb,
         type: 3}
       propertyPath: m_LocalScale.z
