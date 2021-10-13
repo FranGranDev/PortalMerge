@@ -22,25 +22,6 @@ public class InputManagement : MonoBehaviour
     private bool FollowCube;
     private Vector3 TakeDelta;
 
-    private void CameraFollowCubeExecute()
-    {
-        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
-        {
-            if (CurrantTap.InputDir.normalized.y > 0.01f)
-            {
-                OnCubeFollow?.Invoke(CurrantTap.Point, new Vector2(0.25f, 0));
-            }
-        }
-        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
-        {
-            if (CurrantTap.InputDir.normalized.y < -0.01f)
-            {
-                OnCubeFollow?.Invoke(CurrantTap.Point, new Vector2(1f, 0));
-            }
-        }
-    }
-
     private bool Touched;
     public static Vector2 LastTouch;
 
@@ -170,6 +151,27 @@ public class InputManagement : MonoBehaviour
             CurrantCube = null;
         }
     }
+
+    private void CameraFollowCubeExecute()
+    {
+        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+        float Offset = (CurrantTap.InputPos - ScreenCenter).y / (Screen.height / 2);
+        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
+        {
+            if (CurrantTap.InputDir.normalized.y > 0.01f)
+            {
+                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+            }
+        }
+        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
+        {
+            if (CurrantTap.InputDir.normalized.y < -0.01f)
+            {
+                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+            }
+        }
+    }
+
 
     private void SubscribeForCube()
     {

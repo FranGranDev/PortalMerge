@@ -100,12 +100,12 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    private void CameraFollowCube(Vector3 Point, Vector3 Speed)
+    private void CameraFollowCube(Vector3 Speed, Vector3 Point)
     {
         isMoving = true;
-        Point = new Vector3(Point.x * SideMove(), transform.position.y, Point.z);
+        Point = transform.position + Speed * 5;
 
-        transform.position = Vector3.Lerp(transform.position, Point, CameraCubeFollowSpeed * Speed.x * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, Point, CameraCubeFollowSpeed * Time.deltaTime);
 
         if (MoveToCoroutine != null)
         {

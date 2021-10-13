@@ -48,7 +48,6 @@ public class UIManager : MonoBehaviour
     public void OnGemCollected(ICollected gem)
     {
         Vector2 Pos = Camera.main.WorldToScreenPoint(gem.GemTransform.position);
-        Debug.Log(Pos);
     }
 
     private void SubscribeForAction()

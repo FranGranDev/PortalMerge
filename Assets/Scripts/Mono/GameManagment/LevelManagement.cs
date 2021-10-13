@@ -125,19 +125,22 @@ public class LevelManagement : MonoBehaviour
         if (level.LevelPrefab)
         {
             ClearChilds();
-
-            //Dont work when Android FIX
-            //if (Application.isPlaying)
-            //{
-            //    Instantiate(level.LevelPrefab, transform);
-            //}
-            //else
-            //{
-            //    PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
-            //}
-                
-            Instantiate(level.LevelPrefab, transform);
-                
+            if (Application.isEditor)
+            {
+                //Dont work when Android FIX
+                if (Application.isPlaying)
+                {
+                    Instantiate(level.LevelPrefab, transform);
+                }
+                else
+                {
+                    PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
+                }
+            }
+            else
+            {
+                Instantiate(level.LevelPrefab, transform);
+            }  
         }
 
         if (level.SkyboxMaterial)
