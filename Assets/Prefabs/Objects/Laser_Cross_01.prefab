@@ -24,14 +24,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2527809364459935930}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 96.258995, y: -326.10223, z: 26.875559}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2509866899111023112}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5079778226657213305
+--- !u!114 &2125693511992338310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,23 +40,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2999122512605235378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8de8ab7c351f7254a834601615e66e50, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a5061b8053e5694ba1ca26000d9aa67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OneMove: 0
-  isMoveToEnd: 1
-  Activated: 1
-  MoveToOnStop: 1
-  ActivatorTarget: {fileID: 0}
-  StartPoint: {fileID: 0}
-  StartRoadTime: 2
-  StartDelay: 1
-  StartEase: 4
-  EndPoint: {fileID: 0}
-  EndRoadTime: 2
-  EndDelay: 1
-  EndEase: 4
-  _rig: {fileID: 0}
+  RotationSpeed: 90
+  Force: 5
+  isActive: 1
+  Center: {fileID: 8447445080546153278}
 --- !u!1001 &2692712604572022243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160,6 +150,12 @@ GameObject:
 --- !u!4 &2509866899111023112 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c559e82e7662fa241b9d9c3c83c18ceb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2692712604572022243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8447445080546153278 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3430276907618769187, guid: c559e82e7662fa241b9d9c3c83c18ceb,
     type: 3}
   m_PrefabInstance: {fileID: 2692712604572022243}
   m_PrefabAsset: {fileID: 0}
