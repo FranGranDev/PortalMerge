@@ -136,7 +136,6 @@ public class Cube : MonoBehaviour, ICube
         ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
         partilceRender.material.color = CurrantColor;
         partilce.transform.localScale = transform.localScale * GameManagement.MainData.DestroyParticleSize;
-
     }
     public void CreateMergeParticle()
     {
