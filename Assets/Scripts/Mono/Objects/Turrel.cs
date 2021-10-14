@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class Turrel : MonoBehaviour, IActivate
 {
+    [Range(0f, 1)]
+    [SerializeField] private float RotationSpeed;
     [SerializeField] private bool Activated;
-    [SerializeField] private bool Ready;
+    [SerializeField] private bool MoveTo;
+    public void TurnMove(bool on)
+    {
+        MoveTo = on;
+    }
     public enum ViewField { Field42, Field90};
     [SerializeField] private ViewField FieldOfView;
     [Header("Component")]
+    [SerializeField] private Transform Main;
     [SerializeField] private Animator _anim;
     [SerializeField] private Transform MaxField42;
     [SerializeField] private Transform MaxField90;
@@ -64,11 +71,15 @@ public class Turrel : MonoBehaviour, IActivate
         _anim.SetBool("Activated", Enemy != null);
         if (Enemy != null)
         {
-            
+            Vector3 Direction = (Enemy.CubeTransform.position - transform.position).normalized;
+            Direction = new Vector3(Direction.x, 0, Direction.z);
+            Main.transform.forward = Vector3.Lerp(Main.transform.forward, Direction, RotationSpeed * Time.deltaTime);
         }
         else
         {
-
+            Vector3 Direction = transform.forward;
+            Direction = new Vector3(Direction.x, 0, Direction.z);
+            Main.transform.forward = Vector3.Lerp(Main.transform.forward, Direction, RotationSpeed * Time.deltaTime);
         }
     }
     private void Start()

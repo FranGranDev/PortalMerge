@@ -76,10 +76,7 @@ public class GameManagement : MonoBehaviour
             SubscribeForCube(cube);
             TargetNum += cube.Number;
         }
-        if(!isPower2(TargetNum))
-        {
-            Debug.Log("На сцене должно быть кубиков кратно степени двойки!!!");
-        }
+        
     }
     private void GetAllGemsOnScene()
     {

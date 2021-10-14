@@ -464,9 +464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e485cc473ad8014b8b7e5bb4414c775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RotationSpeed: 1
   Activated: 0
   Ready: 0
   FieldOfView: 1
+  Main: {fileID: 415061116441954252}
   _anim: {fileID: 8320349921194744228}
   MaxField42: {fileID: 5061670950693292715}
   MaxField90: {fileID: 845827041748180785}

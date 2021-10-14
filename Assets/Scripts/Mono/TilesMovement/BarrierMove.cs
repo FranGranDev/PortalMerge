@@ -73,7 +73,14 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
         {
             ActivatorTarget.Subscribe(Activate);
         }
-
+        if(StartPoint == null)
+        {
+            StartPoint = transform;
+        }
+        if(EndPoint == null)
+        {
+            EndPoint = transform;
+        }
         Activate(Activated);
     }
 
