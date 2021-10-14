@@ -59,8 +59,10 @@ public class DataGameMain : ScriptableObject
     public ParticleSystem CubeDestroyed;
     public ParticleSystem CubesMerge;
     public ParticleSystem GemCollected;
+    public ParticleSystem TurrelFire;
     [Header("Префабы")]
     public GameObject Cube;
+    public GameObject Bullet;
     [Header("Цвета")]
     [SerializeField] private Color[] CubeColor;
     public Color GetCubeColor(int num)

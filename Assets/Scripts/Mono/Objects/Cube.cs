@@ -94,7 +94,7 @@ public class Cube : MonoBehaviour, ICube
     private Transform PrevParent;
     public ICube PrevCube { get; private set; }
     public bool isNull => Equals(null);
-
+    public bool isDestroyed { get; private set; }
 
     #region Action
     public void TryMerge(ICube other)
@@ -123,6 +123,7 @@ public class Cube : MonoBehaviour, ICube
     }
     public void DestroyCube()
     {
+        isDestroyed = true;
         CreateDestroyParticle();
 
         OnCubeDestroyed?.Invoke(this);
@@ -345,6 +346,8 @@ public class Cube : MonoBehaviour, ICube
 public interface ICube
 {
     bool isNull { get; }
+
+    bool isDestroyed { get; }
 
     int Number { get; }
 
