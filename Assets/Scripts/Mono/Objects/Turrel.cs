@@ -25,8 +25,10 @@ public class Turrel : MonoBehaviour, IActivate
     [Header("Component")]
     [SerializeField] private Transform Main;
     [SerializeField] private Animator _anim;
-    [SerializeField] private GameObject Field42;
-    [SerializeField] private GameObject Field90;
+    [SerializeField] private Material IdleZone;
+    [SerializeField] private Material AngryZone;
+    [SerializeField] private MeshRenderer Field42;
+    [SerializeField] private MeshRenderer Field90;
     [SerializeField] private Transform MaxField42;
     [SerializeField] private Transform MaxField90;
     [SerializeField] private Transform[] FirePoint;
@@ -51,22 +53,49 @@ public class Turrel : MonoBehaviour, IActivate
 
     private void Init()
     {
-        Field42.SetActive(false);
-        Field90.SetActive(false);
+        Field42.gameObject.SetActive(false);
+        Field90.gameObject.SetActive(false);
         switch (FieldOfView)
         {
             case ViewField.Field42:
                 CurrantMax = MaxField42;
                 Radius = (transform.position - CurrantMax.position).magnitude;
-                Field42.SetActive(true);
+                Field42.gameObject.SetActive(true);
                 break;
             case ViewField.Field90:
                 CurrantMax = MaxField90;
                 Radius = (transform.position - CurrantMax.position).magnitude;
-                Field90.SetActive(true);
+                Field90.gameObject.SetActive(true);
                 break;
         }
         if (_anim == null) _anim = transform.GetComponentInChildren<Animator>();
+    }
+    private void ChangeMaterial()
+    {
+        switch (FieldOfView)
+        {
+            case ViewField.Field42:
+                if(Enemy == null)
+                {
+                    Field42.material = IdleZone;
+                }
+                else
+                {
+                    Field42.material = AngryZone;
+                }
+                break;
+            case ViewField.Field90:
+                if (Enemy == null)
+                {
+                    Field90.material = IdleZone;
+                }
+                else
+                {
+                    Field90.material = AngryZone;
+                }
+                break;
+        }
+        
     }
     private void CheckForCube()
     {
@@ -84,6 +113,7 @@ public class Turrel : MonoBehaviour, IActivate
                 break;
             }
         }
+        ChangeMaterial();
     }
     private void ActionExecute()
     {
@@ -154,7 +184,7 @@ public class Turrel : MonoBehaviour, IActivate
             ParticleSystem partilce = Instantiate(GameManagement.MainData.TurrelFire, FirePoint[i].position, FirePoint[i].rotation, null);
 
             Bullet bullet = Instantiate(GameManagement.MainData.Bullet, FirePoint[i].position, FirePoint[i].rotation, null).GetComponent<Bullet>();
-            bullet.Fire(Main.transform.forward * BulletSpeed, BulletDistance);
+            bullet.Fire(Main.transform.forward * BulletSpeed, BulletDistance, Enemy);
         }
         
     }

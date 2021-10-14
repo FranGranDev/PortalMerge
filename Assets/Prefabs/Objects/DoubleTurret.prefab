@@ -534,8 +534,10 @@ MonoBehaviour:
   FieldOfView: 1
   Main: {fileID: 415061116441954252}
   _anim: {fileID: 8320349921194744228}
-  Field42: {fileID: 9008947168625350712}
-  Field90: {fileID: 7170106656717954293}
+  IdleZone: {fileID: 2100000, guid: 336f2dcb538f4344c9417bfea10cc14e, type: 2}
+  AngryZone: {fileID: 2100000, guid: 3ef4a8d1e5efaca4d8cfc49b65c00502, type: 2}
+  Field42: {fileID: 7351785301964192237}
+  Field90: {fileID: 8683408970766482720}
   MaxField42: {fileID: 5061670950693292715}
   MaxField90: {fileID: 845827041748180785}
   FirePoint:

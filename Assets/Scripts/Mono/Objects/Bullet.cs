@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [Range(0, 0.1f)]
+    [SerializeField] private float Follow;
+    private float ImpulseMagn;
+    private ICube Enemy;
+
     [Header("Components")]
     [SerializeField] private Rigidbody _rig;
 
-    public void Fire(Vector3 Impulse, float Distance)
+    public void Fire(Vector3 Impulse, float Distance, ICube cube)
     {
         if (_rig == null) _rig = GetComponent<Rigidbody>();
         _rig.velocity = Impulse;
+        ImpulseMagn = Impulse.magnitude;
 
+        Enemy = cube;
         StartCoroutine(WaitDisable(Distance));
     }
     private IEnumerator WaitDisable(float Distance)
     {
-        Vector3 StartPoint = transform.position;
-        while((StartPoint - transform.position).magnitude < Distance)
+        float Dist = 0;
+        Vector3 prev = transform.position;
+        while(Dist < Distance)
         {
+            Dist += (transform.position - prev).magnitude;
+            prev = transform.position;
             yield return new WaitForFixedUpdate();
         }
         DestroyBullet();
@@ -49,8 +59,12 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    void Start()
+    private void FixedUpdate()
     {
-        
+        if(!Enemy.isNull)
+        {
+            Vector3 Dir = (Enemy.CubeTransform.position - transform.position).normalized;
+            _rig.velocity = Vector3.Lerp(_rig.velocity, ImpulseMagn * Dir, Follow);
+        }
     }
 }
