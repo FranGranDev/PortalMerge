@@ -51,24 +51,12 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void Teleport(ICube cube)
     {
-        StartCoroutine(TeleportCour(cube));
-    }
-    private IEnumerator TeleportCour(ICube cube)
-    {
-        cube.CubeTransform.parent = PrevPortal.PortalTransform;
-        yield return new WaitForFixedUpdate();
-        Vector3 DeltaPosition = (cube.CubeTransform.localPosition);
-        cube.CubeTransform.parent = transform;
-
-
         prevCube = cube;
         cube.CubeRig.velocity = (cube.CubeRig.velocity.magnitude + GameManagement.MainData.AddVelocityOnExitPortal)
         * (transform.forward + Vector3.up * 0.25f) * GameManagement.MainData.SaveVelocityOnExitPortal;
-        cube.CubeTransform.localPosition = DeltaPosition;
-        yield return new WaitForFixedUpdate();
+        cube.CubeTransform.position = transform.position;
         prevCube.SetNullParent();
         cube.OnEnterPortal();
-        yield break;
     }
 
     private void OnTeleported(ICube cube)
