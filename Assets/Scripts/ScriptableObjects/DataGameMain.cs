@@ -60,6 +60,7 @@ public class DataGameMain : ScriptableObject
     public ParticleSystem CubesMerge;
     public ParticleSystem GemCollected;
     public ParticleSystem TurrelFire;
+    public ParticleSystem BulletDestroy;
     [Header("Префабы")]
     public GameObject Cube;
     public GameObject Bullet;

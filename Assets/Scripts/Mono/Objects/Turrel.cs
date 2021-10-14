@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Turrel : MonoBehaviour, IActivate
 {
-    [Range(0f, 10f)]
+    [Range(0f, 25f)]
     [SerializeField] private float BulletSpeed;
-    [Range(0f, 1)]
+    [Range(0f, 25f)]
+    [SerializeField] private float BulletDistance;
+    [Range(0f, 5)]
     [SerializeField] private float ReloadTime;
     private bool Reloaded;
     private bool Reloading;
-    [Range(0f, 1)]
+    [Range(0f, 2f)]
     [SerializeField] private float RotationSpeed;
     [SerializeField] private bool Activated;
     private bool MoveTo;
@@ -23,6 +25,8 @@ public class Turrel : MonoBehaviour, IActivate
     [Header("Component")]
     [SerializeField] private Transform Main;
     [SerializeField] private Animator _anim;
+    [SerializeField] private GameObject Field42;
+    [SerializeField] private GameObject Field90;
     [SerializeField] private Transform MaxField42;
     [SerializeField] private Transform MaxField90;
     [SerializeField] private Transform[] FirePoint;
@@ -47,16 +51,19 @@ public class Turrel : MonoBehaviour, IActivate
 
     private void Init()
     {
+        Field42.SetActive(false);
+        Field90.SetActive(false);
         switch (FieldOfView)
         {
             case ViewField.Field42:
                 CurrantMax = MaxField42;
-                
                 Radius = (transform.position - CurrantMax.position).magnitude;
+                Field42.SetActive(true);
                 break;
             case ViewField.Field90:
                 CurrantMax = MaxField90;
                 Radius = (transform.position - CurrantMax.position).magnitude;
+                Field90.SetActive(true);
                 break;
         }
         if (_anim == null) _anim = transform.GetComponentInChildren<Animator>();
@@ -147,7 +154,7 @@ public class Turrel : MonoBehaviour, IActivate
             ParticleSystem partilce = Instantiate(GameManagement.MainData.TurrelFire, FirePoint[i].position, FirePoint[i].rotation, null);
 
             Bullet bullet = Instantiate(GameManagement.MainData.Bullet, FirePoint[i].position, FirePoint[i].rotation, null).GetComponent<Bullet>();
-            bullet.Fire(Main.transform.forward * BulletSpeed);
+            bullet.Fire(Main.transform.forward * BulletSpeed, BulletDistance);
         }
         
     }

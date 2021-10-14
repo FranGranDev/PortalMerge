@@ -7,18 +7,29 @@ public class Bullet : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Rigidbody _rig;
 
-    public void Fire(Vector3 Impulse)
+    public void Fire(Vector3 Impulse, float Distance)
     {
         if (_rig == null) _rig = GetComponent<Rigidbody>();
         _rig.velocity = Impulse;
 
-        StartCoroutine(WaitDisable());
+        StartCoroutine(WaitDisable(Distance));
     }
-    private IEnumerator WaitDisable()
+    private IEnumerator WaitDisable(float Distance)
     {
-        yield return new WaitForSeconds(10);
-        Destroy(gameObject);
+        Vector3 StartPoint = transform.position;
+        while((StartPoint - transform.position).magnitude < Distance)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        DestroyBullet();
         yield break;
+    }
+
+    private void DestroyBullet()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.BulletDestroy, transform.position, transform.rotation, null);
+
+        Destroy(gameObject);
     }
 
     private void OnCubeEntered(ICube cube)
@@ -26,7 +37,7 @@ public class Bullet : MonoBehaviour
         if (cube.isDestroyed)
             return;
         cube.DestroyCube();
-        Destroy(gameObject);
+        DestroyBullet();
     }
 
     private void OnTriggerEnter(Collider other)
