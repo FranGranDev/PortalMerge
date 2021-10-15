@@ -7,11 +7,16 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Active { get; private set; }
     private const string LEVEL_NAME = "Level";
+    private const string GEM_COLLECTED = "GemCollected";
+    private int GemCollected;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI StartLevelNum;
+    [SerializeField] private TextMeshProUGUI GemNum;
     [Header("Components")]
+    [SerializeField] private RectTransform GemIcon;
     private Animator _animator;
+    
     private const string ANIM_ID = "State";
 
     public enum UIState {InGame, Start, Failed, Done};
@@ -67,6 +72,29 @@ public class UIManager : MonoBehaviour
     public void OnGemCollected(ICollected gem)
     {
         Vector2 Pos = Camera.main.WorldToScreenPoint(gem.GemTransform.position);
+        GemCollected++;
+        SetGemNum();
+        StartCoroutine(GemFly(Pos));
+    }
+    private void SetGemNum()
+    {
+        GemNum.text = GemCollected.ToString();
+    }
+    private IEnumerator GemFly(Vector3 StartPos)
+    {
+        GameObject gem = Instantiate(GameManagement.MainData.GemIcon, StartPos, Quaternion.identity, transform);
+
+        gem.transform.SetAsFirstSibling();
+        yield return new WaitForSeconds(GameManagement.MainData.GemDelayToFly);
+        while(((Vector2)gem.transform.position - (Vector2)GemIcon.transform.position).magnitude > 1f)
+        {
+            float Speed = 1 / Mathf.Sqrt(((Vector2)gem.transform.position - (Vector2)GemIcon.transform.position).magnitude);
+            gem.transform.position = Vector2.Lerp(gem.transform.position, GemIcon.transform.position, GameManagement.MainData.GemFlySpeed * (0.1f + Speed));
+            yield return new WaitForFixedUpdate();
+        }
+        _animator.Play(GEM_COLLECTED, 1, 0);
+        Destroy(gem);
+        yield break;
     }
 
     private void SubscribeForAction()
@@ -95,6 +123,7 @@ public class UIManager : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         SetLevelText();
+        SetGemNum();
     }
 
     private void Awake()

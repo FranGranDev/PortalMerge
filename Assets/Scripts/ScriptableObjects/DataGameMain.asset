@@ -35,6 +35,8 @@ MonoBehaviour:
   DestroyDelay: 0
   ObstacleAcceleration: 0.25
   DelayTime: 0
+  GemDelayToFly: 0.5
+  GemFlySpeed: 0.5
   DestroyParticleSize: 1
   MergeParticleSize: 0.6
   CubeDestroyed: {fileID: 5471425698847393155, guid: 9d2134d1047a57d488d2dcb67864612c,
@@ -49,6 +51,7 @@ MonoBehaviour:
     type: 3}
   Cube: {fileID: 8574350159135478060, guid: 12ed66078c93e844eba7efea9db2b814, type: 3}
   Bullet: {fileID: 4788833205040968159, guid: 4d4ccdf46974f174798dec00df027fac, type: 3}
+  GemIcon: {fileID: 8652199898576579083, guid: 7655205dcbea4434f82b9104f491ed8f, type: 3}
   CubeColor:
   - {r: 0.3372549, g: 0.54901963, b: 0.81960785, a: 1}
   - {r: 0.33725494, g: 0.81960785, b: 0.5534965, a: 1}

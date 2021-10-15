@@ -51,6 +51,11 @@ public class DataGameMain : ScriptableObject
     public float ObstacleAcceleration;
     [Header("Настройка активаторов")]
     public float DelayTime;
+    [Header("Настройка UI")]
+    [Range(0f, 1f)]
+    public float GemDelayToFly;
+    [Range(0f, 1f)]
+    public float GemFlySpeed;
     [Header("Партиклы")]
     [Range(0.25f, 2f)]
     public float DestroyParticleSize;
@@ -64,6 +69,7 @@ public class DataGameMain : ScriptableObject
     [Header("Префабы")]
     public GameObject Cube;
     public GameObject Bullet;
+    public GameObject GemIcon;
     [Header("Цвета")]
     [SerializeField] private Color[] CubeColor;
     public Color GetCubeColor(int num)
