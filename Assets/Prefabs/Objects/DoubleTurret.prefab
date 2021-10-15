@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 415061116441954252}
   - component: {fileID: 3633644551087229033}
   - component: {fileID: 1551977422801763491}
-  - component: {fileID: 982904148729950333}
-  - component: {fileID: 8320349921194744228}
   m_Layer: 9
   m_Name: Turrel
   m_TagString: Traps
@@ -83,38 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &982904148729950333
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047446790806822262}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.15
-  m_Center: {x: 0, y: 0.05, z: 0}
---- !u!95 &8320349921194744228
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047446790806822262}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b8b967bcde9896e468f4fe155ae463b9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2414876219632787827
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,13 +104,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2414876219632787827}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.122, y: 1.545, z: -0.519}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5702343577149894325}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &4353168750078835474
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,13 +134,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4353168750078835474}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.117, y: 1.545, z: -0.519}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5702343577149894325}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &5191626954766323736
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +391,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7170106656717954293}
   m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_Children: []
   m_Father: {fileID: 7434799208686060702}
@@ -488,6 +454,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7434799208686060702}
   - component: {fileID: 5747776591169652242}
+  - component: {fileID: 671908609384280343}
+  - component: {fileID: 832902154282637806}
   m_Layer: 9
   m_Name: DoubleTurret
   m_TagString: Traps
@@ -526,6 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e485cc473ad8014b8b7e5bb4414c775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnimationSpeed: 1
   BulletSpeed: 10
   BulletDistance: 10
   ReloadTime: 1
@@ -533,7 +502,7 @@ MonoBehaviour:
   Activated: 1
   FieldOfView: 1
   Main: {fileID: 415061116441954252}
-  _anim: {fileID: 8320349921194744228}
+  _anim: {fileID: 671908609384280343}
   IdleZone: {fileID: 2100000, guid: 336f2dcb538f4344c9417bfea10cc14e, type: 2}
   AngryZone: {fileID: 2100000, guid: 3ef4a8d1e5efaca4d8cfc49b65c00502, type: 2}
   Field42: {fileID: 7351785301964192237}
@@ -543,6 +512,38 @@ MonoBehaviour:
   FirePoint:
   - {fileID: 190237208891716738}
   - {fileID: 1438274372540517147}
+--- !u!95 &671908609384280343
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811043654384410148}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b8b967bcde9896e468f4fe155ae463b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!135 &832902154282637806
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7811043654384410148}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.82554215
+  m_Center: {x: 0, y: 0.32554215, z: 0}
 --- !u!1 &9008947168625350712
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,7 +570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9008947168625350712}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_Children: []
   m_Father: {fileID: 7434799208686060702}

@@ -171,6 +171,7 @@ public class GameManagement : MonoBehaviour
         DestroyCube(cube1);
         DestroyCube(cube2);
 
+        InputManagement.Active.SubscribeForCube(newCube);
         if (newCube.Number == TargetNum)
         {
             GameWin();

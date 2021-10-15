@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!Enemy.isNull)
+        if(Enemy != null && !Enemy.isNull)
         {
             Vector3 Dir = (Enemy.CubeTransform.position - transform.position).normalized;
             _rig.velocity = Vector3.Lerp(_rig.velocity, ImpulseMagn * Dir, Follow);

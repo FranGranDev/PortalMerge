@@ -172,6 +172,20 @@ public class InputManagement : MonoBehaviour
         }
     }
 
+    public void SubscribeForCube(ICube cube)
+    {
+        StartCoroutine(SubscibeForCubeCour(cube, 0.5f));
+    }
+    private IEnumerator SubscibeForCubeCour(ICube cube, float Delay)
+    {
+        yield return new WaitForSeconds(Delay);
+        if (CurrantAction != ActionType.OnCube)
+            yield break;
+        CurrantCube = cube;
+        SubscribeForCube();
+        CurrantAction = ActionType.OnCube;
+        yield break;
+    }
 
     private void SubscribeForCube()
     {
@@ -179,7 +193,7 @@ public class InputManagement : MonoBehaviour
         {
             CurrantCube.SubscribeForDestroyed(OnLostCube);
             CurrantCube.SubscribeForEnterPortal(OnLostCube);
-            CurrantCube.SubscribeForMerge(OnLostCube);
+            //CurrantCube.SubscribeForMerge(OnLostCube);
             CurrantCube.SubscribeForLeaveGround(OnLostCube);
         }
     }

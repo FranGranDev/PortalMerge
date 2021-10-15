@@ -31,8 +31,11 @@ public class Activator : MonoBehaviour
     [Header("Components")]
     private const string ANIM_BOOL = "Active";
     private Animator _anim;
+    private MeshRenderer _render;
     private bool HaveAnimator;
-
+    [Header("Settings")]
+    [SerializeField] private Color Red;
+    [SerializeField] private Color Green;
 
     private void Init()
     {
@@ -50,6 +53,7 @@ public class Activator : MonoBehaviour
 
         DelayTime = GameManagement.MainData.DelayTime;
         HaveAnimator = transform.TryGetComponent<Animator>(out _anim);
+        transform.GetChild(0).TryGetComponent<MeshRenderer>(out _render);
     }
 
     private void Activate(bool on)
@@ -77,6 +81,15 @@ public class Activator : MonoBehaviour
         yield break;
     }
 
+    public void SetRedColor()
+    {
+        _render.material.color = Red;
+        
+    }
+    public void SetGreenColor()
+    {
+        _render.material.color = Green;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

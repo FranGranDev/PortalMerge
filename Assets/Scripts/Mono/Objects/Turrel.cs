@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Turrel : MonoBehaviour, IActivate
 {
+    [Range(0.5f, 2f)]
+    [SerializeField] private float AnimationSpeed;
     [Range(0f, 25f)]
     [SerializeField] private float BulletSpeed;
     [Range(0f, 25f)]
@@ -69,6 +71,7 @@ public class Turrel : MonoBehaviour, IActivate
                 break;
         }
         if (_anim == null) _anim = transform.GetComponentInChildren<Animator>();
+        _anim.SetFloat("Speed", AnimationSpeed);
     }
     private void ChangeMaterial()
     {
@@ -97,14 +100,27 @@ public class Turrel : MonoBehaviour, IActivate
         }
         
     }
+    private void ActivateZone()
+    {
+        switch (FieldOfView)
+        {
+            case ViewField.Field42:
+                Field42.gameObject.SetActive(Activated);
+                break;
+            case ViewField.Field90:
+                Field90.gameObject.SetActive(Activated);
+                break;
+        }
+    }
+
     private void CheckForCube()
     {
+        Enemy = null;
         if (!Activated)
         {
             return;
         }
         Collider[] colliders = Physics.OverlapSphere(transform.position, Radius, 1 << 9);
-        Enemy = null;
         foreach (Collider col in colliders)
         {
             if (InFieldOfView(col.transform) && col.tag == "Cube")
@@ -117,6 +133,8 @@ public class Turrel : MonoBehaviour, IActivate
     }
     private void ActionExecute()
     {
+        ActivateZone();
+
         if(!Activated)
         {
             _anim.SetBool("Activated", false);
@@ -152,18 +170,21 @@ public class Turrel : MonoBehaviour, IActivate
 
         if (MoveTo && Enemy != null)
         {
-            Vector3 FireDirection = (transform.position - Enemy.CubeTransform.position).normalized;
-            if (Reloaded && !Reloading)
+            RaycastHit[] colliders = Physics.RaycastAll(FirePoint[0].position, FirePoint[0].forward, Radius, 1 << 9);
+            foreach(RaycastHit hit in colliders)
             {
-                if (Vector3.Dot(FireDirection, Main.transform.forward) < 0.01f)
+                if(hit.transform == Enemy.CubeTransform)
                 {
-                    Fire();
+                    if (Reloaded && !Reloading)
+                    {
+                        Fire();
+                    }
+                    else if (!Reloading)
+                    {
+                        Reload();
+                    }
                 }
-            }
-            else if (!Reloading)
-            {
-                Reload();
-            }
+            }         
         }
     }
     private IEnumerator ActivateDelayed()
@@ -178,15 +199,17 @@ public class Turrel : MonoBehaviour, IActivate
     {
         Reloaded = false;
 
-        _anim.SetTrigger("Fire");
-        for(int i = 0; i < FirePoint.Length; i++)
+        _anim.SetTrigger("Fire");  
+    }
+    public void MakeFire()
+    {
+        for (int i = 0; i < FirePoint.Length; i++)
         {
             ParticleSystem partilce = Instantiate(GameManagement.MainData.TurrelFire, FirePoint[i].position, FirePoint[i].rotation, null);
 
             Bullet bullet = Instantiate(GameManagement.MainData.Bullet, FirePoint[i].position, FirePoint[i].rotation, null).GetComponent<Bullet>();
             bullet.Fire(Main.transform.forward * BulletSpeed, BulletDistance, Enemy);
         }
-        
     }
     private void Reload()
     {

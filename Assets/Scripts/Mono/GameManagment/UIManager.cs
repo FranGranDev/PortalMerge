@@ -8,16 +8,21 @@ public class UIManager : MonoBehaviour
     public static UIManager Active { get; private set; }
     private const string LEVEL_NAME = "Level";
     private const string GEM_COLLECTED = "GemCollected";
+    private const string ANIM_ID = "State";
+    private const string ANIM_Combo = "Combo";
     private int GemCollected;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI StartLevelNum;
     [SerializeField] private TextMeshProUGUI GemNum;
+    [SerializeField] private TextMeshProUGUI PlusNum;
     [Header("Components")]
     [SerializeField] private RectTransform GemIcon;
+    [SerializeField] private RectTransform PlusIcon;
     private Animator _animator;
-    
-    private const string ANIM_ID = "State";
+
+
+    private Coroutine ShowComboCoroutine;
 
     public enum UIState {InGame, Start, Failed, Done};
     [SerializeField] private UIState CurrantState = UIState.Start;
@@ -75,6 +80,11 @@ public class UIManager : MonoBehaviour
         GemCollected++;
         SetGemNum();
         StartCoroutine(GemFly(Pos));
+        if(ShowComboCoroutine != null)
+        {
+            StopCoroutine(ShowComboCoroutine);
+        }
+        ShowComboCoroutine = StartCoroutine(ShowComboCour(Pos));
     }
     private void SetGemNum()
     {
@@ -94,6 +104,13 @@ public class UIManager : MonoBehaviour
         }
         _animator.Play(GEM_COLLECTED, 1, 0);
         Destroy(gem);
+        yield break;
+    }
+    private IEnumerator ShowComboCour(Vector3 StartPos)
+    {
+        PlusIcon.transform.position = StartPos;
+        _animator.Play(ANIM_Combo, 2, 0);
+        yield return new WaitForSeconds(1f);
         yield break;
     }
 
