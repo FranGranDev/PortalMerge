@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8031888375302503015}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: House
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,6 +208,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8031888375302503015}
     m_Modifications:
+    - target: {fileID: 3526657926878488329, guid: d7bfa7fe2d57d8941aeb6d4ccf0284f8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1631
+      objectReference: {fileID: 0}
     - target: {fileID: 4553473641318802347, guid: d7bfa7fe2d57d8941aeb6d4ccf0284f8,
         type: 3}
       propertyPath: m_RootOrder
@@ -928,6 +933,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8031888375302503015}
     m_Modifications:
+    - target: {fileID: 3526657926878488329, guid: d7bfa7fe2d57d8941aeb6d4ccf0284f8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1631
+      objectReference: {fileID: 0}
     - target: {fileID: 4553473641318802347, guid: d7bfa7fe2d57d8941aeb6d4ccf0284f8,
         type: 3}
       propertyPath: m_RootOrder
