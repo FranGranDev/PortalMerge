@@ -29,7 +29,8 @@ public class GameManagement : MonoBehaviour
     [SerializeField] private int GemCollected;
     [SerializeField] private int MaxGems;
     [SerializeField] public static bool isGameStarted;
-
+    [Header("Components")]
+    [SerializeField] private StaticCube RenderCube;
     #region Callbacks
     public delegate void OnGameAction();
     public static OnGameAction OnGameWin;
@@ -76,7 +77,8 @@ public class GameManagement : MonoBehaviour
             SubscribeForCube(cube);
             TargetNum += cube.Number;
         }
-        
+
+        RenderCube.SetView(TargetNum);
     }
     private void GetAllGemsOnScene()
     {

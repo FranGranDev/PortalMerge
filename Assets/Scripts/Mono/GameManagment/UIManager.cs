@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     private const string ANIM_ID = "State";
     private const string ANIM_Combo = "Combo";
     private int GemCollected;
+    private int GemCollectedInRow;
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI StartLevelNum;
@@ -20,7 +21,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform GemIcon;
     [SerializeField] private RectTransform PlusIcon;
     private Animator _animator;
-
 
     private Coroutine ShowComboCoroutine;
 
@@ -108,9 +108,12 @@ public class UIManager : MonoBehaviour
     }
     private IEnumerator ShowComboCour(Vector3 StartPos)
     {
+        GemCollectedInRow++;
         PlusIcon.transform.position = StartPos;
         _animator.Play(ANIM_Combo, 2, 0);
+        PlusNum.text = "+" + GemCollectedInRow.ToString();
         yield return new WaitForSeconds(1f);
+        GemCollectedInRow = 0;
         yield break;
     }
 
@@ -141,6 +144,7 @@ public class UIManager : MonoBehaviour
 
         SetLevelText();
         SetGemNum();
+        GemCollectedInRow = 0;
     }
 
     private void Awake()

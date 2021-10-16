@@ -71,7 +71,33 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraWinMove()
     {
-        MoveToCube(GameManagement.LastCube);
+        StartCoroutine(MoveToOnWinCour(GameManagement.LastCube.CubeTransform.position));
+        StartCoroutine(ConfittiCour(GameManagement.LastCube.CubeTransform.position));
+    }
+    private IEnumerator MoveToOnWinCour(Vector3 Target)
+    {
+        Target += Vector3.forward * -2f;
+        while ((new Vector2(transform.position.x, transform.position.z) - new Vector2(Target.x, Target.z)).magnitude > 0.25f)
+        {
+            Vector3 newPoint = new Vector3(Target.x, transform.position.y, Target.z);
+            transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToCubeOnWinSpeed * 0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+        yield break;
+    }
+    private IEnumerator ConfittiCour(Vector3 Target)
+    {
+        yield return new WaitForSeconds(0.5f);
+        int ConfittiNum = Random.Range(10, 15);
+        for (int i = 0; i < ConfittiNum; i++)
+        {
+            float Lenght = Random.Range(3f, 6f);
+            Vector3 Direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+            Vector3 Position = Target + Direction * Lenght;
+
+            GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, null);
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.25f));
+        }
     }
 
     private void MoveToCube(ICube cube)
