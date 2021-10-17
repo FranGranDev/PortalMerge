@@ -40,6 +40,8 @@ public class DataGameMain : ScriptableObject
     public float FollowCubeSpeed;
     [Range(0.1f, 1f)]
     public float MoveToPortalSpeed;
+    [Range(0.1f, 1f)]
+    public float MoveToCubeOnWinSpeed;
     [Header("Настройка телепортов")]
     [Range(0, 1f)]
     public float SaveVelocityOnExitPortal;
@@ -66,6 +68,11 @@ public class DataGameMain : ScriptableObject
     public ParticleSystem GemCollected;
     public ParticleSystem TurrelFire;
     public ParticleSystem BulletDestroy;
+    public GameObject[] Confetti;
+    public GameObject GetConfetti()
+    {
+        return Confetti[Random.Range(0, Confetti.Length)];
+    }
     [Header("Префабы")]
     public GameObject Cube;
     public GameObject Bullet;
