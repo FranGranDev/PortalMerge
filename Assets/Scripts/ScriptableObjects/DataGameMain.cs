@@ -38,6 +38,8 @@ public class DataGameMain : ScriptableObject
     public float FollowCubeDeadZoneDown;
     [Range(0, 10f)]
     public float FollowCubeSpeed;
+    [Range(0, 0.5f)]
+    public float FollowCubeFriction;
     [Range(0.1f, 1f)]
     public float MoveToPortalSpeed;
     [Range(0.1f, 1f)]

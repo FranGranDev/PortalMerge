@@ -27,6 +27,7 @@ public class InputManagement : MonoBehaviour
 
     private Vector3 StartTapPoint;
     public delegate void OnSwipeInput(Vector3 Point, Vector3 StartPoint);
+    public static OnSwipeInput OnCubeThrow;
     public static OnSwipeInput OnCubeFollow;
     public static OnSwipeInput OnSwipeMove;
     public static OnSwipeInput OnSwipeEnd;
@@ -158,17 +159,29 @@ public class InputManagement : MonoBehaviour
         float Offset = (CurrantTap.InputPos - ScreenCenter).y / (Screen.height / 2);
         if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
         {
-            if (CurrantTap.InputDir.normalized.y > 0.01f)
+            if (CurrantTap.InputDir.normalized.y > 0.0f)
             {
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+            }
+            else
+            {
+                OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
             }
         }
         else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
         {
-            if (CurrantTap.InputDir.normalized.y < -0.01f)
+            if (CurrantTap.InputDir.normalized.y < -0.0f)
             {
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
             }
+            else
+            {
+                OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
+            }
+        }
+        else
+        {
+            OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
         }
     }
 
@@ -248,7 +261,8 @@ public class InputManagement : MonoBehaviour
                 OnSwipeEnd?.Invoke(CurrantTap.Point, StartTapPoint);
                 break;
             case ActionType.OnCube:
-                if(CurrantCube != null)
+                OnCubeThrow?.Invoke(CurrantTap.Point, TakeDelta);
+                if (CurrantCube != null)
                 {
                     CurrantCube.Throw();
                 }

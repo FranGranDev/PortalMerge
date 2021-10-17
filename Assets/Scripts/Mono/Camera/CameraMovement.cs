@@ -17,6 +17,7 @@ public class CameraMovement : MonoBehaviour
 
     private Camera _camera;
     private float CameraSpeed;
+    private Vector3 Velocity;
     public const float MAX_SPEED = 100;
     private bool isMoving;
     private Vector3 PrevPos;
@@ -129,15 +130,35 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraFollowCube(Vector3 Speed, Vector3 Point)
     {
+        float StopRatio = Speed.z == 0 ? 2 : 1f;
+        Velocity = Vector3.Lerp(Velocity, Speed, StopRatio * Time.deltaTime);
+
         isMoving = true;
-        Point = transform.position + Speed * 5;
+        Point = transform.position + Velocity * 5;
 
         transform.position = Vector3.Lerp(transform.position, Point, CameraCubeFollowSpeed * Time.deltaTime);
-
+    }
+    private void CameraStopFollowCube(Vector3 Point, Vector3 CubeDelta)
+    {
         if (MoveToCoroutine != null)
         {
             StopCoroutine(MoveToCoroutine);
         }
+        MoveToCoroutine = StartCoroutine(CameraStopFollowCubeCour());
+    }
+    private IEnumerator CameraStopFollowCubeCour()
+    {
+        while(Mathf.Abs(Velocity.z) > 0.01f)
+        {
+            Velocity.z *= (1 - GameManagement.MainData.FollowCubeFriction);
+            Vector3 Point = transform.position + Velocity * 5;
+
+            transform.position = Vector3.Lerp(transform.position, Point, 0.05f);
+            yield return new WaitForFixedUpdate();
+        }
+        Velocity = Vector3.zero;
+        MoveToCoroutine = null;
+        yield break;
     }
 
     public void SubcribeToCube(ICube cube, bool Unsubscribe = false)
@@ -162,6 +183,7 @@ public class CameraMovement : MonoBehaviour
         InputManagement.OnSwipeMove += CameraSwipeMove;
         InputManagement.OnSwipeEnd += CameraSwipeEnd;
         InputManagement.OnCubeFollow += CameraFollowCube;
+        InputManagement.OnCubeThrow += CameraStopFollowCube;
 
         GameManagement.OnGameWin += CameraWinMove;
     }
@@ -170,6 +192,7 @@ public class CameraMovement : MonoBehaviour
         InputManagement.OnSwipeMove -= CameraSwipeMove;
         InputManagement.OnSwipeEnd -= CameraSwipeEnd;
         InputManagement.OnCubeFollow -= CameraFollowCube;
+        InputManagement.OnCubeThrow -= CameraStopFollowCube;
 
         GameManagement.OnGameWin -= CameraWinMove;
     }

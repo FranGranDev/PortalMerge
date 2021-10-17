@@ -26,9 +26,10 @@ MonoBehaviour:
   CameraFriction: 2
   MoveToCubeOnEnterPortal: 1
   CameraFollowCube: 1
-  FollowCubeDeadZoneUp: 0.4
-  FollowCubeDeadZoneDown: -0.4
+  FollowCubeDeadZoneUp: 0.3
+  FollowCubeDeadZoneDown: -0.6
   FollowCubeSpeed: 5
+  FollowCubeFriction: 0.025
   MoveToPortalSpeed: 0.5
   MoveToCubeOnWinSpeed: 0.25
   TeleportTime: 0.5
