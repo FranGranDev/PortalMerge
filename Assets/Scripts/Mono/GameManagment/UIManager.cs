@@ -9,7 +9,8 @@ public class UIManager : MonoBehaviour
     private const string LEVEL_NAME = "Level";
     private const string GEM_COLLECTED = "GemCollected";
     private const string ANIM_ID = "State";
-    private const string ANIM_Combo = "Combo";
+    private const string ANIM_COMBO = "Combo";
+    private const string ANIM_TUTOR = "ShowTutor";
     private int GemCollected;
     private int GemCollectedInRow;
 
@@ -59,6 +60,11 @@ public class UIManager : MonoBehaviour
         LevelManagement.Default.NextLevel();
 
         SetState(UIState.Start);
+    }
+
+    public void TurnTutor(bool on)
+    {
+        _animator.SetBool(ANIM_TUTOR, on);
     }
 
     private void OnGameStarted()
@@ -118,7 +124,7 @@ public class UIManager : MonoBehaviour
             StartPos += Vector3.right * 50;
         }
         PlusIcon.transform.position = StartPos;
-        _animator.Play(ANIM_Combo, 2, 0);
+        _animator.Play(ANIM_COMBO, 2, 0);
         PlusNum.text = "+" + GemCollectedInRow.ToString();
         yield return new WaitForSeconds(1f);
         GemCollectedInRow = 0;
@@ -153,6 +159,8 @@ public class UIManager : MonoBehaviour
         SetLevelText();
         SetGemNum();
         GemCollectedInRow = 0;
+
+        TurnTutor(false);
     }
 
     private void Awake()

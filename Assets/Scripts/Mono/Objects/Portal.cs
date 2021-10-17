@@ -28,7 +28,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             return;
         if(PairPortal != null)
         {
-            if (prevCube == null && PairPortal.Activated && !cube.NoTeleport)
+            if (prevCube == null && PairPortal.Activated)
             {
                 PairPortal.Teleport(cube);
             }
@@ -61,19 +61,26 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     }
     private IEnumerator TeleportCour(ICube cube)
     {
-        cube.OnEnterPortal();
-        prevCube = cube;
-        float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
-        cube.CubeRig.velocity *= 0.25f;
-        yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
-        cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.5f).normalized * (PrevCubeVelocity *
-        GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
-        cube.CubeTransform.position = transform.position + Vector3.up * 2;
-        prevCube.SetNullParent();
-        prevCube.OnExitPortal();
+        yield return new WaitForFixedUpdate();
+        if (!cube.NoTeleport)
+        {
+            cube.OnEnterPortal();
+            prevCube = cube;
+            float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
+            cube.CubeRig.velocity *= 0.25f;
+            yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
+            cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.5f).normalized * (PrevCubeVelocity *
+            GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
+            cube.CubeTransform.position = transform.position + Vector3.up * 2;
+            prevCube.SetNullParent();
+            prevCube.OnExitPortal();
 
+
+            OnTeleported(prevCube);
+        }
+            
+        
         TeleportCoroutine = null;
-        OnTeleported(prevCube);
         yield break;
     }
 

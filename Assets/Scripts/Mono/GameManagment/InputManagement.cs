@@ -25,16 +25,16 @@ public class InputManagement : MonoBehaviour
     private bool Touched;
     public static Vector2 LastTouch;
 
-    #region Swipe
     private Vector3 StartTapPoint;
     public delegate void OnSwipeInput(Vector3 Point, Vector3 StartPoint);
     public static OnSwipeInput OnCubeFollow;
     public static OnSwipeInput OnSwipeMove;
     public static OnSwipeInput OnSwipeEnd;
-    #endregion
-    #region Cube drag
+    public delegate void OnTouchAction();
+    public OnTouchAction OnTakeCube;
+
     private ICube CurrantCube;
-    #endregion
+
 
     private class TapInfo
     {
@@ -97,7 +97,7 @@ public class InputManagement : MonoBehaviour
                 InputPos = Input.mousePosition;
             }
 
-            if ((InputPos - PrevTouch).magnitude > 0.1f)
+            if ((InputPos - PrevTouch).magnitude > 0.25f)
             {
                 InputDir = (InputPos - PrevTouch).normalized;
                 PrevDir = InputDir;
@@ -231,6 +231,8 @@ public class InputManagement : MonoBehaviour
                 TryTakeCube(CurrantTap.gameObject);
                 CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"
                 StartTapPoint = CurrantTap.Point;
+
+                OnTakeCube?.Invoke();
                 break;
             case ActionType.OnSwipe:
                 CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"

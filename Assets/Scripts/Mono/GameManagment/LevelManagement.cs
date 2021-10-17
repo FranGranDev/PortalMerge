@@ -121,14 +121,17 @@ public class LevelManagement : MonoBehaviour
             ClearChilds();
             if (Application.isEditor)
             {
-                //Dont work when Android FIX
+                
                 if (Application.isPlaying)
                 {
                     Instantiate(level.LevelPrefab, transform);
                 }
                 else
                 {
+                #if UNITY_EDITOR
                     PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
+                #endif
+
                 }
             }
             else
