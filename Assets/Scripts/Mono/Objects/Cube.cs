@@ -83,6 +83,7 @@ public class Cube : MonoBehaviour, ICube
     [SerializeField] private Animator _animator;
     private const string ANIM_ENTER = "EnterPortal";
     private const string ANIM_EXIT = "ExitPortal";
+    private const string ANIM_DIE = "EnterWater";
     private Material _material;
     public Collider CubeCol { get => _collider; }
     public Transform CubeTransform { get => transform; }
@@ -136,16 +137,34 @@ public class Cube : MonoBehaviour, ICube
     {
         transform.parent = PrevParent;
     }
+    public void OnWaterEntered()
+    {
+        if (isDestroyed)
+            return;
+        isDestroyed = true;
+        CreateWaterParticle();
+
+        OnCubeDestroyed?.Invoke(this);
+        _animator.Play(ANIM_DIE);
+    }
     public void DestroyCube()
     {
+        if (isDestroyed)
+            return;
         isDestroyed = true;
         CreateDestroyParticle();
 
         OnCubeDestroyed?.Invoke(this);
         Destroy(gameObject);
     }
+    public void ForceDestroy() => Destroy(gameObject);
     #endregion
     #region Particle
+    public void CreateWaterParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeWater, transform.position, Quaternion.identity);
+        partilce.transform.localScale = Vector3.one * GameManagement.MainData.WaterParticleSize;
+    }
     public void CreateDestroyParticle()
     {
         ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeDestroyed, transform.position, transform.rotation);
@@ -351,7 +370,7 @@ public class Cube : MonoBehaviour, ICube
                 OnEnterGround();
                 break;
             case "Death":
-                DestroyCube();
+                OnWaterEntered();
                 break;
         }
     }

@@ -62,9 +62,12 @@ public class DataGameMain : ScriptableObject
     public float GemFlySpeed;
     [Header("Партиклы")]
     [Range(0.25f, 2f)]
+    public float WaterParticleSize;
+    [Range(0.25f, 2f)]
     public float DestroyParticleSize;
     [Range(0.25f, 2f)]
     public float MergeParticleSize;
+    public ParticleSystem CubeWater;
     public ParticleSystem CubeDestroyed;
     public ParticleSystem CubesMerge;
     public ParticleSystem GemCollected;
