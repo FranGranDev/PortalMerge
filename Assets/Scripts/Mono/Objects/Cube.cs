@@ -8,6 +8,7 @@ public class Cube : MonoBehaviour, ICube
     [Header("Settings")]
     [SerializeField] private int _number;
     [HideInInspector]public int Number { get => _number; private set => _number = value; }
+    public bool NoTeleport { get; private set; }
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
 
@@ -79,6 +80,9 @@ public class Cube : MonoBehaviour, ICube
     [SerializeField] private Rigidbody _rig;
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Collider _collider;
+    [SerializeField] private Animator _animator;
+    private const string ANIM_ENTER = "EnterPortal";
+    private const string ANIM_EXIT = "ExitPortal";
     private Material _material;
     public Collider CubeCol { get => _collider; }
     public Transform CubeTransform { get => transform; }
@@ -112,6 +116,17 @@ public class Cube : MonoBehaviour, ICube
     public void OnEnterPortal()
     {
         OnCubeEnterPortal?.Invoke(this);
+
+        _animator.SetTrigger(ANIM_ENTER);
+    }
+    public void OnFailedEnterPortal()
+    {
+        OnCubeLeaveGround?.Invoke(this);
+    }
+    public void OnExitPortal()
+    {
+        _animator.SetTrigger(ANIM_EXIT);
+        OnMergeWait();
     }
     public void OnEnterTrap()
     {
@@ -259,6 +274,23 @@ public class Cube : MonoBehaviour, ICube
             TextNumber[i].text = _number.ToString();
         }
     }
+    private Coroutine OnMergeWaitCoroutine;
+    public void OnMergeWait()
+    {
+        if(OnMergeWaitCoroutine == null)
+        {
+            OnMergeWaitCoroutine = StartCoroutine(OnMergeWaitCour());
+        }
+    }
+    private IEnumerator OnMergeWaitCour()
+    {
+        NoTeleport = true;
+        yield return new WaitForSeconds(0.75f);
+        NoTeleport = false;
+
+        OnMergeWaitCoroutine = null;
+        yield break;
+    }
 
     private void ClearCallbacks()
     {
@@ -275,6 +307,8 @@ public class Cube : MonoBehaviour, ICube
         SetView();
         ApplySettings();
         SetNumbers();
+
+        OnMergeWait();
     }
     public void InitCube(int num)
     {
@@ -351,6 +385,8 @@ public interface ICube
 
     int Number { get; }
 
+    bool NoTeleport { get; }
+
     Color CubeColor { get; }
 
     Transform CubeTransform { get; }
@@ -371,6 +407,12 @@ public interface ICube
     void DestroyCube();
 
     void OnEnterPortal();
+
+    void OnFailedEnterPortal();
+
+    void OnExitPortal();
+
+    void OnMergeWait();
 
     void OnEnterTrap();
 

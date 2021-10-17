@@ -107,13 +107,14 @@ public class CameraMovement : MonoBehaviour
         {
             StopCoroutine(MoveToCoroutine);
         }
-        MoveToCoroutine = StartCoroutine(MoveToCour(Point));
+        MoveToCoroutine = StartCoroutine(MoveToCour(cube));
     }
-    private IEnumerator MoveToCour(Vector3 Target)
+    private IEnumerator MoveToCour(ICube cube)
     {
-        while (Mathf.Abs(transform.position.z - Target.z) > 0.25f)
+        yield return new WaitForSeconds(GameManagement.MainData.TeleportTime + 0.1f);
+        while (!cube.isNull && Mathf.Abs(transform.position.z - cube.CubeTransform.position.z) > 0.25f)
         {
-            Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? transform.position.x : Target.x, transform.position.y, Target.z);
+            Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? transform.position.x : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToPortalSpeed * 0.1f);
             yield return new WaitForFixedUpdate();
         }

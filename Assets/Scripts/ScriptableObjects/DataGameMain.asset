@@ -28,10 +28,11 @@ MonoBehaviour:
   CameraFollowCube: 1
   FollowCubeDeadZoneUp: 0.5
   FollowCubeDeadZoneDown: -0.5
-  FollowCubeSpeed: 5
+  FollowCubeSpeed: 3
   MoveToPortalSpeed: 0.5
   MoveToCubeOnWinSpeed: 0.25
-  SaveVelocityOnExitPortal: 0.75
+  TeleportTime: 0.5
+  SaveVelocityOnExitPortal: 0.25
   AddVelocityOnExitPortal: 4
   DestroyDelay: 0
   ObstacleAcceleration: 0.25

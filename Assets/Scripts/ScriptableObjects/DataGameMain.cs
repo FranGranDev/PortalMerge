@@ -44,6 +44,8 @@ public class DataGameMain : ScriptableObject
     public float MoveToCubeOnWinSpeed;
     [Header("Настройка телепортов")]
     [Range(0, 1f)]
+    public float TeleportTime;
+    [Range(0, 1f)]
     public float SaveVelocityOnExitPortal;
     [Range(0, 5f)]
     public float AddVelocityOnExitPortal;

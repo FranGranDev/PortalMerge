@@ -109,6 +109,14 @@ public class UIManager : MonoBehaviour
     private IEnumerator ShowComboCour(Vector3 StartPos)
     {
         GemCollectedInRow++;
+        if(StartPos.x > Screen.width * 0.5f)
+        {
+            StartPos += Vector3.right * -50;
+        }
+        else if(StartPos.x < Screen.width * 0.5f)
+        {
+            StartPos += Vector3.right * 50;
+        }
         PlusIcon.transform.position = StartPos;
         _animator.Play(ANIM_Combo, 2, 0);
         PlusNum.text = "+" + GemCollectedInRow.ToString();

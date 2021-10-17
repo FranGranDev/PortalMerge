@@ -11,6 +11,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     [SerializeField] private bool isActive = true;
     public bool Activated { get => isActive; }
     private ICube prevCube;
+    private Coroutine TeleportCoroutine;
 
     private Animator _anim;
 
@@ -27,7 +28,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             return;
         if(PairPortal != null)
         {
-            if (prevCube == null && PairPortal.Activated)
+            if (prevCube == null && PairPortal.Activated && !cube.NoTeleport)
             {
                 PairPortal.Teleport(cube);
             }
@@ -42,7 +43,8 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     private void DontLetCube(ICube cube)
     {
-        cube.CubeRig.velocity *= -0.2f;
+        cube.OnFailedEnterPortal();
+        cube.CubeRig.velocity *= -0.5f;
         Vector3 CubeImpulse = Vector3.up * 5;
         Vector3 CubeAngular = new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 5;
         cube.AddImpulse(CubeImpulse, CubeAngular);
@@ -51,29 +53,49 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void Teleport(ICube cube)
     {
-        prevCube = cube;
-        //cube.CubeRig.velocity = (cube.CubeRig.velocity.magnitude + GameManagement.MainData.AddVelocityOnExitPortal)
-        //* (transform.forward + Vector3.up * 0.25f) * GameManagement.MainData.SaveVelocityOnExitPortal;
-        cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.25f) * (cube.CubeRig.velocity.magnitude * 
-           GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
-        cube.CubeTransform.position = transform.position + Vector3.up * cube.CubeTransform.localScale.y;
-        prevCube.SetNullParent();
+        if(TeleportCoroutine == null)
+        {
+            TeleportCoroutine = StartCoroutine(TeleportCour(cube));
+        }
+        
+    }
+    private IEnumerator TeleportCour(ICube cube)
+    {
         cube.OnEnterPortal();
+        prevCube = cube;
+        float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
+        cube.CubeRig.velocity *= 0.25f;
+        yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
+        cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.5f).normalized * (PrevCubeVelocity *
+        GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
+        cube.CubeTransform.position = transform.position + Vector3.up * 2;
+        prevCube.SetNullParent();
+        prevCube.OnExitPortal();
+
+        TeleportCoroutine = null;
+        OnTeleported(prevCube);
+        yield break;
     }
 
     private void OnTeleported(ICube cube)
     {
-        StartCoroutine(OnTeleportedCour(cube));
+        if(TeleportCoroutine == null)
+        {
+            TeleportCoroutine = StartCoroutine(OnTeleportedCour(cube));
+        }
+        
     }
     private IEnumerator OnTeleportedCour(ICube cube)
     {
         float Lenght = (transform.position - cube.CubeTransform.position).magnitude;
-        while (Vector3.Distance(transform.position, cube.CubeTransform.position) < Lenght + 0.1f)
+        while (!cube.isNull && (transform.position - cube.CubeTransform.position).magnitude < Lenght + 0.1f)
         {
             yield return new WaitForFixedUpdate();
         }
         ClearPrevCube();
         PairPortal.ClearPrevCube();
+
+        TeleportCoroutine = null;
         yield break;
     }
 
@@ -120,14 +142,14 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Cube")
-        {
-            ICube cube = other.GetComponent<ICube>();
-            if(cube == prevCube)
-            {
-                OnTeleported(cube);
-            }
-        }
+        //if(other.tag == "Cube")
+        //{
+        //    ICube cube = other.GetComponent<ICube>();
+        //    if(cube == prevCube)
+        //    {
+        //        OnTeleported(cube);
+        //    }
+        //}
     }
 }
 public interface IPortal
