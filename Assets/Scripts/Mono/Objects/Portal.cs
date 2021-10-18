@@ -28,8 +28,10 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             return;
         if(PairPortal != null)
         {
-            if (prevCube == null && PairPortal.Activated)
+            Debug.Log("Enter");
+            if ((prevCube == null || cube != prevCube) && PairPortal.Activated)
             {
+                Debug.Log("Enterda");
                 PairPortal.Teleport(cube);
             }
         }
@@ -86,11 +88,11 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     private void OnTeleported(ICube cube)
     {
-        if(TeleportCoroutine == null)
+        if(TeleportCoroutine != null)
         {
-            TeleportCoroutine = StartCoroutine(OnTeleportedCour(cube));
+            StopCoroutine(TeleportCoroutine);
         }
-        
+        TeleportCoroutine = StartCoroutine(OnTeleportedCour(cube));
     }
     private IEnumerator OnTeleportedCour(ICube cube)
     {
@@ -101,6 +103,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         }
         ClearPrevCube();
         PairPortal.ClearPrevCube();
+        
 
         TeleportCoroutine = null;
         yield break;
@@ -141,10 +144,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         if (other.tag == "Cube")
         {
             ICube cube = other.GetComponent<ICube>();
-            if (cube != prevCube)
-            {
-                OnCubeEntered(cube);
-            }
+            OnCubeEntered(cube);
         }
     }
     private void OnTriggerExit(Collider other)
