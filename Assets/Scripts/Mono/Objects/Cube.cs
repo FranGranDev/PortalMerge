@@ -304,7 +304,7 @@ public class Cube : MonoBehaviour, ICube
     private IEnumerator OnMergeWaitCour()
     {
         NoTeleport = true;
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
         NoTeleport = false;
 
         OnMergeWaitCoroutine = null;
