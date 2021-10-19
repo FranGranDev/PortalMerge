@@ -72,6 +72,7 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraWinMove()
     {
+        Debug.Log("Win");
         StartCoroutine(MoveToOnWinCour(GameManagement.LastCube.CubeTransform.position));
         StartCoroutine(ConfittiCour(GameManagement.LastCube.CubeTransform.position));
     }

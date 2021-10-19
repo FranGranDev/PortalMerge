@@ -13,13 +13,12 @@ public class LevelManagement : MonoBehaviour
     #endregion
 
     const string PREFS_KEY_LEVEL_ID = "CurrentLevelCount";
-    const string PREFS_KEY_LAST_INDEX = "LastLevelIndex";
 
 
     public bool editorMode;
-    public int CurrentLevelCount => PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0) + 1;
-    public int CurrentLevelIndex;
+    public int CurrentLevelIndex { get => PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0); private set => PlayerPrefs.SetInt(PREFS_KEY_LEVEL_ID, value); }
     public List<Level> Levels = new List<Level>();
+    private bool GameInitialised;
 
     public void Start()
     {
@@ -30,20 +29,30 @@ public class LevelManagement : MonoBehaviour
         
         if (!editorMode)
         {
-            SelectLevel(PlayerPrefs.GetInt(PREFS_KEY_LAST_INDEX, 0), false);
+            SelectLevel(CurrentLevelIndex);
         }
+
+        Debug.Log(CurrentLevelIndex);
     }
 
-    public void StartGame()
+    private void LevelInit()
     {
-        //SendStart();
-        if(editorMode)
+
+    }
+
+    private void InitGame()
+    {
+        if(!GameInitialised)
         {
             GameManagement.Active.Init();
+            GameInitialised = true;
         }
+    }
+    public void StartGame()
+    {
+        InitGame();
         GameManagement.Active.StartGame();
     }
-
     public void RestartLevel()
     {
         SelectLevel(CurrentLevelIndex, false);
@@ -67,31 +76,44 @@ public class LevelManagement : MonoBehaviour
 
         var level = Levels[levelIndex];
 
-        if (level.LevelPrefab)
+        if (level.LevelPrefab != null)
         {
             SetLevelParams(level);
+            
             CurrentLevelIndex = levelIndex;
+
+            //Debug.Log("Set: " + CurrentLevelIndex);
         }
     }
 
     public void NextLevel() 
     {
-        SelectLevel(CurrentLevelIndex + 1);
-
-        if(!editorMode)
-        {
-            PlayerPrefs.SetInt(PREFS_KEY_LEVEL_ID, (PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0) + 1));
-            GameManagement.Active.StartGame();
-        }
+        CurrentLevelIndex++;
+        SelectLevel(CurrentLevelIndex);
     }
 
-    public void PrevLevel() =>
-        SelectLevel(CurrentLevelIndex - 1);
+    public void PrevLevel()
+    {
+        CurrentLevelIndex--;
+        SelectLevel(CurrentLevelIndex);
+    }
+        
     private int GetCorrectedIndex(int levelIndex)
     {
         if (editorMode)
         {
-            return levelIndex > Levels.Count - 1 || levelIndex <= 0 ? 0 : levelIndex;
+            if (levelIndex > Levels.Count - 1)
+            {
+                return 0;
+            }
+            else if (levelIndex < 0)
+            {
+                return Levels.Count - 1;
+            }
+            else
+            {
+                return levelIndex;
+            }
         }  
         else
         {
@@ -126,23 +148,19 @@ public class LevelManagement : MonoBehaviour
             ClearChilds();
             if (Application.isEditor)
             {
-                
                 if (Application.isPlaying)
                 {
                     Instantiate(level.LevelPrefab, transform);
                 }
                 else
                 {
-                #if UNITY_EDITOR
                     PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
-                #endif
-
                 }
             }
             else
             {
                 Instantiate(level.LevelPrefab, transform);
-                GameManagement.Active.Init();
+                InitGame();
             }
 
             
@@ -156,6 +174,8 @@ public class LevelManagement : MonoBehaviour
 
     private void ClearChilds()
     {
+        GameInitialised = false;
+
         DOTween.Clear();
 
         for (int i = 0; i < transform.childCount; i++)
@@ -178,7 +198,7 @@ public class LevelManagement : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerPrefs.SetInt(PREFS_KEY_LAST_INDEX, CurrentLevelIndex);
+        
     }
     /*
     #region Analitics Events
