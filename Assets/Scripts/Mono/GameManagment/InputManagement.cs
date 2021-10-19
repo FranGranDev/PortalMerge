@@ -369,8 +369,8 @@ public class InputManagement : MonoBehaviour
     private void Init()
     {
         GameZoneX = new float[2];
-        GameZoneX[0] = new TapInfo(ActionType.OnSwipe, new Vector2(0, 0)).Point.x;
-        GameZoneX[1] = new TapInfo(ActionType.OnSwipe, new Vector2(Screen.width, 0)).Point.x;
+        GameZoneX[0] = new TapInfo(ActionType.OnSwipe, new Vector2(0, 0)).Point.x - 1;
+        GameZoneX[1] = new TapInfo(ActionType.OnSwipe, new Vector2(Screen.width, 0)).Point.x + 1; 
     }
     private void Start()
     {
