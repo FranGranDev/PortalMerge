@@ -82,8 +82,6 @@ public class InputManagement : MonoBehaviour
             {
                 if(Input.touchCount > 0)
                 {
-
-
                     InputPos = Input.GetTouch(0).position;
                     LastTouch = InputPos;
 
@@ -126,8 +124,68 @@ public class InputManagement : MonoBehaviour
 
             TapActionInfo = TagToActionInfo(Tag);
         }
+        public TapInfo(ActionType NowClickInfo, Vector2 InputPos)
+        {
+            InputDir = InputPos.normalized;
+            PrevTouch = InputPos;
+
+            Ray ray = Camera.main.ScreenPointToRay(InputPos);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo)))
+            {
+                Point = raycastHit.point;
+                Tag = raycastHit.transform.tag;
+                PrevPoint = Point;
+                gameObject = raycastHit.transform.gameObject;
+            }
+            else
+            {
+                gameObject = null;
+                Point = PrevPoint;
+                Tag = NULL_TAG;
+            }
+
+            TapActionInfo = TagToActionInfo(Tag);
+        }
     }
 
+    private void CubeMovement()
+    {
+        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
+        float Offset = ((CurrantTap.InputPos - ScreenCenter).y) / (Screen.height / 2);
+        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
+        {
+            if (CurrantTap.InputDir.normalized.y > 0.0f)
+            {
+                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+                Vector2 UpLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneUp));
+                CurrantTap = new TapInfo(CurrantAction, UpLinePos);
+            }
+            else
+            {
+                OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
+            }
+        }
+        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
+        {
+            if (CurrantTap.InputDir.normalized.y < -0.0f)
+            {
+                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+                Vector2 DownLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneDown));
+                CurrantTap = new TapInfo(CurrantAction, DownLinePos);
+            }
+            else
+            {
+                OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
+            }
+        }
+        else
+        {
+            OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
+        }
+
+
+        CurrantCube.Drag(CurrantTap.Point + TakeDelta);
+    }
     private void TryTakeCube(GameObject obj)
     {
         CurrantCube = obj.GetComponent<ICube>();
@@ -153,38 +211,6 @@ public class InputManagement : MonoBehaviour
         }
     }
 
-    private void CameraFollowCubeExecute()
-    {
-        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        float OffsetY = Screen.height * GameManagement.MainData.FollowCubeOffset;
-        float Offset = ((CurrantTap.InputPos - ScreenCenter).y + OffsetY) / (Screen.height / 2);
-        if ((CurrantTap.InputPos - ScreenCenter).y + OffsetY > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
-        {
-            if (CurrantTap.InputDir.normalized.y > 0.0f)
-            {
-                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
-            }
-            else
-            {
-                OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
-            }
-        }
-        else if ((CurrantTap.InputPos - ScreenCenter).y + OffsetY < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
-        {
-            if (CurrantTap.InputDir.normalized.y < -0.0f)
-            {
-                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
-            }
-            else
-            {
-                OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
-            }
-        }
-        else
-        {
-            OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
-        }
-    }
 
     public void SubscribeForCube(ICube cube)
     {
@@ -316,11 +342,8 @@ public class InputManagement : MonoBehaviour
                 {
                     if (!CurrantCube.isNull)
                     {
-                        CurrantCube.Drag(CurrantTap.Point + TakeDelta);
-                        if (GameManagement.MainData.CameraFollowCube)
-                        {
-                            CameraFollowCubeExecute();
-                        }
+                        CubeMovement();
+                        
                     }
                 }
                 break;

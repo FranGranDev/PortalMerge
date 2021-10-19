@@ -31,8 +31,6 @@ public class LevelManagement : MonoBehaviour
         {
             SelectLevel(CurrentLevelIndex);
         }
-
-        Debug.Log(CurrentLevelIndex);
     }
 
     private void LevelInit()

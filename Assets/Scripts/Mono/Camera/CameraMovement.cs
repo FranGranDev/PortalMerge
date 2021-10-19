@@ -72,7 +72,6 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraWinMove()
     {
-        Debug.Log("Win");
         StartCoroutine(MoveToOnWinCour(GameManagement.LastCube.CubeTransform.position));
         StartCoroutine(ConfittiCour(GameManagement.LastCube.CubeTransform.position));
     }
@@ -132,7 +131,7 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraFollowCube(Vector3 Speed, Vector3 Point)
     {
-        float StopRatio = Speed.z == 0 ? 2 : 1f;
+        float StopRatio = Speed.z == 0 ? 3 : 1f;
         Velocity = Vector3.Lerp(Velocity, Speed, StopRatio * Time.deltaTime);
 
         isMoving = true;

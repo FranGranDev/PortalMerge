@@ -32,8 +32,6 @@ public class DataGameMain : ScriptableObject
     [Header("Настройка камеры")]
     public bool MoveToCubeOnEnterPortal;
     public bool CameraFollowCube;
-    [Range(-0.25f, 0.25f)]
-    public float FollowCubeOffset;
     [Range(0, 1f)]
     public float FollowCubeDeadZoneUp;
     [Range(-1f, 0f)]
