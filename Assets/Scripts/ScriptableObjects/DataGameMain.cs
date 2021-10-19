@@ -32,6 +32,8 @@ public class DataGameMain : ScriptableObject
     [Header("Настройка камеры")]
     public bool MoveToCubeOnEnterPortal;
     public bool CameraFollowCube;
+    [Range(-0.25f, 0.25f)]
+    public float FollowCubeOffset;
     [Range(0, 1f)]
     public float FollowCubeDeadZoneUp;
     [Range(-1f, 0f)]
@@ -69,6 +71,8 @@ public class DataGameMain : ScriptableObject
     public float DestroyParticleSize;
     [Range(0.25f, 2f)]
     public float MergeParticleSize;
+    [Range(0.25f, 2f)]
+    public float ConfittiParticleSize;
     public ParticleSystem CubeWater;
     public ParticleSystem CubeDestroyed;
     public ParticleSystem CubesMerge;
