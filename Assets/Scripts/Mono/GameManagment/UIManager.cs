@@ -6,7 +6,9 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Active { get; private set; }
-    private const string LEVEL_NAME = "Level";
+    private const string LEVEL_NAME = "LEVEL";
+    private const string LEVEL_FAILED = "FAILED";
+    private const string LEVEL_DONE = "DONE";
     private const string GEM_COLLECTED = "GemCollected";
     private const string ANIM_ID = "State";
     private const string ANIM_COMBO = "Combo";
@@ -16,6 +18,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Text")]
     [SerializeField] private TextMeshProUGUI StartLevelNum;
+    [SerializeField] private TextMeshProUGUI DoneLevelNum;
+    [SerializeField] private TextMeshProUGUI FailedLevelNum;
     [SerializeField] private TextMeshProUGUI GemNum;
     [SerializeField] private TextMeshProUGUI PlusNum;
     [Header("Components")]
@@ -146,9 +150,9 @@ public class UIManager : MonoBehaviour
 
     private void SetLevelText()
     {
-        if (StartLevelNum == null)
-            return;
         StartLevelNum.text = LEVEL_NAME + " " + (LevelManagement.Default.CurrentLevelIndex + 1);
+        DoneLevelNum.text = LEVEL_NAME + " " + (LevelManagement.Default.CurrentLevelIndex + 1) + " " + LEVEL_DONE;
+        FailedLevelNum.text = LEVEL_NAME + " " + (LevelManagement.Default.CurrentLevelIndex + 1) + " " + LEVEL_FAILED;
     }
 
     private void Init()

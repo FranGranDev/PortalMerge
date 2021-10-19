@@ -238,6 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartLevelNum: {fileID: 1168165478528196540}
+  DoneLevelNum: {fileID: 4349730332708189528}
+  FailedLevelNum: {fileID: 8280692752005885986}
   GemNum: {fileID: 5180307106117240605}
   PlusNum: {fileID: 6580123478780323640}
   GemIcon: {fileID: 6811625898579486679}
@@ -705,7 +707,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level 0
+  m_text: LEVEL 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b62bba351c0daa4090cfbb847f1934d, type: 2}
   m_sharedMaterial: {fileID: -5005636103996465679, guid: 6b62bba351c0daa4090cfbb847f1934d,
@@ -1321,7 +1323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next
+  m_text: NEXT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b62bba351c0daa4090cfbb847f1934d, type: 2}
   m_sharedMaterial: {fileID: -5005636103996465679, guid: 6b62bba351c0daa4090cfbb847f1934d,
@@ -2116,7 +2118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0009765625, y: 0.0016479492}
+  m_AnchoredPosition: {x: -0.0009765625, y: 0.0017089844}
   m_SizeDelta: {x: -582.85254, y: -1037.433}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5263075834570669259
@@ -2501,9 +2503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Restart
-
-'
+  m_text: RESTART
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b62bba351c0daa4090cfbb847f1934d, type: 2}
   m_sharedMaterial: {fileID: -5005636103996465679, guid: 6b62bba351c0daa4090cfbb847f1934d,
@@ -2637,9 +2637,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level failed
-
-'
+  m_text: LEVEL 0 FAILED
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b62bba351c0daa4090cfbb847f1934d, type: 2}
   m_sharedMaterial: {fileID: -5005636103996465679, guid: 6b62bba351c0daa4090cfbb847f1934d,
@@ -3119,9 +3117,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level Done
-
-'
+  m_text: LEVEL DONE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b62bba351c0daa4090cfbb847f1934d, type: 2}
   m_sharedMaterial: {fileID: -5005636103996465679, guid: 6b62bba351c0daa4090cfbb847f1934d,
@@ -3255,7 +3251,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: START
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6b62bba351c0daa4090cfbb847f1934d, type: 2}
   m_sharedMaterial: {fileID: -5005636103996465679, guid: 6b62bba351c0daa4090cfbb847f1934d,
