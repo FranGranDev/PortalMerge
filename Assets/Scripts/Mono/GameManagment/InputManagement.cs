@@ -96,7 +96,7 @@ public class InputManagement : MonoBehaviour
                 InputPos = Input.mousePosition;
             }
 
-            if ((InputPos - PrevTouch).magnitude > 0.25f)
+            if ((InputPos - PrevTouch).magnitude > 1f)
             {
                 InputDir = (InputPos - PrevTouch).normalized;
                 PrevDir = InputDir;
@@ -150,6 +150,7 @@ public class InputManagement : MonoBehaviour
 
     private void CubeMovement()
     {
+        bool MoveCube = true;
         Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
         float Offset = ((CurrantTap.InputPos - ScreenCenter).y) / (Screen.height / 2);
         if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
@@ -159,6 +160,7 @@ public class InputManagement : MonoBehaviour
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
                 Vector2 UpLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneUp));
                 CurrantTap = new TapInfo(CurrantAction, UpLinePos);
+                MoveCube = CurrantCube.CubeTransform.position.z < CurrantTap.Point.z + 1;
             }
             else
             {
@@ -172,6 +174,7 @@ public class InputManagement : MonoBehaviour
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
                 Vector2 DownLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneDown));
                 CurrantTap = new TapInfo(CurrantAction, DownLinePos);
+                MoveCube = CurrantCube.CubeTransform.position.z > CurrantTap.Point.z - 1;
             }
             else
             {
@@ -183,8 +186,10 @@ public class InputManagement : MonoBehaviour
             OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
         }
 
-
-        CurrantCube.Drag(CurrantTap.Point + TakeDelta);
+        if (MoveCube)
+        {
+            CurrantCube.Drag(CurrantTap.Point + TakeDelta);
+        }
     }
     private void TryTakeCube(GameObject obj)
     {

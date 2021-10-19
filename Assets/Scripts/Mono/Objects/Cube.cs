@@ -127,7 +127,6 @@ public class Cube : MonoBehaviour, ICube
     public void OnExitPortal()
     {
         _animator.SetTrigger(ANIM_EXIT);
-        OnMergeWait();
     }
     public void OnEnterTrap()
     {
@@ -158,6 +157,25 @@ public class Cube : MonoBehaviour, ICube
         Destroy(gameObject);
     }
     public void ForceDestroy() => Destroy(gameObject);
+
+    private Coroutine OnMergeWaitCoroutine;
+    public void OnMergeWait()
+    {
+        if (OnMergeWaitCoroutine == null)
+        {
+            OnMergeWaitCoroutine = StartCoroutine(OnMergeWaitCour());
+        }
+    }
+    private IEnumerator OnMergeWaitCour()
+    {
+        NoTeleport = true;
+        yield return new WaitForSeconds(0.5f);
+        NoTeleport = false;
+
+        OnMergeWaitCoroutine = null;
+        yield break;
+    }
+
     #endregion
     #region Particle
     public void CreateWaterParticle()
@@ -292,23 +310,6 @@ public class Cube : MonoBehaviour, ICube
         {
             TextNumber[i].text = _number.ToString();
         }
-    }
-    private Coroutine OnMergeWaitCoroutine;
-    public void OnMergeWait()
-    {
-        if(OnMergeWaitCoroutine == null)
-        {
-            OnMergeWaitCoroutine = StartCoroutine(OnMergeWaitCour());
-        }
-    }
-    private IEnumerator OnMergeWaitCour()
-    {
-        NoTeleport = true;
-        yield return new WaitForSeconds(0.5f);
-        NoTeleport = false;
-
-        OnMergeWaitCoroutine = null;
-        yield break;
     }
 
     private void ClearCallbacks()
