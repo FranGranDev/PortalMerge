@@ -197,8 +197,8 @@ public class GameManagement : MonoBehaviour
         isGameStarted = true;
         isGameWin = false;
 
-        GetAllCubesOnScene();
-        GetAllGemsOnScene();
+        //GetAllCubesOnScene();
+        //GetAllGemsOnScene();
         OnGameStarted?.Invoke();
     }
     private void GameFailed()
@@ -224,6 +224,6 @@ public class GameManagement : MonoBehaviour
     }
     private void Start()
     {
-        Init();
+        //Init();
     }
 }

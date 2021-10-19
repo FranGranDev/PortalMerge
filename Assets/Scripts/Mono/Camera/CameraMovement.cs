@@ -89,7 +89,7 @@ public class CameraMovement : MonoBehaviour
     private IEnumerator ConfittiCour(Vector3 Target)
     {
         yield return new WaitForSeconds(0.5f);
-        int ConfittiNum = Random.Range(10, 25);
+        int ConfittiNum = Random.Range(10, 30);
         for (int i = 0; i < ConfittiNum; i++)
         {
             float Lenght = Random.Range(3f, 6f);
@@ -98,7 +98,7 @@ public class CameraMovement : MonoBehaviour
 
             GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, null);
             particle.transform.localScale = Vector3.one * GameManagement.MainData.ConfittiParticleSize;
-            yield return new WaitForSeconds(Random.Range(0.025f, 0.1f));
+            yield return new WaitForSeconds(Random.Range(0.025f, 0.25f));
         }
     }
 

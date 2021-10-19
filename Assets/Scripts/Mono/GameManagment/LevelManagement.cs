@@ -27,6 +27,7 @@ public class LevelManagement : MonoBehaviour
 #else
             editorMode = false;
 #endif
+        
         if (!editorMode)
         {
             SelectLevel(PlayerPrefs.GetInt(PREFS_KEY_LAST_INDEX, 0), false);
@@ -36,6 +37,10 @@ public class LevelManagement : MonoBehaviour
     public void StartGame()
     {
         //SendStart();
+        if(editorMode)
+        {
+            GameManagement.Active.Init();
+        }
         GameManagement.Active.StartGame();
     }
 
@@ -137,15 +142,16 @@ public class LevelManagement : MonoBehaviour
             else
             {
                 Instantiate(level.LevelPrefab, transform);
-            }  
+                GameManagement.Active.Init();
+            }
+
+            
         }
 
         if (level.SkyboxMaterial)
         {
             RenderSettings.skybox = level.SkyboxMaterial;
         }
-
-
     }
 
     private void ClearChilds()
