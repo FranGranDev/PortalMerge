@@ -28,10 +28,8 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             return;
         if(PairPortal != null)
         {
-            Debug.Log("Enter");
             if ((prevCube == null || cube != prevCube) && PairPortal.Activated)
             {
-                Debug.Log("Enterda");
                 PairPortal.Teleport(cube);
             }
         }

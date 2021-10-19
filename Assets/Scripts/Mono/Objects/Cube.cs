@@ -328,7 +328,7 @@ public class Cube : MonoBehaviour, ICube
         ApplySettings();
         SetNumbers();
 
-        OnMergeWait();
+        //OnMergeWait();
     }
     public void InitCube(int num)
     {

@@ -12,9 +12,10 @@ public class LevelManagement : MonoBehaviour
     public LevelManagement() => Default = this;
     #endregion
 
+    public delegate void OnLevelAction();
+    public OnLevelAction OnSceneLoaded;
+
     const string PREFS_KEY_LEVEL_ID = "CurrentLevelCount";
-
-
     public bool editorMode;
     public int CurrentLevelIndex { get => PlayerPrefs.GetInt(PREFS_KEY_LEVEL_ID, 0); private set => PlayerPrefs.SetInt(PREFS_KEY_LEVEL_ID, value); }
     public List<Level> Levels = new List<Level>();
@@ -22,20 +23,20 @@ public class LevelManagement : MonoBehaviour
 
     public void Start()
     {
-#if UNITY_EDITOR
-#else
-            editorMode = false;
-#endif
-        
-        if (!editorMode)
-        {
-            SelectLevel(CurrentLevelIndex);
-        }
+        LevelInit();
     }
 
     private void LevelInit()
     {
+#if UNITY_EDITOR
+#else
+            editorMode = false;
+#endif
 
+        if (!editorMode)
+        {
+            SelectLevel(CurrentLevelIndex);
+        }
     }
 
     private void InitGame()
@@ -44,6 +45,7 @@ public class LevelManagement : MonoBehaviour
         {
             GameManagement.Active.Init();
             GameInitialised = true;
+            Debug.Log("init");
         }
     }
     public void StartGame()
@@ -53,7 +55,7 @@ public class LevelManagement : MonoBehaviour
     }
     public void RestartLevel()
     {
-        SelectLevel(CurrentLevelIndex, false);
+        SelectLevel(CurrentLevelIndex, true);
     }
 
     public void clearListAtIndex(int levelIndex)
@@ -154,13 +156,15 @@ public class LevelManagement : MonoBehaviour
                 {
                     PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
                 }
+                InitGame();
             }
             else
             {
                 Instantiate(level.LevelPrefab, transform);
                 InitGame();
             }
-
+            ResolutionHandler.Active.SetFieldOfView();
+            OnSceneLoaded?.Invoke();
             
         }
 
