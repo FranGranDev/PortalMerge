@@ -29,6 +29,7 @@ public class GameManagement : MonoBehaviour
     [SerializeField] private int GemCollected;
     [SerializeField] private int MaxGems;
     [SerializeField] public static bool isGameStarted;
+    [SerializeField] public static bool isGameWin;
     [Header("Components")]
     [SerializeField] private StaticCube RenderCube;
     #region Callbacks
@@ -194,9 +195,10 @@ public class GameManagement : MonoBehaviour
     public void StartGame()
     {
         isGameStarted = true;
+        isGameWin = false;
 
-        GetAllCubesOnScene();
-        GetAllGemsOnScene();
+        //GetAllCubesOnScene();
+        //GetAllGemsOnScene();
         OnGameStarted?.Invoke();
     }
     private void GameFailed()
@@ -204,6 +206,7 @@ public class GameManagement : MonoBehaviour
         if (!isGameStarted)
             return;
         isGameStarted = false;
+        isGameWin = false;
         OnGameFailed?.Invoke();
     }
     private void GameWin()
@@ -211,6 +214,7 @@ public class GameManagement : MonoBehaviour
         if (!isGameStarted)
             return;
         isGameStarted = false;
+        isGameWin = true;
         OnGameWin?.Invoke();
     }
 
@@ -220,6 +224,6 @@ public class GameManagement : MonoBehaviour
     }
     private void Start()
     {
-        Init();
+        //Init();
     }
 }

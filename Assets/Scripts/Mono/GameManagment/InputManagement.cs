@@ -156,8 +156,9 @@ public class InputManagement : MonoBehaviour
     private void CameraFollowCubeExecute()
     {
         Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        float Offset = (CurrantTap.InputPos - ScreenCenter).y / (Screen.height / 2);
-        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
+        float OffsetY = Screen.height * GameManagement.MainData.FollowCubeOffset;
+        float Offset = ((CurrantTap.InputPos - ScreenCenter).y + OffsetY) / (Screen.height / 2);
+        if ((CurrantTap.InputPos - ScreenCenter).y + OffsetY > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
         {
             if (CurrantTap.InputDir.normalized.y > 0.0f)
             {
@@ -168,7 +169,7 @@ public class InputManagement : MonoBehaviour
                 OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
             }
         }
-        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
+        else if ((CurrantTap.InputPos - ScreenCenter).y + OffsetY < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
         {
             if (CurrantTap.InputDir.normalized.y < -0.0f)
             {

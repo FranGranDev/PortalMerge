@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e1717594a58846b88f961fc095638, type: 3}
   m_Name: DataGameMain
   m_EditorClassIdentifier: 
-  SpeedSumOnMerge: 0.1
-  VerticalForceOnMerge: 7.5
+  SpeedSumOnMerge: 0.35
+  VerticalForceOnMerge: 8
   RotationOnMerge: 10
   CubeDragSpeed: 1
   CubeDragAcceleration: 0.25
@@ -26,9 +26,10 @@ MonoBehaviour:
   CameraFriction: 2
   MoveToCubeOnEnterPortal: 1
   CameraFollowCube: 1
-  FollowCubeDeadZoneUp: 0.2
-  FollowCubeDeadZoneDown: -0.6
-  FollowCubeSpeed: 5
+  FollowCubeOffset: 0.1
+  FollowCubeDeadZoneUp: 0.4
+  FollowCubeDeadZoneDown: -0.5
+  FollowCubeSpeed: 4
   FollowCubeFriction: 0.025
   MoveToPortalSpeed: 0.5
   MoveToCubeOnWinSpeed: 0.25
@@ -43,6 +44,7 @@ MonoBehaviour:
   WaterParticleSize: 1
   DestroyParticleSize: 1
   MergeParticleSize: 0.6
+  ConfittiParticleSize: 1.5
   CubeWater: {fileID: 8052429819891692185, guid: 142e5964da83bfc40886298780b571f4,
     type: 3}
   CubeDestroyed: {fileID: 5471425698847393155, guid: 9d2134d1047a57d488d2dcb67864612c,

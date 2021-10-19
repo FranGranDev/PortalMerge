@@ -64,11 +64,6 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
     private void Init()
     {
         if (_rig == null) _rig = GetComponent<Rigidbody>();
-        if (StartPoint == null || EndPoint == null)
-        {
-            Debug.Log("Нет ссылкки на начальный или конечный пункт!");
-            return;
-        }
         if (ActivatorTarget != null)
         {
             ActivatorTarget.Subscribe(Activate);
