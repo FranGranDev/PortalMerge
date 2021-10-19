@@ -102,6 +102,35 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
+    public void FollowCubeDie(ICube cube)
+    {
+        if(MoveToCoroutine != null)
+        {
+            StopCoroutine(MoveToCoroutine);
+        }
+        MoveToCoroutine = StartCoroutine(FollowCubeDieCour(cube));
+    }
+    private IEnumerator FollowCubeDieCour(ICube cube)
+    {
+        while(cube != null && !cube.isNull && !cube.isDestroyed && InputManagement.Active.OutOfGameZone(cube.CubeTransform))
+        {
+            Vector3 newPoint = new Vector3(cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
+            transform.position = Vector3.Lerp(transform.position, newPoint, 0.05f);
+            yield return new WaitForFixedUpdate();
+        }
+        if(cube != null && !cube.isNull && !cube.isDestroyed)
+        {
+            MoveToCube(cube);
+        }
+        else
+        {
+            MoveToCoroutine = null;
+        }
+
+        yield break;
+    }
+
+
     private void MoveToCube(ICube cube)
     {
         Vector3 Point = cube.CubeTransform.position + Vector3.forward * -5;
@@ -114,12 +143,13 @@ public class CameraMovement : MonoBehaviour
     private IEnumerator MoveToCour(ICube cube)
     {
         yield return new WaitForSeconds(GameManagement.MainData.TeleportTime + 0.1f);
-        while (!cube.isNull && Mathf.Abs(transform.position.z - cube.CubeTransform.position.z) > 0.25f)
+        while (!cube.isNull && Mathf.Abs(transform.position.z - cube.CubeTransform.position.z) > 0.1f)
         {
-            Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? transform.position.x : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
+            Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? 0 : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToPortalSpeed * 0.1f);
             yield return new WaitForFixedUpdate();
         }
+        transform.position = new Vector3(0, transform.position.y, transform.position.z);
         yield break;
     }
     private void CalculateSpeed()

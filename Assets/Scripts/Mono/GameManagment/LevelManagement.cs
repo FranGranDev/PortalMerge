@@ -45,7 +45,6 @@ public class LevelManagement : MonoBehaviour
         {
             GameManagement.Active.Init();
             GameInitialised = true;
-            Debug.Log("init");
         }
     }
     public void StartGame()
@@ -151,12 +150,12 @@ public class LevelManagement : MonoBehaviour
                 if (Application.isPlaying)
                 {
                     Instantiate(level.LevelPrefab, transform);
+                    InitGame();
                 }
                 else
                 {
                     PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
                 }
-                InitGame();
             }
             else
             {

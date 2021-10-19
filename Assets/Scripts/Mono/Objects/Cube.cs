@@ -7,7 +7,7 @@ public class Cube : MonoBehaviour, ICube
 {
     [Header("Settings")]
     [SerializeField] private int _number;
-    [HideInInspector]public int Number { get => _number; private set => _number = value; }
+    [HideInInspector] public int Number { get => _number; private set => _number = value; }
     public bool NoTeleport { get; private set; }
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
@@ -29,7 +29,7 @@ public class Cube : MonoBehaviour, ICube
 
     public void SubscribeForDestroyed(OnCubeAction action, bool Unsubscribe = false)
     {
-        if(Unsubscribe)
+        if (Unsubscribe)
         {
             OnCubeDestroyed -= action;
         }
@@ -63,7 +63,7 @@ public class Cube : MonoBehaviour, ICube
     }
     public void SubscribeForMerge(OnCubeMergeAction action, bool Unsubscribe = false)
     {
-        if(Unsubscribe)
+        if (Unsubscribe)
         {
             OnCubesMerge -= action;
         }
@@ -71,7 +71,7 @@ public class Cube : MonoBehaviour, ICube
         {
             OnCubesMerge += action;
         }
-        
+
     }
 
     #endregion
@@ -96,6 +96,7 @@ public class Cube : MonoBehaviour, ICube
     [Header("States")]
     [SerializeField] private bool inAir;
     [SerializeField] private bool isMoving;
+    [SerializeField] private bool isOutOfZone;
     private Transform PrevParent;
     public ICube PrevCube { get; private set; }
     public bool isNull => Equals(null);
@@ -104,7 +105,7 @@ public class Cube : MonoBehaviour, ICube
     #region Action
     public void TryMerge(ICube other)
     {
-        if(Number == other.Number)
+        if (Number == other.Number)
         {
             if (other.PrevCube == null)
             {
@@ -112,7 +113,7 @@ public class Cube : MonoBehaviour, ICube
                 OnCubesMerge?.Invoke(this, other); //OnCubesMerge(ICube cube1, ICube cube2) in GameManager
             }
         }
-        
+
     }
     public void OnEnterPortal()
     {
@@ -131,7 +132,33 @@ public class Cube : MonoBehaviour, ICube
     public void OnEnterTrap()
     {
         OnCubeLeaveGround?.Invoke(this);
+
+        if (OnLeaveZoneCoroutine != null)
+        {
+            StopCoroutine(OnLeaveZoneCoroutine);
+        }
+        OnLeaveZoneCoroutine = StartCoroutine(OnLeaveZoneCour());
     }
+    private Coroutine OnLeaveZoneCoroutine;
+    private IEnumerator OnLeaveZoneCour()
+    {
+        float time = 5f;
+        while (time > 0)
+        {
+            if (InputManagement.Active.OutOfGameZone(transform))
+            {
+                CameraMovement.active.FollowCubeDie(this);
+                break;
+            }
+
+            time -= Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        OnLeaveZoneCoroutine = null;
+        yield break;
+    }
+
     public void SetNullParent()
     {
         transform.parent = PrevParent;
@@ -229,7 +256,7 @@ public class Cube : MonoBehaviour, ICube
     {
         isMoving = false;
 
-        if(OffGravityOnTake)
+        if (OffGravityOnTake)
         {
             _rig.useGravity = true;
         }
@@ -246,7 +273,7 @@ public class Cube : MonoBehaviour, ICube
     private void OnEnterGround()
     {
         inAir = false;
-        if(OnLeaveGroundCoroutine != null)
+        if (OnLeaveGroundCoroutine != null)
         {
             StopCoroutine(OnLeaveGroundCoroutine);
         }
@@ -262,7 +289,7 @@ public class Cube : MonoBehaviour, ICube
         yield return new WaitForSeconds(0.025f);
         if (Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //есть ли под нами земля?
             yield break;
-        if(isMoving)
+        if (isMoving)
         {
             CubeRig.velocity = new Vector3(CubeRig.velocity.x * 0.5f, CubeRig.velocity.y - 5, CubeRig.velocity.z * 0.5f);
             CubeRig.useGravity = true;
@@ -282,11 +309,11 @@ public class Cube : MonoBehaviour, ICube
         {
             _rig = GetComponent<Rigidbody>();
         }
-        if(_meshRenderer == null)
+        if (_meshRenderer == null)
         {
             _meshRenderer = GetComponent<MeshRenderer>();
         }
-        if(_material == null)
+        if (_material == null)
         {
             _material = _meshRenderer.material;
         }
@@ -306,7 +333,7 @@ public class Cube : MonoBehaviour, ICube
     }
     public void SetNumbers()
     {
-        for(int i = 0; i < TextNumber.Length; i++)
+        for (int i = 0; i < TextNumber.Length; i++)
         {
             TextNumber[i].text = _number.ToString();
         }
@@ -358,11 +385,11 @@ public class Cube : MonoBehaviour, ICube
     }
     private void OnTriggerEnter(Collider other)
     {
-        switch(other.tag)
+        switch (other.tag)
         {
             case "Cube":
                 ICube cube = other.GetComponent<ICube>();
-                if(cube != null)
+                if (cube != null)
                 {
                     TryMerge(cube);
                 }
@@ -388,13 +415,26 @@ public class Cube : MonoBehaviour, ICube
 
     private void Awake()
     {
-        
+
     }
     private void Start()
     {
-        
+
     }
 
+    private void FixedUpdate()
+    {
+        if (!isOutOfZone && InputManagement.Active.OutOfGameZone(transform))
+        {
+            isOutOfZone = true;
+            CameraMovement.active.FollowCubeDie(this);
+        }
+        else if (isOutOfZone && !InputManagement.Active.OutOfGameZone(transform))
+        {
+            isOutOfZone = false;
+        }
+
+    }
 }
 
 public interface ICube

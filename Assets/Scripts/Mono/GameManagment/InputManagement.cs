@@ -10,6 +10,7 @@ public class InputManagement : MonoBehaviour
     public InputManagement() => _active = this;
     #endregion
 
+
     private enum ActionType
     {
         NotStarted,
@@ -18,6 +19,11 @@ public class InputManagement : MonoBehaviour
     }
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
+    public float[] GameZoneX { get; private set; }
+    public bool OutOfGameZone(Transform obj)
+    {
+        return obj.position.x < GameZoneX[0] || obj.position.x > GameZoneX[1];
+    }
 
     private bool FollowCube;
     private Vector3 TakeDelta;
@@ -360,9 +366,15 @@ public class InputManagement : MonoBehaviour
         }
     }
 
+    private void Init()
+    {
+        GameZoneX = new float[2];
+        GameZoneX[0] = new TapInfo(ActionType.OnSwipe, new Vector2(0, 0)).Point.x;
+        GameZoneX[1] = new TapInfo(ActionType.OnSwipe, new Vector2(Screen.width, 0)).Point.x;
+    }
     private void Start()
     {
-
+        Init();
     }
     private void Update()
     {
