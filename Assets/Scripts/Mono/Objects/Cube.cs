@@ -8,7 +8,8 @@ public class Cube : MonoBehaviour, ICube
     [Header("Settings")]
     [SerializeField] private int _number;
     [HideInInspector] public int Number { get => _number; private set => _number = value; }
-    public bool NoTeleport { get; private set; }
+    public bool AfterPortal { get; private set; }
+    public bool NoTelepor { get; private set; }
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
 
@@ -128,6 +129,8 @@ public class Cube : MonoBehaviour, ICube
     public void OnExitPortal()
     {
         _animator.SetTrigger(ANIM_EXIT);
+
+        OnTeleportWait();
     }
     public void OnEnterTrap()
     {
@@ -185,21 +188,35 @@ public class Cube : MonoBehaviour, ICube
     }
     public void ForceDestroy() => Destroy(gameObject);
 
-    private Coroutine OnMergeWaitCoroutine;
-    public void OnMergeWait()
+    private Coroutine OnTeleportWaitCoroutine;
+    public void OnTeleportWait()
     {
-        if (OnMergeWaitCoroutine == null)
+        if (OnTeleportWaitCoroutine != null)
         {
-            OnMergeWaitCoroutine = StartCoroutine(OnMergeWaitCour());
+            StopCoroutine(OnTeleportWaitCoroutine);
         }
+        OnTeleportWaitCoroutine = StartCoroutine(OnTeleportWaitCour());
     }
-    private IEnumerator OnMergeWaitCour()
+    private IEnumerator OnTeleportWaitCour()
     {
-        NoTeleport = true;
-        yield return new WaitForSeconds(0.5f);
-        NoTeleport = false;
+        Debug.Log("Start");
+        AfterPortal = true;
+        yield return new WaitForSeconds(0.3f);
+        AfterPortal = false;
+        Debug.Log("end");
+        OnTeleportWaitCoroutine = null;
+        yield break;
+    }
 
-        OnMergeWaitCoroutine = null;
+    private void DelayTeleport()
+    {
+        StartCoroutine(DelayTeleportCour());
+    }
+    private IEnumerator DelayTeleportCour()
+    {
+        NoTelepor = true;
+        yield return new WaitForSeconds(0.1f);
+        NoTelepor = false;
         yield break;
     }
 
@@ -354,20 +371,22 @@ public class Cube : MonoBehaviour, ICube
         SetView();
         ApplySettings();
         SetNumbers();
-
-        //OnMergeWait();
     }
     public void InitCube(int num)
     {
         Number = num;
         InitCube();
     }
-    public void InitCube(int num, Vector3 Impulse, Vector3 Angular)
+    public void InitCube(int num, Vector3 Impulse, Vector3 Angular, bool AfterPortal = false)
     {
         Number = num;
         InitCube();
 
         AddImpulse(Impulse, Angular);
+        if(AfterPortal)
+        {
+            DelayTeleport();
+        }
     }
     #endregion
 
@@ -443,9 +462,11 @@ public interface ICube
 
     bool isDestroyed { get; }
 
+    bool NoTelepor { get; }
+
     int Number { get; }
 
-    bool NoTeleport { get; }
+    bool AfterPortal { get; }
 
     Color CubeColor { get; }
 
@@ -472,7 +493,7 @@ public interface ICube
 
     void OnExitPortal();
 
-    void OnMergeWait();
+    void OnTeleportWait();
 
     void OnEnterTrap();
 
@@ -488,7 +509,7 @@ public interface ICube
 
     void InitCube(int num);
 
-    void InitCube(int num, Vector3 Impulse, Vector3 Angular);
+    void InitCube(int num, Vector3 Impulse, Vector3 Angular, bool AfterMerge = false);
 
     ICube PrevCube { get; }
 

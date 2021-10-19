@@ -165,7 +165,7 @@ public class GameManagement : MonoBehaviour
         Vector3 CubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
 
         ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
-        newCube.InitCube(CubeSum, CubeImpulse, CubeAngular);
+        newCube.InitCube(CubeSum, CubeImpulse, CubeAngular, cube1.AfterPortal || cube2.AfterPortal);
         newCube.CreateMergeParticle();
         Cubes.Add(newCube);
         SubscribeForCube(newCube);
@@ -197,8 +197,6 @@ public class GameManagement : MonoBehaviour
         isGameStarted = true;
         isGameWin = false;
 
-        //GetAllCubesOnScene();
-        //GetAllGemsOnScene();
         OnGameStarted?.Invoke();
     }
     private void GameFailed()

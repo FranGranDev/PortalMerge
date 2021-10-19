@@ -142,12 +142,21 @@ public class CameraMovement : MonoBehaviour
     }
     private IEnumerator MoveToCour(ICube cube)
     {
+        Vector3 newPoint = Vector3.zero;
         yield return new WaitForSeconds(GameManagement.MainData.TeleportTime + 0.1f);
         while (!cube.isNull && Mathf.Abs(transform.position.z - cube.CubeTransform.position.z) > 0.1f)
         {
-            Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? 0 : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
+            newPoint = new Vector3(GameManagement.MainData.LockSideMove ? 0 : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToPortalSpeed * 0.1f);
             yield return new WaitForFixedUpdate();
+        }
+        if(cube.isNull)
+        {
+            while (Mathf.Abs(transform.position.z - newPoint.z) > 0.1f)
+            {
+                transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToPortalSpeed * 0.1f);
+                yield return new WaitForFixedUpdate();
+            }
         }
         transform.position = new Vector3(0, transform.position.y, transform.position.z);
         yield break;

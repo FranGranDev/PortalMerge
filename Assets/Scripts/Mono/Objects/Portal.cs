@@ -28,7 +28,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             return;
         if(PairPortal != null)
         {
-            if ((prevCube == null || cube != prevCube) && PairPortal.Activated)
+            if ((prevCube == null || cube != prevCube) && !cube.NoTelepor && PairPortal.Activated)
             {
                 PairPortal.Teleport(cube);
             }
@@ -62,7 +62,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     private IEnumerator TeleportCour(ICube cube)
     {
         yield return new WaitForFixedUpdate();
-        if (!cube.NoTeleport)
+        if (!cube.AfterPortal)
         {
             cube.OnEnterPortal();
             prevCube = cube;
