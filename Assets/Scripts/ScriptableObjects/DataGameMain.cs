@@ -51,7 +51,7 @@ public class DataGameMain : ScriptableObject
     public float TeleportTime;
     [Range(0, 1f)]
     public float SaveVelocityOnExitPortal;
-    [Range(0, 5f)]
+    [Range(0, 10f)]
     public float AddVelocityOnExitPortal;
     [Header("Настройка ловушек")]
     public float DestroyDelay;
