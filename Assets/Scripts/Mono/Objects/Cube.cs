@@ -199,11 +199,9 @@ public class Cube : MonoBehaviour, ICube
     }
     private IEnumerator OnTeleportWaitCour()
     {
-        Debug.Log("Start");
         AfterPortal = true;
         yield return new WaitForSeconds(0.3f);
         AfterPortal = false;
-        Debug.Log("end");
         OnTeleportWaitCoroutine = null;
         yield break;
     }
