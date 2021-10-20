@@ -92,9 +92,9 @@ public class CameraMovement : MonoBehaviour
         int ConfittiNum = Random.Range(10, 30);
         for (int i = 0; i < ConfittiNum; i++)
         {
-            float Lenght = Random.Range(3f, 6f);
+            float Lenght = Random.Range(0f, 6f);
             Vector3 Direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-            Vector3 Position = Target + Direction * Lenght;
+            Vector3 Position = Target + Direction * Lenght + Vector3.up * 2;
 
             GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, null);
             particle.transform.localScale = Vector3.one * GameManagement.MainData.ConfittiParticleSize;
