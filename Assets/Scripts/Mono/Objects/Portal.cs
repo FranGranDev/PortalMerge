@@ -69,9 +69,11 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
             cube.CubeRig.velocity *= 0.25f;
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
-            cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.5f).normalized * (PrevCubeVelocity *
+            cube.CubeRig.velocity = (transform.forward + Vector3.up).normalized * (PrevCubeVelocity *
             GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
-            cube.CubeTransform.position = transform.position + Vector3.up * 2.5f;
+            Vector3 CubeAngular = GameManagement.MainData.AddRotationOnExitPortal * new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne());
+            cube.CubeRig.angularVelocity += CubeAngular;
+            cube.CubeTransform.position = transform.position + Vector3.up * 3f;
             prevCube.SetNullParent();
             prevCube.OnExitPortal();
 

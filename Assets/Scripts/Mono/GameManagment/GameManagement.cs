@@ -39,6 +39,7 @@ public class GameManagement : MonoBehaviour
     public static OnGameAction OnGameWin;
     public static OnGameAction OnGameFailed;
     public static OnGameAction OnGameStarted;
+    
     #endregion
 
     public static float RandomOne()
@@ -158,6 +159,7 @@ public class GameManagement : MonoBehaviour
     {
 
     }
+
     private void OnCubesMerge(ICube cube1, ICube cube2)
     {
         int CubeSum = cube1.Number + cube2.Number;

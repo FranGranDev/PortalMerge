@@ -74,7 +74,7 @@ public class InputManagement : MonoBehaviour
             switch (info)
             {
                 case ActionType.OnCube:
-                    return LayerMask.GetMask(new string[1] { "Ground" });
+                    return LayerMask.GetMask(new string[1] { "Camera" });
                 case ActionType.OnSwipe:
                     return LayerMask.GetMask(new string[1] { "Camera" });
                 default:
@@ -235,7 +235,7 @@ public class InputManagement : MonoBehaviour
 
     public void SubscribeForCube(ICube cube)
     {
-        StartCoroutine(SubscibeForCubeCour(cube, 0.5f));
+        StartCoroutine(SubscibeForCubeCour(cube, 0f));
     }
     private IEnumerator SubscibeForCubeCour(ICube cube, float Delay)
     {
@@ -254,7 +254,6 @@ public class InputManagement : MonoBehaviour
         {
             CurrantCube.SubscribeForDestroyed(OnLostCube);
             CurrantCube.SubscribeForEnterPortal(OnLostCube);
-            //CurrantCube.SubscribeForMerge(OnLostCube);
             CurrantCube.SubscribeForLeaveGround(OnLostCube);
         }
     }
@@ -366,7 +365,7 @@ public class InputManagement : MonoBehaviour
                     if (!CurrantCube.isNull)
                     {
                         CubeMovement();
-                        
+                        Debug.Log("da");
                     }
                 }
                 break;

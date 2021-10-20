@@ -8,9 +8,9 @@ public class DataGameMain : ScriptableObject
     [Header("Физика куба")]
     [Range(0, 1f)]
     public float SpeedSumOnMerge;
-    [Range(0, 10f)]
+    [Range(0, 25f)]
     public float VerticalForceOnMerge;
-    [Range(0, 10f)]
+    [Range(0, 25f)]
     public float RotationOnMerge;
     [Range(0.1f, 1f)]
     public float CubeDragSpeed;
@@ -51,6 +51,8 @@ public class DataGameMain : ScriptableObject
     public float SaveVelocityOnExitPortal;
     [Range(0, 10f)]
     public float AddVelocityOnExitPortal;
+    [Range(0, 25f)]
+    public float AddRotationOnExitPortal;
     [Header("Настройка ловушек")]
     public float DestroyDelay;
     [Range(0.1f, 1f)]

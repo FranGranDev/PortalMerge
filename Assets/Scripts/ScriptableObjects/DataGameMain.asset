@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DataGameMain
   m_EditorClassIdentifier: 
   SpeedSumOnMerge: 0.35
-  VerticalForceOnMerge: 8
-  RotationOnMerge: 10
+  VerticalForceOnMerge: 9
+  RotationOnMerge: 15
   CubeDragSpeed: 1
   CubeDragAcceleration: 0.25
   CubeFriction: 0.5
@@ -34,7 +34,8 @@ MonoBehaviour:
   MoveToCubeOnWinSpeed: 0.25
   TeleportTime: 0
   SaveVelocityOnExitPortal: 0
-  AddVelocityOnExitPortal: 6
+  AddVelocityOnExitPortal: 5
+  AddRotationOnExitPortal: 10
   DestroyDelay: 0
   ObstacleAcceleration: 0.25
   DelayTime: 0

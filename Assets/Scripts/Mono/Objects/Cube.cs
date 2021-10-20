@@ -10,6 +10,7 @@ public class Cube : MonoBehaviour, ICube
     [HideInInspector] public int Number { get => _number; private set => _number = value; }
     public bool AfterPortal { get; private set; }
     public bool NoTelepor { get; private set; }
+    private bool AfterMerge;
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
 
@@ -193,13 +194,13 @@ public class Cube : MonoBehaviour, ICube
 
     public void ExitPlatform()
     {
-        if(PrevPlatform != null)
+        if (PrevPlatform != null)
         {
             PrevPlatform.OnExitPlatform(this);
             AddImpulse(PrevPlatform._rig.velocity);
             PrevPlatform = null;
         }
-        
+
         isOnPlatform = false;
 
         transform.SetParent(PrevParent);
@@ -223,7 +224,7 @@ public class Cube : MonoBehaviour, ICube
     }
     public void DestroyCube()
     {
-        if (isDestroyed)
+        if (isDestroyed || GameManagement.isGameWin)
             return;
         isDestroyed = true;
         CreateDestroyParticle();
@@ -263,6 +264,14 @@ public class Cube : MonoBehaviour, ICube
         yield break;
     }
 
+    private IEnumerator AfterMergeCour()
+    {
+        AfterMerge = true;
+        yield return new WaitForSeconds(0.5f);
+        AfterMerge = false;
+        yield break;
+    }
+
     #endregion
     #region Particle
     public void CreateWaterParticle()
@@ -291,7 +300,7 @@ public class Cube : MonoBehaviour, ICube
     {
         isMoving = true;
 
-        if(isOnPlatform)
+        if (isOnPlatform)
         {
             ExitPlatform();
         }
@@ -306,8 +315,10 @@ public class Cube : MonoBehaviour, ICube
         Vector3 Direction = (Point - transform.position);
         if (Direction.magnitude > MinDistanceToMove)
         {
+            Debug.Log(gameObject.name);
             float AirRatio = inAir && OffGravityOnTake ? 1f : 0f;
             Vector3 NewSpeed = Direction.normalized * DragSpeed / (AirRatio + 1) * 50 + Physics.gravity * AirRatio;
+            NewSpeed = new Vector3(NewSpeed.x, AfterMerge ? _rig.velocity.y : NewSpeed.y, NewSpeed.z);
             _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
         }
         else
@@ -344,15 +355,18 @@ public class Cube : MonoBehaviour, ICube
     }
     private void OnLeaveGround()
     {
-        inAir = true;
         OnLeaveGroundCoroutine = StartCoroutine(OnLeaveGroundCour());
     }
     private Coroutine OnLeaveGroundCoroutine;
     private IEnumerator OnLeaveGroundCour()
     {
         yield return new WaitForSeconds(0.025f);
-        if (Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //есть ли под нами земля?
+        if (Physics.Raycast(transform.position, Vector3.down, 5, 1 << 8)) //есть ли под нами земля?
+        {
+            inAir = false;
             yield break;
+        }
+        inAir = true;
         if (isMoving)
         {
             CubeRig.velocity = new Vector3(CubeRig.velocity.x * 0.5f, CubeRig.velocity.y - 5, CubeRig.velocity.z * 0.5f);
@@ -427,10 +441,11 @@ public class Cube : MonoBehaviour, ICube
         InitCube();
 
         AddImpulse(Impulse, Angular);
-        if(AfterPortal)
+        if (AfterPortal)
         {
             DelayTeleport();
         }
+        StartCoroutine(AfterMergeCour());
     }
     #endregion
 
@@ -477,7 +492,7 @@ public class Cube : MonoBehaviour, ICube
 
     private void Awake()
     {
-
+        ClearCallbacks();
     }
     private void Start()
     {
