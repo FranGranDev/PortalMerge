@@ -72,33 +72,32 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraWinMove()
     {
-        StartCoroutine(MoveToOnWinCour(GameManagement.LastCube.CubeTransform.position));
-        StartCoroutine(ConfittiCour(GameManagement.LastCube.CubeTransform.position));
+        StartCoroutine(MoveToOnWinCour(GameManagement.LastCube));
+        StartCoroutine(ConfittiCour(GameManagement.LastCube));
     }
-    private IEnumerator MoveToOnWinCour(Vector3 Target)
+    private IEnumerator MoveToOnWinCour(ICube cube)
     {
-        Target += Vector3.forward * -2f;
-        while ((new Vector2(transform.position.x, transform.position.z) - new Vector2(Target.x, Target.z)).magnitude > 0.25f)
+        while ((new Vector2(transform.position.x, transform.position.z) - new Vector2(cube.CubeTransform.position.x, cube.CubeTransform.position.z)).magnitude > 0.25f)
         {
-            Vector3 newPoint = new Vector3(Target.x, transform.position.y, Target.z);
+            Vector3 newPoint = new Vector3(cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToCubeOnWinSpeed * 0.1f);
             yield return new WaitForFixedUpdate();
         }
         yield break;
     }
-    private IEnumerator ConfittiCour(Vector3 Target)
+    private IEnumerator ConfittiCour(ICube cube)
     {
         yield return new WaitForSeconds(0.5f);
-        int ConfittiNum = Random.Range(10, 30);
+        int ConfittiNum = Random.Range(20, 25);
         for (int i = 0; i < ConfittiNum; i++)
         {
-            float Lenght = Random.Range(0f, 6f);
+            float Lenght = Random.Range(3f, 6f);
             Vector3 Direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-            Vector3 Position = Target + Direction * Lenght + Vector3.up * 2;
+            Vector3 Position = cube.CubeTransform.position + Direction * Lenght + Vector3.up * 2;
 
             GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, null);
             particle.transform.localScale = Vector3.one * GameManagement.MainData.ConfittiParticleSize;
-            yield return new WaitForSeconds(Random.Range(0.025f, 0.25f));
+            yield return new WaitForSeconds(Random.Range(0.025f, 0.15f));
         }
     }
 
