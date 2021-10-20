@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManagement : MonoBehaviour
 {
     public static GameManagement Active { get; private set; }
+    public GameManagement() => Active = this;
+
     [SerializeField] private DataGameMain _data;
     [SerializeField] private Transform _level;
     [SerializeField] private LevelManagement levelManagement;
@@ -59,8 +61,8 @@ public class GameManagement : MonoBehaviour
         GameObject[] obj = GameObject.FindGameObjectsWithTag("Cube");
         for (int i = 0; i < obj.Length; i++)
         {
-            Cube cube = obj[i].GetComponent<Cube>();
-            cube.SetNumbers();
+            ICube cube = obj[i].GetComponent<ICube>();
+            cube.InitCube();
         }
     }
 

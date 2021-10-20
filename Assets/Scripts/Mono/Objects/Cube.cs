@@ -377,15 +377,12 @@ public class Cube : MonoBehaviour, ICube
         {
             _meshRenderer = GetComponent<MeshRenderer>();
         }
-        if (_material == null)
-        {
-            _material = _meshRenderer.material;
-        }
     }
     private void SetView()
     {
-        CurrantColor = GameManagement.MainData.GetCubeColor(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
-        _material.color = CurrantColor;
+        Material material = GameManagement.MainData.GetCubeMaterial(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
+        CurrantColor = material.color;
+        _meshRenderer.material = material;
     }
     private void ApplySettings()
     {

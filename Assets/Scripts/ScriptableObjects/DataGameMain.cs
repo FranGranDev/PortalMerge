@@ -88,6 +88,15 @@ public class DataGameMain : ScriptableObject
     public GameObject Bullet;
     public GameObject GemIcon;
     [Header("Цвета")]
+    [SerializeField] private Material[] CubeMaterial;
+    public Material GetCubeMaterial(int num)
+    {
+        if (num > CubeMaterial.Length - 1 || num < 0)
+        {
+            return CubeMaterial[0];
+        }
+        return CubeMaterial[num];
+    }
     [SerializeField] private Color[] CubeColor;
     public Color GetCubeColor(int num)
     {

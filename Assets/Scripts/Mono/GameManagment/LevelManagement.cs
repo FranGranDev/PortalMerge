@@ -155,6 +155,7 @@ public class LevelManagement : MonoBehaviour
                 else
                 {
                     PrefabUtility.InstantiatePrefab(level.LevelPrefab, transform);
+                    GameManagement.Active.ShowCubesNumbers();
                 }
             }
             else

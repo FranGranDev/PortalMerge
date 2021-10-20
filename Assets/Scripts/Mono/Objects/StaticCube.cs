@@ -30,9 +30,10 @@ public class StaticCube : MonoBehaviour
             _material = _meshRenderer.material;
         }
     }
-    private void SetColor()
+    private void SetMaterial()
     {
-        _material.color = GameManagement.MainData.GetCubeColor(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
+        Material material = GameManagement.MainData.GetCubeMaterial(Mathf.RoundToInt(Mathf.Log(Number, 2) - 1));
+        _meshRenderer.material = material;
     }
     private void SetNumbers()
     {
@@ -47,7 +48,7 @@ public class StaticCube : MonoBehaviour
         Number = num;
 
         SetComponents();
-        SetColor();
+        SetMaterial();
         SetNumbers();
     }
 
