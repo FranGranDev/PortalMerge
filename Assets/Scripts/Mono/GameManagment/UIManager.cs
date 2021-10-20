@@ -36,11 +36,6 @@ public class UIManager : MonoBehaviour
         CurrantState = state;
 
         _animator.SetInteger(ANIM_ID, (int)CurrantState);
-
-        if(state == UIState.Start)
-        {
-            SetLevelText();
-        }
     }
 
     public void Play()
@@ -148,7 +143,7 @@ public class UIManager : MonoBehaviour
         GameManagement.OnGameStarted -= OnGameStarted;
     }
 
-    private void SetLevelText()
+    public void SetLevelText() //Calls from NULL_State in animations
     {
         StartLevelNum.text = LEVEL_NAME + " " + (LevelManagement.Default.CurrentLevelIndex + 1);
         DoneLevelNum.text = LEVEL_NAME + " " + (LevelManagement.Default.CurrentLevelIndex + 1) + " " + LEVEL_DONE;

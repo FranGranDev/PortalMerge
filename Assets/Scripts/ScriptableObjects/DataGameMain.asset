@@ -15,7 +15,7 @@ MonoBehaviour:
   SpeedSumOnMerge: 0.35
   VerticalForceOnMerge: 9
   RotationOnMerge: 15
-  CubeDragSpeed: 1
+  CubeDragSpeed: 0.75
   CubeDragAcceleration: 0.25
   CubeFriction: 0.5
   CubeHeightOnMove: 0.6
@@ -30,7 +30,7 @@ MonoBehaviour:
   FollowCubeDeadZoneDown: -0.6
   FollowCubeSpeed: 4
   FollowCubeFriction: 0.025
-  MoveToPortalSpeed: 0.5
+  MoveToPortalSpeed: 0.75
   MoveToCubeOnWinSpeed: 0.25
   TeleportTime: 0
   SaveVelocityOnExitPortal: 0

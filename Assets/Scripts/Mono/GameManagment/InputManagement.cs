@@ -365,7 +365,6 @@ public class InputManagement : MonoBehaviour
                     if (!CurrantCube.isNull)
                     {
                         CubeMovement();
-                        Debug.Log("da");
                     }
                 }
                 break;

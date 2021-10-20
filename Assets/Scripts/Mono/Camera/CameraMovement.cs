@@ -89,7 +89,7 @@ public class CameraMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         int ConfittiNum = Random.Range(20, 25);
-        for (int i = 0; i < ConfittiNum; i++)
+        for (int i = 0; i < ConfittiNum && !cube.isNull; i++)
         {
             float Lenght = Random.Range(3f, 6f);
             Vector3 Direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
@@ -132,7 +132,6 @@ public class CameraMovement : MonoBehaviour
 
     private void MoveToCube(ICube cube)
     {
-        Vector3 Point = cube.CubeTransform.position + Vector3.forward * -5;
         if(MoveToCoroutine != null)
         {
             StopCoroutine(MoveToCoroutine);

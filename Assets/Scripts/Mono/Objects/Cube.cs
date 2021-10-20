@@ -315,7 +315,6 @@ public class Cube : MonoBehaviour, ICube
         Vector3 Direction = (Point - transform.position);
         if (Direction.magnitude > MinDistanceToMove)
         {
-            Debug.Log(gameObject.name);
             float AirRatio = inAir && OffGravityOnTake ? 1f : 0f;
             Vector3 NewSpeed = Direction.normalized * DragSpeed / (AirRatio + 1) * 50 + Physics.gravity * AirRatio;
             NewSpeed = new Vector3(NewSpeed.x, AfterMerge ? _rig.velocity.y : NewSpeed.y, NewSpeed.z);
