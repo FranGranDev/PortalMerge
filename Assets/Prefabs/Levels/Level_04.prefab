@@ -264,16 +264,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeForTile_05.1 (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 8244774569351824094, guid: 3587371593112be49b5999d03fdec30b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
-    - target: {fileID: 8244774569351824094, guid: 3587371593112be49b5999d03fdec30b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 44d007689669fc2428b740fb9880d450, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3587371593112be49b5999d03fdec30b, type: 3}
 --- !u!4 &7482097459910361977 stripped
@@ -739,16 +729,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4797595008712789980}
     m_Modifications:
-    - target: {fileID: 7918791221549383986, guid: ac442c7befeb95c4f93e4d24fa422cc2,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
-    - target: {fileID: 7918791221549383986, guid: ac442c7befeb95c4f93e4d24fa422cc2,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 44d007689669fc2428b740fb9880d450, type: 2}
     - target: {fileID: 8567481298153726183, guid: ac442c7befeb95c4f93e4d24fa422cc2,
         type: 3}
       propertyPath: m_Name
@@ -1064,6 +1044,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4797595008712789980}
     m_Modifications:
+    - target: {fileID: 1248352605716759688, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388734395993134400, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.055385
+      objectReference: {fileID: 0}
     - target: {fileID: 7167270604423917090, guid: cb1be30a08a207f4f800548ac8242ab1,
         type: 3}
       propertyPath: m_RootOrder
@@ -1123,6 +1113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Laser
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743751877034818483, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4001604
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb1be30a08a207f4f800548ac8242ab1, type: 3}
@@ -1214,16 +1209,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeForTile_05.1 (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 8244774569351824094, guid: 3587371593112be49b5999d03fdec30b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
-    - target: {fileID: 8244774569351824094, guid: 3587371593112be49b5999d03fdec30b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 44d007689669fc2428b740fb9880d450, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3587371593112be49b5999d03fdec30b, type: 3}
 --- !u!4 &6420416711899641530 stripped
@@ -1469,6 +1454,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4797595008712789980}
     m_Modifications:
+    - target: {fileID: 37186975397115644, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562414831442505857, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7167270604423917090, guid: cb1be30a08a207f4f800548ac8242ab1,
         type: 3}
       propertyPath: m_RootOrder
@@ -1528,6 +1523,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Laser (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743751877034818483, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1298996
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743751877034818483, guid: cb1be30a08a207f4f800548ac8242ab1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.82
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb1be30a08a207f4f800548ac8242ab1, type: 3}
@@ -1619,16 +1624,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4797595008712789980}
     m_Modifications:
-    - target: {fileID: 7918791221549383986, guid: ac442c7befeb95c4f93e4d24fa422cc2,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
-    - target: {fileID: 7918791221549383986, guid: ac442c7befeb95c4f93e4d24fa422cc2,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 44d007689669fc2428b740fb9880d450, type: 2}
     - target: {fileID: 8567481298153726183, guid: ac442c7befeb95c4f93e4d24fa422cc2,
         type: 3}
       propertyPath: m_Name
@@ -2174,16 +2169,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeForTile_05.1 (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 8244774569351824094, guid: 3587371593112be49b5999d03fdec30b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
-    - target: {fileID: 8244774569351824094, guid: 3587371593112be49b5999d03fdec30b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 44d007689669fc2428b740fb9880d450, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3587371593112be49b5999d03fdec30b, type: 3}
 --- !u!4 &1430650468211670150 stripped
