@@ -60,7 +60,6 @@ MonoBehaviour:
   EndRoadTime: 3
   EndDelay: 1
   EndEase: 4
-  _rig: {fileID: 5044888272831587420}
   _collider: {fileID: 4139234380487856184}
 --- !u!33 &5044888272831587409
 MeshFilter:
@@ -88,9 +87,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f53d9bb7bc3acc64eaec9e51aa67ff4b, type: 2}
-  - {fileID: 2100000, guid: f53d9bb7bc3acc64eaec9e51aa67ff4b, type: 2}
-  - {fileID: 2100000, guid: f53d9bb7bc3acc64eaec9e51aa67ff4b, type: 2}
+  - {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
+  - {fileID: 2100000, guid: 2f7834d15dfeb2741b7c6d8918747d85, type: 2}
+  - {fileID: 2100000, guid: 44d007689669fc2428b740fb9880d450, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
