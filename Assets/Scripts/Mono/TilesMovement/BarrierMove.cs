@@ -24,7 +24,21 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
     [SerializeField] protected Ease EndEase = Ease.InOutSine;
 
     [Header("Components")]
-    [SerializeField] protected Rigidbody _rig;
+    [SerializeField] protected BoxCollider _collider;
+    public Rigidbody _rig { get; private set; }
+
+    private List<ICube> CubesOn = new List<ICube>();
+    private void ClearEmpty()
+    {
+        foreach(ICube cube in CubesOn)
+        {
+            if(cube == null || cube.isNull)
+            {
+                CubesOn.Remove(cube);
+            }
+        }
+    }
+    private Dictionary<ICube, Coroutine> OnPlatformCoroutine = new Dictionary<ICube, Coroutine>();
 
     public void Activate(bool on)
     {
@@ -64,6 +78,7 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
     private void Init()
     {
         if (_rig == null) _rig = GetComponent<Rigidbody>();
+        if (_collider == null) _collider = GetComponent<BoxCollider>();
         if (ActivatorTarget != null)
         {
             ActivatorTarget.Subscribe(Activate);
@@ -83,13 +98,89 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
     {
         Init();
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (ActivatorTarget != null)
         {
             ActivatorTarget.Subscribe(Activate, true);
         }
+        CubesOn.Clear();
     }
+
+    public void OnEnterPlatform(ICube cube)
+    {
+        if (!CubesOn.Exists(item => item == cube))
+        {
+            CubesOn.Add(cube);
+            if (!OnPlatformCoroutine.ContainsKey(cube))
+            {
+                OnPlatformCoroutine.Add(cube, StartCoroutine(OnEnterPlatformCour(cube)));
+            }
+        }
+    }
+    private IEnumerator OnEnterPlatformCour(ICube cube)
+    {
+        while (cube.isNull || cube.CubeRig.angularVelocity.magnitude > 0.25f)
+        {
+            if (cube.isNull)
+            {
+                CubesOn.Remove(cube);
+                yield break;
+            }
+                
+            yield return new WaitForFixedUpdate();
+        }
+        yield return new WaitForFixedUpdate();
+        Debug.Log("Enter");
+        cube.EnterPlatform(this);
+
+        OnPlatformCoroutine.Remove(cube);
+        yield break;
+    }
+
+    public void OnExitPlatform(ICube cube)
+    {
+        if (CubesOn.Exists(item => item == cube))
+        {
+            StartCoroutine(OnExitPlatformCour(cube));
+        }
+    }
+    private IEnumerator OnExitPlatformCour(ICube cube)
+    {
+        while (cube.isNull || cube.isMoving || cube.CubeRig.angularVelocity.magnitude > 0.25f)
+        {
+            if (cube.isNull)
+            {
+                CubesOn.Remove(cube);
+                yield break;
+            }
+                
+            yield return new WaitForFixedUpdate();
+        }
+
+        if (OnPlatformCoroutine.ContainsKey(cube))
+        {
+            StopCoroutine(OnPlatformCoroutine[cube]);
+            OnPlatformCoroutine.Remove(cube);
+        }
+        Debug.Log("exit");
+
+        CubesOn.Remove(cube);
+        yield break;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.tag == "Cube")
+        {
+            ICube cube = other.GetComponent<ICube>();
+            if(cube != null)
+            {
+                OnEnterPlatform(cube);
+            }
+        }
+    }
+
 
     private void Update()
     {

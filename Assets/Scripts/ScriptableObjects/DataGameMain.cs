@@ -84,6 +84,7 @@ public class DataGameMain : ScriptableObject
     }
     [Header("Префабы")]
     public GameObject Cube;
+    public GameObject CubeCopy;
     public GameObject Bullet;
     public GameObject GemIcon;
     [Header("Цвета")]

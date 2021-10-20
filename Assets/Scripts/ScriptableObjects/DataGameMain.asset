@@ -32,9 +32,9 @@ MonoBehaviour:
   FollowCubeFriction: 0.025
   MoveToPortalSpeed: 0.5
   MoveToCubeOnWinSpeed: 0.25
-  TeleportTime: 0.1
+  TeleportTime: 0
   SaveVelocityOnExitPortal: 0
-  AddVelocityOnExitPortal: 7
+  AddVelocityOnExitPortal: 6
   DestroyDelay: 0
   ObstacleAcceleration: 0.25
   DelayTime: 0
@@ -64,6 +64,8 @@ MonoBehaviour:
   - {fileID: 129898, guid: 36bdc02b23d9ca94d93bd715c0cca5c0, type: 3}
   - {fileID: 162456, guid: aa67315846cbf1a4db925cced0c050da, type: 3}
   Cube: {fileID: 8574350159135478060, guid: 12ed66078c93e844eba7efea9db2b814, type: 3}
+  CubeCopy: {fileID: 7877637469935765411, guid: 095c55659a817284ca25be9c27d8bb57,
+    type: 3}
   Bullet: {fileID: 4788833205040968159, guid: 4d4ccdf46974f174798dec00df027fac, type: 3}
   GemIcon: {fileID: 8652199898576579083, guid: 7655205dcbea4434f82b9104f491ed8f, type: 3}
   CubeColor:

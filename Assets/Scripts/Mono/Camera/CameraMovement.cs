@@ -92,9 +92,9 @@ public class CameraMovement : MonoBehaviour
         int ConfittiNum = Random.Range(10, 30);
         for (int i = 0; i < ConfittiNum; i++)
         {
-            float Lenght = Random.Range(3f, 6f);
+            float Lenght = Random.Range(0f, 6f);
             Vector3 Direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-            Vector3 Position = Target + Direction * Lenght;
+            Vector3 Position = Target + Direction * Lenght + Vector3.up * 2;
 
             GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, null);
             particle.transform.localScale = Vector3.one * GameManagement.MainData.ConfittiParticleSize;
@@ -142,8 +142,7 @@ public class CameraMovement : MonoBehaviour
     }
     private IEnumerator MoveToCour(ICube cube)
     {
-        Vector3 newPoint = Vector3.zero;
-        yield return new WaitForSeconds(GameManagement.MainData.TeleportTime + 0.1f);
+        Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? 0 : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
         while (!cube.isNull && Mathf.Abs(transform.position.z - cube.CubeTransform.position.z) > 0.1f)
         {
             newPoint = new Vector3(GameManagement.MainData.LockSideMove ? 0 : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
@@ -166,6 +165,14 @@ public class CameraMovement : MonoBehaviour
         CameraSpeed = (transform.position - PrevPos).magnitude / Time.deltaTime;
         PrevPos = transform.position;
 
+    }
+
+    private void CameraSimpleFollowCube(Vector3 Point, Vector3 StartPoint)
+    {
+        Vector3 newPoint = new Vector3(0, transform.position.y, Point.z);
+        transform.position = Vector3.Lerp(transform.position, newPoint, 0.05f);
+
+        Velocity = Vector3.forward * CameraSpeed * 0.1f;
     }
 
     private void CameraFollowCube(Vector3 Speed, Vector3 Point)
@@ -203,7 +210,7 @@ public class CameraMovement : MonoBehaviour
 
     public void SubcribeToCube(ICube cube, bool Unsubscribe = false)
     {
-        cube.SubscribeForEnterPortal(MoveToCube, Unsubscribe);
+        cube.SubscribeForExitPortal(MoveToCube, Unsubscribe);
     }
 
     private void Update()
@@ -224,6 +231,7 @@ public class CameraMovement : MonoBehaviour
         InputManagement.OnSwipeEnd += CameraSwipeEnd;
         InputManagement.OnCubeFollow += CameraFollowCube;
         InputManagement.OnCubeThrow += CameraStopFollowCube;
+        InputManagement.OnCubePlatformFollow += CameraSimpleFollowCube;
 
         GameManagement.OnGameWin += CameraWinMove;
     }
@@ -233,6 +241,7 @@ public class CameraMovement : MonoBehaviour
         InputManagement.OnSwipeEnd -= CameraSwipeEnd;
         InputManagement.OnCubeFollow -= CameraFollowCube;
         InputManagement.OnCubeThrow -= CameraStopFollowCube;
+        InputManagement.OnCubePlatformFollow -= CameraSimpleFollowCube;
 
         GameManagement.OnGameWin -= CameraWinMove;
     }

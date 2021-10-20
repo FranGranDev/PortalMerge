@@ -24,6 +24,7 @@ public class Cube : MonoBehaviour, ICube
     public delegate void OnCubeAction(ICube cube);
     public OnCubeAction OnCubeDestroyed;
     public OnCubeAction OnCubeEnterPortal;
+    public OnCubeAction OnCubeExitPortal;
     public OnCubeAction OnCubeLeaveGround;
     public delegate void OnCubeMergeAction(ICube cube1, ICube cube2);
     public OnCubeMergeAction OnCubesMerge;
@@ -49,6 +50,17 @@ public class Cube : MonoBehaviour, ICube
         else
         {
             OnCubeEnterPortal += action;
+        }
+    }
+    public void SubscribeForExitPortal(OnCubeAction action, bool Unsubscribe = false)
+    {
+        if (Unsubscribe)
+        {
+            OnCubeExitPortal -= action;
+        }
+        else
+        {
+            OnCubeExitPortal += action;
         }
     }
     public void SubscribeForLeaveGround(OnCubeAction action, bool Unsubscribe = false)
@@ -94,12 +106,14 @@ public class Cube : MonoBehaviour, ICube
     [SerializeField] private TextMeshProUGUI[] TextNumber;
 
 
-    [Header("States")]
-    [SerializeField] private bool inAir;
-    [SerializeField] private bool isMoving;
-    [SerializeField] private bool isOutOfZone;
+    //States
+    public bool inAir { get; private set; }
+    public bool isMoving { get; private set; }
+    public bool isOutOfZone { get; private set; }
+    public bool isOnPlatform { get; private set; }
     private Transform PrevParent;
     public ICube PrevCube { get; private set; }
+    private BarrierMove PrevPlatform;
     public bool isNull => Equals(null);
     public bool isDestroyed { get; private set; }
 
@@ -118,16 +132,21 @@ public class Cube : MonoBehaviour, ICube
     }
     public void OnEnterPortal()
     {
+        MakeCopy();
+
         OnCubeEnterPortal?.Invoke(this);
 
         _animator.SetTrigger(ANIM_ENTER);
     }
+    private void MakeCopy() => StaticCube.MakeCopy(this);
     public void OnFailedEnterPortal()
     {
         OnCubeLeaveGround?.Invoke(this);
     }
     public void OnExitPortal()
     {
+        OnCubeExitPortal?.Invoke(this);
+
         _animator.SetTrigger(ANIM_EXIT);
 
         OnTeleportWait();
@@ -160,6 +179,32 @@ public class Cube : MonoBehaviour, ICube
 
         OnLeaveZoneCoroutine = null;
         yield break;
+    }
+
+    public void EnterPlatform(BarrierMove platform)
+    {
+        PrevPlatform = platform;
+        isOnPlatform = true;
+
+        transform.SetParent(platform.transform, true);
+        CubeRig.isKinematic = true;
+        _animator.enabled = false;
+    }
+
+    public void ExitPlatform()
+    {
+        if(PrevPlatform != null)
+        {
+            PrevPlatform.OnExitPlatform(this);
+            AddImpulse(PrevPlatform._rig.velocity);
+            PrevPlatform = null;
+        }
+        
+        isOnPlatform = false;
+
+        transform.SetParent(PrevParent);
+        CubeRig.isKinematic = false;
+        _animator.enabled = true;
     }
 
     public void SetNullParent()
@@ -246,6 +291,10 @@ public class Cube : MonoBehaviour, ICube
     {
         isMoving = true;
 
+        if(isOnPlatform)
+        {
+            ExitPlatform();
+        }
         if (OffGravityOnTake)
         {
             _rig.useGravity = false;
@@ -426,7 +475,6 @@ public class Cube : MonoBehaviour, ICube
             case "Ground":
                 OnLeaveGround();
                 break;
-
         }
     }
 
@@ -439,6 +487,10 @@ public class Cube : MonoBehaviour, ICube
 
     }
 
+    private void Update()
+    {
+
+    }
     private void FixedUpdate()
     {
         if (!isOutOfZone && InputManagement.Active.OutOfGameZone(transform))
@@ -465,6 +517,10 @@ public interface ICube
     int Number { get; }
 
     bool AfterPortal { get; }
+
+    bool isMoving { get; }
+
+    bool isOnPlatform { get; }
 
     Color CubeColor { get; }
 
@@ -495,6 +551,12 @@ public interface ICube
 
     void OnEnterTrap();
 
+
+    void EnterPlatform(BarrierMove platform);
+
+    void ExitPlatform();
+
+
     void CreateMergeParticle();
 
     void CreateDestroyParticle();
@@ -518,5 +580,7 @@ public interface ICube
     void SubscribeForLeaveGround(Cube.OnCubeAction action, bool Unsubscribe = false);
 
     void SubscribeForMerge(Cube.OnCubeMergeAction action, bool Unsubscribe = false);
+
+    void SubscribeForExitPortal(Cube.OnCubeAction action, bool Unsubscribe = false);
 
 }

@@ -71,7 +71,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
             cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.5f).normalized * (PrevCubeVelocity *
             GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
-            cube.CubeTransform.position = transform.position + Vector3.up * 2;
+            cube.CubeTransform.position = transform.position + Vector3.up * 2.5f;
             prevCube.SetNullParent();
             prevCube.OnExitPortal();
 

@@ -35,13 +35,14 @@ public class InputManagement : MonoBehaviour
     public delegate void OnSwipeInput(Vector3 Point, Vector3 StartPoint);
     public static OnSwipeInput OnCubeThrow;
     public static OnSwipeInput OnCubeFollow;
+    public static OnSwipeInput OnCubePlatformFollow;
     public static OnSwipeInput OnSwipeMove;
     public static OnSwipeInput OnSwipeEnd;
     public delegate void OnTouchAction();
     public OnTouchAction OnTakeCube;
 
     private ICube CurrantCube;
-
+    private ICube prevCube;
 
     private class TapInfo
     {
@@ -206,6 +207,8 @@ public class InputManagement : MonoBehaviour
             SubscribeForCube();
 
             TakeDelta = CurrantCube.CubeTransform.position - CurrantTap.Point;
+
+            prevCube = CurrantCube;
         }
         else
         {
@@ -222,6 +225,13 @@ public class InputManagement : MonoBehaviour
         }
     }
 
+    private void TryFollowCubeOnPlatform()
+    {
+        if(prevCube != null && !prevCube.isNull && prevCube.isOnPlatform)
+        {
+            OnCubePlatformFollow?.Invoke(prevCube.CubeTransform.position, Vector3.zero);
+        }
+    }
 
     public void SubscribeForCube(ICube cube)
     {
@@ -288,6 +298,8 @@ public class InputManagement : MonoBehaviour
             case ActionType.OnSwipe:
                 CurrantTap = new TapInfo(ActionType.OnSwipe);//Новый TapInfo делается для того, чтобы Raycast был только по поверхности "Camera"
                 StartTapPoint = CurrantTap.Point;
+
+                prevCube = null;
                 break;
         }
     }
@@ -345,7 +357,7 @@ public class InputManagement : MonoBehaviour
         {
             case ActionType.NotStarted:
                 {
-
+                    
 
                 }
                 break;
@@ -365,6 +377,13 @@ public class InputManagement : MonoBehaviour
                 break;
         }
     }
+    private void FixedActionExecute()
+    {
+        if(CurrantAction == ActionType.NotStarted)
+        {
+            TryFollowCubeOnPlatform();
+        }
+    }
 
     private void Init()
     {
@@ -382,6 +401,13 @@ public class InputManagement : MonoBehaviour
         {
             Movement();
             ActionExecute();
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (GameManagement.isGameStarted)
+        {
+            FixedActionExecute();
         }
     }
 }
