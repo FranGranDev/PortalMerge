@@ -5,12 +5,19 @@ using TMPro;
 
 public class StaticCube : MonoBehaviour
 {
+    public static void MakeCopy(ICube cube)
+    {
+        StaticCube Copy = Instantiate(GameManagement.MainData.CubeCopy, cube.CubeTransform.position, cube.CubeTransform.rotation, null).GetComponent<StaticCube>();
+        Copy.SetView(cube.Number);
+    }
+
     private int Number;
     [Header("Components")]
     [SerializeField] private MeshRenderer _meshRenderer;
     private Material _material;
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI[] TextNumber;
+    private Animator _anim;
 
     private void SetComponents()
     {
@@ -42,5 +49,10 @@ public class StaticCube : MonoBehaviour
         SetComponents();
         SetColor();
         SetNumbers();
+    }
+
+    public void DestroyCopy()
+    {
+        Destroy(gameObject);
     }
 }
