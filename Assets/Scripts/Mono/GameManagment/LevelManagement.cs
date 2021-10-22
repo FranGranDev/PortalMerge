@@ -32,7 +32,6 @@ public class LevelManagement : MonoBehaviour
 #else
             editorMode = false;
 #endif
-
         if (!editorMode)
         {
             SelectLevel(CurrentLevelIndex);
@@ -79,7 +78,8 @@ public class LevelManagement : MonoBehaviour
         {
             SetLevelParams(level);
             
-            CurrentLevelIndex = levelIndex;
+            
+            //CurrentLevelIndex = levelIndex;
 
             //Debug.Log("Set: " + CurrentLevelIndex);
         }
@@ -203,6 +203,10 @@ public class LevelManagement : MonoBehaviour
     private void OnDestroy()
     {
         
+    }
+    private void OnApplicationQuit()
+    {
+       
     }
     /*
     #region Analitics Events
