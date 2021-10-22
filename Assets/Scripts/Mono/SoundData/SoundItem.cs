@@ -13,7 +13,7 @@ public struct SoundItem
     [Header("Тон")]
     [Range(0, 1)]
     public float Pitch;
-    [Header("Объемность звука")]
+    [Header("Объемность звука(2D/3D)")]
     [Range(0, 1)]
     public float SpatialBlend;
 }

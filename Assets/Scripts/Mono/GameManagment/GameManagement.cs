@@ -227,7 +227,5 @@ public class GameManagement : MonoBehaviour
     private void Start()
     {
         //Init();
-
-        SoundManagment.PlaySound("test", transform);
     }
 }
