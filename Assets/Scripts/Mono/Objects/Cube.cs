@@ -11,8 +11,27 @@ public class Cube : MonoBehaviour, ICube
     public bool AfterPortal { get; private set; }
     public bool NoTelepor { get; private set; }
     public bool AfterMerge { get; private set; }
+    public bool NoInput { get; private set; }
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
+    public enum DestroyType {Laser, Fall, Water, Bullet}
+    private string DestroyTypeToSoundID(DestroyType type)
+    {
+        switch (type)
+        {
+            case DestroyType.Fall:
+                return "destroy_fall";
+            case DestroyType.Laser:
+                return "destroy_laser";
+            case DestroyType.Water:
+                return "destroy_water";
+            case DestroyType.Bullet:
+                return "destroy_bullet";
+            default:
+                return "destroy_fall";
+        }
+        
+    }
 
     [Header("Physics")]
     private float DragSpeed;
@@ -131,6 +150,7 @@ public class Cube : MonoBehaviour, ICube
         }
 
     }
+    private void MakeCopy() => StaticCube.MakeCopy(this);
     public void OnEnterPortal()
     {
         MakeCopy();
@@ -138,8 +158,9 @@ public class Cube : MonoBehaviour, ICube
         OnCubeEnterPortal?.Invoke(this);
 
         _animator.SetTrigger(ANIM_ENTER);
+
+        //SoundManagment.PlaySound("portal", transform);
     }
-    private void MakeCopy() => StaticCube.MakeCopy(this);
     public void OnFailedEnterPortal()
     {
         OnCubeLeaveGround?.Invoke(this);
@@ -151,6 +172,8 @@ public class Cube : MonoBehaviour, ICube
         _animator.SetTrigger(ANIM_EXIT);
 
         OnTeleportWait();
+
+        SoundManagment.PlaySound("portal", transform);
     }
     public void OnEnterTrap()
     {
@@ -161,6 +184,8 @@ public class Cube : MonoBehaviour, ICube
             StopCoroutine(OnLeaveZoneCoroutine);
         }
         OnLeaveZoneCoroutine = StartCoroutine(OnLeaveZoneCour());
+
+        SoundManagment.PlaySound("twirl_punch", transform);   
     }
     private Coroutine OnLeaveZoneCoroutine;
     private IEnumerator OnLeaveZoneCour()
@@ -234,10 +259,13 @@ public class Cube : MonoBehaviour, ICube
         isDestroyed = true;
         CreateWaterParticle();
 
+        SoundManagment.PlaySound(DestroyTypeToSoundID(DestroyType.Water), transform);
+
         OnCubeDestroyed?.Invoke(this);
         _animator.Play(ANIM_DIE);
+        Destroy(gameObject, Time.fixedDeltaTime);
     }
-    public void DestroyCube()
+    public void DestroyCube(DestroyType type = DestroyType.Fall)
     {
         if (isDestroyed || GameManagement.isGameWin)
             return;
@@ -245,7 +273,9 @@ public class Cube : MonoBehaviour, ICube
         CreateDestroyParticle();
 
         OnCubeDestroyed?.Invoke(this);
-        Destroy(gameObject);
+        Destroy(gameObject, Time.fixedDeltaTime);
+
+        SoundManagment.PlaySound(DestroyTypeToSoundID(type), transform);
     }
     public void ForceDestroy() => Destroy(gameObject);
 
@@ -281,8 +311,13 @@ public class Cube : MonoBehaviour, ICube
 
     private IEnumerator AfterMergeCour()
     {
+        SoundManagment.PlaySound("merge", transform);
+        float Delay = GameManagement.MainData.VerticalForceOnMerge * 0.03f;
+
+        NoInput = true;
         AfterMerge = true;
-        float Delay = GameManagement.MainData.VerticalForceOnMerge * 0.06f;
+        yield return new WaitForSeconds(Delay);
+        NoInput = false;
         yield return new WaitForSeconds(Delay);
         AfterMerge = false;
         yield break;
@@ -353,7 +388,7 @@ public class Cube : MonoBehaviour, ICube
         {
             float AirRatio = inAir && OffGravityOnTake ? 1f : 0f;
             Vector3 NewSpeed = Direction.normalized * DragSpeed / (AirRatio + 1) * 50 + Physics.gravity * AirRatio;
-            NewSpeed = new Vector3(NewSpeed.x, AfterMerge ? CubeRig.velocity.y : NewSpeed.y, NewSpeed.z);
+            NewSpeed = new Vector3(NewSpeed.x, AfterMerge ? CubeRig.velocity.y : NewSpeed.y - 1, NewSpeed.z);
             _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
         }
         else
@@ -389,7 +424,7 @@ public class Cube : MonoBehaviour, ICube
     {
         if(InputManagement.Active.BelowGameZone(transform))
         {
-            DestroyCube();
+            DestroyCube(DestroyType.Fall);
         }
     }
     private void OnEnterGround()
@@ -583,6 +618,10 @@ public interface ICube
 
     bool AfterMerge { get; }
 
+    bool NoInput { get; }
+
+    
+
     bool isMoving { get; }
 
     bool inAir { get; }
@@ -607,7 +646,7 @@ public interface ICube
 
     void Throw();
 
-    void DestroyCube();
+    void DestroyCube(Cube.DestroyType type = Cube.DestroyType.Fall);
 
     void OnEnterPortal();
 

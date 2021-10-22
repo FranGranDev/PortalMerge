@@ -77,7 +77,7 @@ public class CameraMovement : MonoBehaviour
     }
     private IEnumerator MoveToOnWinCour(ICube cube)
     {
-        while (!cube.isNull && (new Vector2(transform.position.x, transform.position.z) - new Vector2(cube.CubeTransform.position.x, cube.CubeTransform.position.z)).magnitude > 0.25f)
+        while (!cube.isNull)
         {
             Vector3 newPoint = new Vector3(cube.CubeTransform.position.x, cube.CubeTransform.position.y, cube.CubeTransform.position.z) + GameManagement.MainData.CameraWinOffset;
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToCubeOnWinSpeed * 0.1f);

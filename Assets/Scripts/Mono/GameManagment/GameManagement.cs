@@ -9,6 +9,7 @@ public class GameManagement : MonoBehaviour
 
     [SerializeField] private DataGameMain _data;
     [SerializeField] private Transform _level;
+    public Transform LevelTransform { get => _level; }
     [SerializeField] private LevelManagement levelManagement;
     private Transform GetLevelTransform => _level.GetChild(0);
     public static DataGameMain MainData {get => Active._data; }
@@ -178,13 +179,13 @@ public class GameManagement : MonoBehaviour
         InputManagement.Active.SubscribeForCube(newCube);
         if (newCube.Number == TargetNum)
         {
-            GameWin();
-
             Vector3 WinCubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
             WinCubeImpulse += Vector3.up * MainData.VerticalForceOnFinalMerge;
             Vector3 WinCubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
             newCube.SetImpulse(WinCubeImpulse, WinCubeAngular);
             newCube.StartFinalMerge();
+
+            GameWin();
         }
 
         DestroyCube(cube1);
@@ -217,6 +218,8 @@ public class GameManagement : MonoBehaviour
         isGameStarted = false;
         isGameWin = false;
         OnGameFailed?.Invoke();
+
+        SoundManagment.PlaySound("lose", null, 0.5f);
     }
     private void GameWin()
     {
@@ -225,6 +228,8 @@ public class GameManagement : MonoBehaviour
         isGameStarted = false;
         isGameWin = true;
         OnGameWin?.Invoke();
+
+        SoundManagment.PlaySound("win");
     }
 
     private void Awake()

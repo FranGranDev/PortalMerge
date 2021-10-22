@@ -18,14 +18,18 @@ public class SoundManagment : MonoBehaviour
     [SerializeField] private AudioSource MusicSource;
     private float MusicVol;
 
-    private void DestroySoundOnEnd(AudioSource obj) => StartCoroutine(DestroySoundOnEndCour(obj));
-    private IEnumerator DestroySoundOnEndCour(AudioSource obj)
+    private void DestroySoundOnEnd(AudioSource obj, float Delay) => StartCoroutine(DestroySoundOnEndCour(obj, Delay));
+    private IEnumerator DestroySoundOnEndCour(AudioSource obj, float Delay)
     {
-        while(obj.isPlaying)
+        yield return new WaitForSeconds(Delay);
+        while(obj != null && obj.isPlaying)
         {
             yield return new WaitForFixedUpdate();
         }
-        Destroy(obj.gameObject);
+        if (obj != null)
+        {
+            Destroy(obj.gameObject);
+        }
         yield break;
     }
 
@@ -38,7 +42,7 @@ public class SoundManagment : MonoBehaviour
     {
         MusicSource.volume = MusicVol * (GameManagement.MainData.MuteMusic ? 0 : 1);
     }
-    public static void PlaySound(string id, Transform obj = null)
+    public static void PlaySound(string id, Transform obj = null, float Delay = 0)
     {
         if (GameManagement.MainData.MuteEffect)
             return;
@@ -46,7 +50,11 @@ public class SoundManagment : MonoBehaviour
         {
             SoundItem ItemData = Active.Data.Sounds.Find(item => item.id == id);
             
-            GameObject SoundObject = Instantiate(Active.SoundPrefab, obj);
+            GameObject SoundObject = Instantiate(Active.SoundPrefab, GameManagement.Active.LevelTransform);
+            if (obj != null)
+            {
+                SoundObject.transform.position = obj.position;
+            }
             SoundObject.name = $"source: {id}";
 
             AudioSource SoundSource = SoundObject.GetComponent<AudioSource>();
@@ -54,9 +62,10 @@ public class SoundManagment : MonoBehaviour
             SoundSource.volume = ItemData.Volume;
             SoundSource.pitch = ItemData.Pitch;
             SoundSource.spatialBlend = ItemData.SpatialBlend;
+            SoundSource.maxDistance = ItemData.MaxDistance;
 
-            SoundSource.Play();
-            Active.DestroySoundOnEnd(SoundSource);
+            SoundSource.PlayDelayed(Delay);
+            Active.DestroySoundOnEnd(SoundSource, Delay);
             
         }
         else

@@ -43,6 +43,8 @@ public class UIManager : MonoBehaviour
         if (CurrantState != UIState.Start)
             return;
         LevelManagement.Default.StartGame();
+
+        SoundManagment.PlaySound("ui_button");
     }
     public void Restart()
     {
@@ -51,6 +53,7 @@ public class UIManager : MonoBehaviour
         LevelManagement.Default.RestartLevel();
 
         SetState(UIState.Start);
+        SoundManagment.PlaySound("ui_button");
     }
     public void Next()
     {
@@ -59,6 +62,7 @@ public class UIManager : MonoBehaviour
         LevelManagement.Default.NextLevel();
 
         SetState(UIState.Start);
+        SoundManagment.PlaySound("ui_button");
     }
 
     public void TurnTutor(bool on)

@@ -28,7 +28,7 @@ public class Laser : MonoBehaviour, IActivate
     private IEnumerator DestroyCube(ICube cube)
     {
         yield return new WaitForSeconds(DestroyDelay);
-        cube.DestroyCube();
+        cube.DestroyCube(Cube.DestroyType.Laser);
         yield break;
     }
 

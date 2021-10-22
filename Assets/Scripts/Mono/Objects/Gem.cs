@@ -37,6 +37,8 @@ public class Gem : MonoBehaviour, ICollected
 
         CreateCollectedParticle();
 
+        SoundManagment.PlaySound("gem_take", transform);
+
         Destroy(gameObject);
     }
     private void CreateCollectedParticle()

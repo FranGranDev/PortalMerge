@@ -13,14 +13,88 @@ MonoBehaviour:
   m_Name: SoundData
   m_EditorClassIdentifier: 
   soundItems:
-  - id: test
-    Clip: {fileID: 8300000, guid: 8a1b45a57608f8041abecfff55933132, type: 3}
+  - id: ui_button
+    Clip: {fileID: 8300000, guid: 2332c957fd54ee54bb647874e87bd598, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 0
+    MaxDistance: 100
+  - id: button
+    Clip: {fileID: 8300000, guid: 2332c957fd54ee54bb647874e87bd598, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
+    MaxDistance: 25
+  - id: destroy_laser
+    Clip: {fileID: 8300000, guid: 48034c546890a6b4bb23db931804d553, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: destroy_water
+    Clip: {fileID: 8300000, guid: e5c1ead3d5e9ce042874a9bd719e5484, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: twirl_punch
+    Clip: {fileID: 8300000, guid: 8b720a0e90e228f46863455514791836, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: gem_take
+    Clip: {fileID: 8300000, guid: 768fc73cd459ea249a136d91a30d7f9f, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: win
+    Clip: {fileID: 8300000, guid: 3be75b01a1e2dc34aa6c5c1c476f8ac7, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 0
+    MaxDistance: 25
+  - id: merge
+    Clip: {fileID: 8300000, guid: e531a148b4899c242a6305088b1af490, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: portal
+    Clip: {fileID: 8300000, guid: 5dd0c91e4465ed24180e9ac31a18b1c9, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: cannon_fire
+    Clip: {fileID: 8300000, guid: 4ceb694118de8db42aa3c2f7442b7203, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: destroy_fall
+    Clip: {fileID: 8300000, guid: e5c1ead3d5e9ce042874a9bd719e5484, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: destroy_bullet
+    Clip: {fileID: 8300000, guid: e5c1ead3d5e9ce042874a9bd719e5484, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 1
+    MaxDistance: 25
+  - id: lose
+    Clip: {fileID: 8300000, guid: 3be75b01a1e2dc34aa6c5c1c476f8ac7, type: 3}
+    Volume: 1
+    Pitch: 1
+    SpatialBlend: 0
+    MaxDistance: 25
   musicItems:
   - id: music_0
     Clip: {fileID: 8300000, guid: 26364aaf1f64b40c1a047b0bacfbd10e, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 0
+    MaxDistance: 0

@@ -18,7 +18,7 @@ public class InputManagement : MonoBehaviour
     }
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
-    public static TapInfo GetCenterPoint { get { return new TapInfo(ActionType.OnSwipe, ScreenCenter()); } }
+    public static TapInfo GetCenterPoint { get { return new TapInfo(ActionType.OnSwipe, ScreenCenter(), false); } }
     public static Vector2 ScreenCenter()
     {
         return new Vector2(Screen.width / 2, Screen.height / 2);
@@ -60,12 +60,12 @@ public class InputManagement : MonoBehaviour
         bool MoveCube = true;
         Vector2 Center = ScreenCenter();
         float Offset = ((CurrantTap.InputPos - Center).y) / (Screen.height / 2);
-        float AirRatio = CurrantCube.AfterMerge ? 0f : 1f;
+        float AirRatio = CurrantCube.NoInput ? 0f : 1f;
+
 
         if ((CurrantTap.InputPos - Center).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
         {
-
-            if (CurrantTap.InputDir.normalized.y > 0.0f)
+            if (CurrantTap.InputDir.normalized.y > 0f || (CurrantCube.NoInput && TapInfo.PrevDir.y > 0f))
             {
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset * AirRatio), CurrantTap.Point);
                 Vector2 UpLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneUp));
@@ -79,7 +79,7 @@ public class InputManagement : MonoBehaviour
         }
         else if ((CurrantTap.InputPos - Center).y * AirRatio < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
         {
-            if (CurrantTap.InputDir.normalized.y < -0.0f)
+            if (CurrantTap.InputDir.normalized.y < -0f || (CurrantCube.NoInput && TapInfo.PrevDir.y < -0f))
             {
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset * AirRatio), CurrantTap.Point);
                 Vector2 DownLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneDown));
@@ -138,7 +138,7 @@ public class InputManagement : MonoBehaviour
 
     public void SubscribeForCube(ICube cube)
     {
-        StartCoroutine(SubscibeForCubeCour(cube, 0f));
+        StartCoroutine(SubscibeForCubeCour(cube, Time.fixedDeltaTime));
     }
     private IEnumerator SubscibeForCubeCour(ICube cube, float Delay)
     {
@@ -326,7 +326,7 @@ public class InputManagement : MonoBehaviour
 
         public static Vector3 PrevPoint;
         private static Vector2 PrevTouch;
-        private static Vector3 PrevDir;
+        public static Vector3 PrevDir;
         public const string NULL_TAG = "NULL";
         private ActionType TagToActionInfo(string Tag)
         {
@@ -373,16 +373,17 @@ public class InputManagement : MonoBehaviour
             {
                 InputPos = Input.mousePosition;
             }
-
-            if ((InputPos - PrevTouch).magnitude > 1f)
+            if((InputPos - PrevTouch).magnitude > 0.25f)
             {
                 InputDir = (InputPos - PrevTouch).normalized;
                 PrevDir = InputDir;
             }
             else
             {
-                InputDir = PrevDir;
+                //InputDir = PrevDir;
+                InputDir = Vector2.zero;
             }
+
             PrevTouch = InputPos;
 
             Ray ray = Camera.main.ScreenPointToRay(InputPos);
@@ -402,11 +403,21 @@ public class InputManagement : MonoBehaviour
 
             TapActionInfo = TagToActionInfo(Tag);
         }
-        public TapInfo(ActionType NowClickInfo, Vector2 InputPos)
+        public TapInfo(ActionType NowClickInfo, Vector2 InputPos, bool SetPrevTouch = true, bool ForceSetInputDir = false)
         {
-            InputDir = InputPos.normalized;
-            PrevTouch = InputPos;
+            if (ForceSetInputDir)
+            {
+                InputDir = PrevDir;
+            }
+            else
+            {
+                InputDir = InputPos.normalized;
+            }
 
+            if (SetPrevTouch)
+            {
+                PrevTouch = InputPos;
+            }
             Ray ray = Camera.main.ScreenPointToRay(InputPos);
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo)))
             {

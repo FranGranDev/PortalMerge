@@ -77,6 +77,10 @@ public class Activator : MonoBehaviour
         {
             _anim.SetBool(ANIM_BOOL, on);
         }
+        if(on)
+        {
+            SoundManagment.PlaySound("button", transform);
+        }
         ActivateCoroutine = null;
         yield break;
     }
@@ -84,7 +88,6 @@ public class Activator : MonoBehaviour
     public void SetRedColor()
     {
         _render.material = Red;
-        
     }
     public void SetGreenColor()
     {

@@ -16,4 +16,6 @@ public struct SoundItem
     [Header("Объемность звука(2D/3D)")]
     [Range(0, 1)]
     public float SpatialBlend;
+    [Header("Максимальная дальность звука")]
+    public float MaxDistance;
 }

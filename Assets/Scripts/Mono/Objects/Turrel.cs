@@ -210,6 +210,10 @@ public class Turrel : MonoBehaviour, IActivate
             Bullet bullet = Instantiate(GameManagement.MainData.Bullet, FirePoint[i].position, FirePoint[i].rotation, null).GetComponent<Bullet>();
             bullet.Fire(Main.transform.forward * BulletSpeed, BulletDistance, Enemy);
         }
+        if(FirePoint.Length > 0)
+        {
+            SoundManagment.PlaySound("cannon_fire", transform);
+        }
     }
     private void Reload()
     {

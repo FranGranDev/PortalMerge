@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour, IPortal, IActivate
 {
+    [Header("Settings")]
+    [SerializeField] private float ExtraForce;
     [Header("Pair")]
     [SerializeField] private Portal SecondPortal;
     [SerializeField] private IPortal PairPortal => SecondPortal;
@@ -69,8 +71,8 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
             cube.CubeRig.velocity *= 0.25f;
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
-            cube.CubeRig.velocity = (transform.forward + Vector3.up).normalized * (PrevCubeVelocity *
-            GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
+            cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.25f).normalized * (PrevCubeVelocity *
+            GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal + ExtraForce);
             Vector3 CubeAngular = GameManagement.MainData.AddRotationOnExitPortal * new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne());
             cube.CubeRig.angularVelocity += CubeAngular;
             cube.CubeTransform.position = transform.position + Vector3.up * 3f;
@@ -97,7 +99,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     private IEnumerator OnTeleportedCour(ICube cube)
     {
         float Lenght = (transform.position - cube.CubeTransform.position).magnitude;
-        while (!cube.isNull && (transform.position - cube.CubeTransform.position).magnitude < Lenght + 0.1f)
+        while (!cube.isNull && (transform.position - cube.CubeTransform.position).magnitude < Lenght)
         {
             yield return new WaitForFixedUpdate();
         }

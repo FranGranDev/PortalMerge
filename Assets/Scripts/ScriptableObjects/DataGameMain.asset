@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e1717594a58846b88f961fc095638, type: 3}
   m_Name: DataGameMain
   m_EditorClassIdentifier: 
-  MuteMusic: 0
+  MuteMusic: 1
   MuteEffect: 0
   SpeedSumOnMerge: 0.35
   VerticalForceOnMerge: 10
   VerticalForceOnFinalMerge: 25
   RotationOnMerge: 15
   CubeDragSpeed: 0.75
-  CubeDragAcceleration: 0.25
+  CubeDragAcceleration: 0.2
   CubeFriction: 0.5
   CubeHeightOnMove: 0.6
   MinDistanceToMove: 0.5
@@ -36,7 +36,7 @@ MonoBehaviour:
   FollowCubeFriction: 0.025
   MoveToPortalSpeed: 0.75
   MoveToCubeOnWinSpeed: 0.25
-  TeleportTime: 0
+  TeleportTime: 0.1
   SaveVelocityOnExitPortal: 0
   AddVelocityOnExitPortal: 6
   AddRotationOnExitPortal: 10
