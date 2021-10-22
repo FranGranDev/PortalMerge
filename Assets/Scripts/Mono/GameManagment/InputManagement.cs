@@ -5,9 +5,8 @@ using UnityEngine;
 public class InputManagement : MonoBehaviour
 {
     #region Singletone
-    private static InputManagement _active;
-    public static InputManagement Active { get => _active; }
-    public InputManagement() => _active = this;
+    public static InputManagement Active { get; private set; }
+    public InputManagement() => Active = this;
     #endregion
 
 
@@ -29,6 +28,11 @@ public class InputManagement : MonoBehaviour
     {
         return obj.position.x < GameZoneX[0] || obj.position.x > GameZoneX[1];
     }
+    public bool BelowGameZone(Transform obj)
+    {
+        return obj.transform.position.y + 1 < CameraTrigger.position.y;
+    }
+    private Transform CameraTrigger;
 
     private bool FollowCube;
     private Vector3 TakeDelta;
@@ -37,6 +41,7 @@ public class InputManagement : MonoBehaviour
     public static Vector2 LastTouch;
 
     private Vector3 StartTapPoint;
+    #region Callbacks
     public delegate void OnSwipeInput(Vector3 Point, Vector3 StartPoint);
     public static OnSwipeInput OnCubeThrow;
     public static OnSwipeInput OnCubeFollow;
@@ -45,6 +50,7 @@ public class InputManagement : MonoBehaviour
     public static OnSwipeInput OnSwipeEnd;
     public delegate void OnTouchAction();
     public OnTouchAction OnTakeCube;
+    #endregion
 
     private ICube CurrantCube;
     private ICube prevCube;
@@ -285,6 +291,8 @@ public class InputManagement : MonoBehaviour
         GameZoneX = new float[2];
         GameZoneX[0] = new TapInfo(ActionType.OnSwipe, new Vector2(0, 0)).Point.x - 1;
         GameZoneX[1] = new TapInfo(ActionType.OnSwipe, new Vector2(Screen.width, 0)).Point.x + 1;
+
+        CameraTrigger = GameObject.FindGameObjectWithTag("CameraTrigger").transform;
     }
     private void Start()
     {

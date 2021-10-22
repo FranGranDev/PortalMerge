@@ -181,6 +181,21 @@ public class Cube : MonoBehaviour, ICube
         OnLeaveZoneCoroutine = null;
         yield break;
     }
+    public void StartFinalMerge()
+    {
+        StartCoroutine(FinalMergeCour());
+    }
+    private IEnumerator FinalMergeCour()
+    {
+        while (CubeRig.velocity.magnitude > 5f)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        CubeRig.velocity *= 0.75f;
+        CubeRig.useGravity = false;
+        StartCoroutine(FinalParticleCour());
+        yield break;
+    }
 
     public void EnterPlatform(BarrierMove platform)
     {
@@ -295,6 +310,22 @@ public class Cube : MonoBehaviour, ICube
         partilce.transform.localScale = transform.localScale * GameManagement.MainData.MergeParticleSize;
 
     }
+    private IEnumerator FinalParticleCour()
+    {
+        Vector3 Offset = Vector3.down * 4;
+        ParticleSystem particle = Instantiate(GameManagement.MainData.FinalMerge, transform.position, Quaternion.identity, PrevParent);
+        particle.transform.localScale = Vector3.zero;
+        var main = particle.main;
+        main.startColor = CurrantColor;
+        while (!isNull)
+        {
+            particle.transform.position = transform.position + Vector3.down * 2;
+            particle.transform.localScale = Vector3.Lerp(particle.transform.localScale, Vector3.one, 0.025f);
+            yield return new WaitForFixedUpdate();
+        }
+
+        yield break;
+    }
     #endregion
     #region Movement
     public void Take()
@@ -312,7 +343,6 @@ public class Cube : MonoBehaviour, ICube
     }
     public void Drag(Vector3 Point)
     {
-        Debug.Log(inAir);
         Point += Vector3.up * transform.localScale.y * CubeHeightOnMove;
         Vector3 Direction = (Point - transform.position);
         if (Direction.magnitude > MinDistanceToMove)
@@ -346,6 +376,18 @@ public class Cube : MonoBehaviour, ICube
         _rig.velocity += Impulse;
         _rig.angularVelocity += Angular;
     }
+    public void SetImpulse(Vector3 Impulse, Vector3 Angular)
+    {
+        _rig.velocity = Impulse;
+        _rig.angularVelocity = Angular;
+    }
+    private void CheckBelowScene()
+    {
+        if(InputManagement.Active.BelowGameZone(transform))
+        {
+            DestroyCube();
+        }
+    }
     private void OnEnterGround()
     {
         
@@ -362,7 +404,7 @@ public class Cube : MonoBehaviour, ICube
     private Coroutine OnLeaveGroundCoroutine;
     private IEnumerator OnLeaveGroundCour()
     {
-        yield return new WaitForSeconds(0.025f);
+        yield return new WaitForSeconds(0.05f);
         inAir = true;
         if (Physics.Raycast(transform.position, Vector3.down, 5, 1 << 8)) //есть ли под нами земля?
         {
@@ -480,6 +522,9 @@ public class Cube : MonoBehaviour, ICube
             case "Death":
                 OnWaterEntered();
                 break;
+            case "Platform":
+                CheckBelowScene();
+                break;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -551,6 +596,7 @@ public interface ICube
     Collider CubeCol { get; }
 
     void SetNullParent();
+
     void Take();
 
     void Drag(Vector3 Point);
@@ -574,6 +620,7 @@ public interface ICube
 
     void ExitPlatform();
 
+    void StartFinalMerge();
 
     void CreateMergeParticle();
 
@@ -582,6 +629,8 @@ public interface ICube
     void AddImpulse(Vector3 Impulse);
 
     void AddImpulse(Vector3 Impulse, Vector3 Angular);
+
+    void SetImpulse(Vector3 Impulse, Vector3 Angular);
 
     void InitCube();
 

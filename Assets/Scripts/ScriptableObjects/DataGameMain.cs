@@ -10,6 +10,8 @@ public class DataGameMain : ScriptableObject
     public float SpeedSumOnMerge;
     [Range(0, 25f)]
     public float VerticalForceOnMerge;
+    [Range(0, 50f)]
+    public float VerticalForceOnFinalMerge;
     [Range(0, 25f)]
     public float RotationOnMerge;
     [Range(0.1f, 1f)]
@@ -29,6 +31,7 @@ public class DataGameMain : ScriptableObject
     public float CameraFollowSpeed;
     [Range(1, 25f)]
     public float CameraFriction;
+    public Vector3 CameraWinOffset;
     [Header("Настройка камеры")]
     public bool MoveToCubeOnEnterPortal;
     public bool CameraFollowCube;
@@ -79,6 +82,7 @@ public class DataGameMain : ScriptableObject
     public ParticleSystem GemCollected;
     public ParticleSystem TurrelFire;
     public ParticleSystem BulletDestroy;
+    public ParticleSystem FinalMerge;
     public GameObject[] Confetti;
     public GameObject GetConfetti()
     {

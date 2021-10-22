@@ -79,7 +79,7 @@ public class CameraMovement : MonoBehaviour
     {
         while (!cube.isNull && (new Vector2(transform.position.x, transform.position.z) - new Vector2(cube.CubeTransform.position.x, cube.CubeTransform.position.z)).magnitude > 0.25f)
         {
-            Vector3 newPoint = new Vector3(cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
+            Vector3 newPoint = new Vector3(cube.CubeTransform.position.x, cube.CubeTransform.position.y, cube.CubeTransform.position.z) + GameManagement.MainData.CameraWinOffset;
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToCubeOnWinSpeed * 0.1f);
             yield return new WaitForFixedUpdate();
         }

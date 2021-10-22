@@ -175,15 +175,22 @@ public class GameManagement : MonoBehaviour
         SubscribeForCube(newCube);
         LastCube = newCube;
 
-        DestroyCube(cube1);
-        DestroyCube(cube2);
-
         InputManagement.Active.SubscribeForCube(newCube);
         if (newCube.Number == TargetNum)
         {
             GameWin();
+
+            Vector3 WinCubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
+            WinCubeImpulse += Vector3.up * MainData.VerticalForceOnFinalMerge;
+            Vector3 WinCubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
+            newCube.SetImpulse(WinCubeImpulse, WinCubeAngular);
+            newCube.StartFinalMerge();
         }
+
+        DestroyCube(cube1);
+        DestroyCube(cube2);
     }
+
 
     private void OnGemCollected(ICollected gem)
     {

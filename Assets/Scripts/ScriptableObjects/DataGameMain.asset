@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeedSumOnMerge: 0.35
   VerticalForceOnMerge: 10
+  VerticalForceOnFinalMerge: 25
   RotationOnMerge: 15
   CubeDragSpeed: 0.75
   CubeDragAcceleration: 0.25
@@ -24,6 +25,7 @@ MonoBehaviour:
   LockSideMove: 1
   CameraFollowSpeed: 10
   CameraFriction: 2
+  CameraWinOffset: {x: 0, y: 15, z: -3}
   MoveToCubeOnEnterPortal: 1
   CameraFollowCube: 1
   FollowCubeDeadZoneUp: 0.2
@@ -56,6 +58,8 @@ MonoBehaviour:
   TurrelFire: {fileID: 8911892298764087524, guid: 9f392b025e2f97141b32f14c7890421d,
     type: 3}
   BulletDestroy: {fileID: 3145845078045133723, guid: 2f2f432c085c0ff4aad7f0651c0969b9,
+    type: 3}
+  FinalMerge: {fileID: 9099722521726314399, guid: a1be12d6025bbd94a880e780837bee95,
     type: 3}
   Confetti:
   - {fileID: 164112, guid: a54f4434684ca0143bf644289de35374, type: 3}
