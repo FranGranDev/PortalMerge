@@ -78,8 +78,10 @@ public class LevelManagement : MonoBehaviour
         {
             SetLevelParams(level);
             
-            
-            //CurrentLevelIndex = levelIndex;
+            if(editorMode)
+            {
+                CurrentLevelIndex = levelIndex;
+            }
 
             //Debug.Log("Set: " + CurrentLevelIndex);
         }
