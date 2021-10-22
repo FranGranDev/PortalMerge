@@ -11,7 +11,7 @@ public class InputManagement : MonoBehaviour
     #endregion
 
 
-    private enum ActionType
+    public enum ActionType
     {
         NotStarted,
         OnCube,
@@ -19,6 +19,11 @@ public class InputManagement : MonoBehaviour
     }
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
+    public static TapInfo GetCenterPoint { get { return new TapInfo(ActionType.OnSwipe, ScreenCenter()); } }
+    public static Vector2 ScreenCenter()
+    {
+        return new Vector2(Screen.width / 2, Screen.height / 2);
+    }
     public float[] GameZoneX { get; private set; }
     public bool OutOfGameZone(Transform obj)
     {
@@ -44,127 +49,19 @@ public class InputManagement : MonoBehaviour
     private ICube CurrantCube;
     private ICube prevCube;
 
-    private class TapInfo
-    {
-        public readonly Vector3 Point;
-        public readonly Vector2 InputPos;
-        public readonly Vector2 InputDir;
-        public readonly string Tag;
-        public readonly GameObject gameObject;
-        public readonly ActionType TapActionInfo;
-
-        public static Vector3 PrevPoint;
-        private static Vector2 PrevTouch;
-        private static Vector3 PrevDir;
-        public const string NULL_TAG = "NULL";
-        private ActionType TagToActionInfo(string Tag)
-        {
-            switch (Tag)
-            {
-                case NULL_TAG:
-                    return ActionType.NotStarted;
-                case "Cube":
-                    return ActionType.OnCube;
-                default:
-                    return ActionType.OnSwipe;
-            }
-        }
-        private LayerMask GetMask(ActionType info)
-        {
-            switch (info)
-            {
-                case ActionType.OnCube:
-                    return LayerMask.GetMask(new string[1] { "Camera" });
-                case ActionType.OnSwipe:
-                    return LayerMask.GetMask(new string[1] { "Camera" });
-                default:
-                    return LayerMask.GetMask(new string[3] { "Camera", "Object", "Ground" });
-            }
-
-        } //if OnSwipe, chech only "Camera" layer, if OnCube check only "Ground" layers
-
-        public TapInfo(ActionType NowClickInfo)
-        {
-            if (Application.isMobilePlatform)
-            {
-                if(Input.touchCount > 0)
-                {
-                    InputPos = Input.GetTouch(0).position;
-                    LastTouch = InputPos;
-
-                }
-                else
-                {
-                    InputPos = LastTouch;
-                }
-            }
-            else
-            {
-                InputPos = Input.mousePosition;
-            }
-
-            if ((InputPos - PrevTouch).magnitude > 1f)
-            {
-                InputDir = (InputPos - PrevTouch).normalized;
-                PrevDir = InputDir;
-            }
-            else
-            {
-                InputDir = PrevDir;
-            }
-            PrevTouch = InputPos;
-
-            Ray ray = Camera.main.ScreenPointToRay(InputPos);
-            if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo))) 
-            {
-                Point = raycastHit.point;
-                Tag = raycastHit.transform.tag;
-                PrevPoint = Point;
-                gameObject = raycastHit.transform.gameObject;
-            }
-            else
-            {
-                gameObject = null;
-                Point = PrevPoint;
-                Tag = NULL_TAG;
-            }
-
-            TapActionInfo = TagToActionInfo(Tag);
-        }
-        public TapInfo(ActionType NowClickInfo, Vector2 InputPos)
-        {
-            InputDir = InputPos.normalized;
-            PrevTouch = InputPos;
-
-            Ray ray = Camera.main.ScreenPointToRay(InputPos);
-            if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo)))
-            {
-                Point = raycastHit.point;
-                Tag = raycastHit.transform.tag;
-                PrevPoint = Point;
-                gameObject = raycastHit.transform.gameObject;
-            }
-            else
-            {
-                gameObject = null;
-                Point = PrevPoint;
-                Tag = NULL_TAG;
-            }
-
-            TapActionInfo = TagToActionInfo(Tag);
-        }
-    }
-
     private void CubeMovement()
     {
         bool MoveCube = true;
-        Vector2 ScreenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
-        float Offset = ((CurrantTap.InputPos - ScreenCenter).y) / (Screen.height / 2);
-        if ((CurrantTap.InputPos - ScreenCenter).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
+        Vector2 Center = ScreenCenter();
+        float Offset = ((CurrantTap.InputPos - Center).y) / (Screen.height / 2);
+        float AirRatio = CurrantCube.AfterMerge ? 0f : 1f;
+
+        if ((CurrantTap.InputPos - Center).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
         {
+
             if (CurrantTap.InputDir.normalized.y > 0.0f)
             {
-                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset * AirRatio), CurrantTap.Point);
                 Vector2 UpLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneUp));
                 CurrantTap = new TapInfo(CurrantAction, UpLinePos);
                 MoveCube = CurrantCube.CubeTransform.position.z < CurrantTap.Point.z + 1;
@@ -174,11 +71,11 @@ public class InputManagement : MonoBehaviour
                 OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
             }
         }
-        else if ((CurrantTap.InputPos - ScreenCenter).y < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
+        else if ((CurrantTap.InputPos - Center).y * AirRatio < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
         {
             if (CurrantTap.InputDir.normalized.y < -0.0f)
             {
-                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset), CurrantTap.Point);
+                OnCubeFollow?.Invoke(new Vector3(0, 0, Offset * AirRatio), CurrantTap.Point);
                 Vector2 DownLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneDown));
                 CurrantTap = new TapInfo(CurrantAction, DownLinePos);
                 MoveCube = CurrantCube.CubeTransform.position.z > CurrantTap.Point.z - 1;
@@ -193,7 +90,7 @@ public class InputManagement : MonoBehaviour
             OnCubeFollow?.Invoke(Vector3.zero, CurrantTap.Point);
         }
 
-        if (MoveCube)
+        if (MoveCube && !CurrantCube.AfterMerge)
         {
             CurrantCube.Drag(CurrantTap.Point + TakeDelta);
         }
@@ -387,7 +284,7 @@ public class InputManagement : MonoBehaviour
     {
         GameZoneX = new float[2];
         GameZoneX[0] = new TapInfo(ActionType.OnSwipe, new Vector2(0, 0)).Point.x - 1;
-        GameZoneX[1] = new TapInfo(ActionType.OnSwipe, new Vector2(Screen.width, 0)).Point.x + 1; 
+        GameZoneX[1] = new TapInfo(ActionType.OnSwipe, new Vector2(Screen.width, 0)).Point.x + 1;
     }
     private void Start()
     {
@@ -406,6 +303,118 @@ public class InputManagement : MonoBehaviour
         if (GameManagement.isGameStarted)
         {
             FixedActionExecute();
+        }
+    }
+
+
+    public class TapInfo
+    {
+        public readonly Vector3 Point;
+        public readonly Vector2 InputPos;
+        public readonly Vector2 InputDir;
+        public readonly string Tag;
+        public readonly GameObject gameObject;
+        public readonly ActionType TapActionInfo;
+
+        public static Vector3 PrevPoint;
+        private static Vector2 PrevTouch;
+        private static Vector3 PrevDir;
+        public const string NULL_TAG = "NULL";
+        private ActionType TagToActionInfo(string Tag)
+        {
+            switch (Tag)
+            {
+                case NULL_TAG:
+                    return ActionType.NotStarted;
+                case "Cube":
+                    return ActionType.OnCube;
+                default:
+                    return ActionType.OnSwipe;
+            }
+        }
+        private LayerMask GetMask(ActionType info)
+        {
+            switch (info)
+            {
+                case ActionType.OnCube:
+                    return LayerMask.GetMask(new string[1] { "Camera" });
+                case ActionType.OnSwipe:
+                    return LayerMask.GetMask(new string[1] { "Camera" });
+                default:
+                    return LayerMask.GetMask(new string[3] { "Camera", "Object", "Ground" });
+            }
+
+        } //if OnSwipe, chech only "Camera" layer, if OnCube check only "Ground" layers
+
+        public TapInfo(ActionType NowClickInfo)
+        {
+            if (Application.isMobilePlatform)
+            {
+                if (Input.touchCount > 0)
+                {
+                    InputPos = Input.GetTouch(0).position;
+                    LastTouch = InputPos;
+
+                }
+                else
+                {
+                    InputPos = LastTouch;
+                }
+            }
+            else
+            {
+                InputPos = Input.mousePosition;
+            }
+
+            if ((InputPos - PrevTouch).magnitude > 1f)
+            {
+                InputDir = (InputPos - PrevTouch).normalized;
+                PrevDir = InputDir;
+            }
+            else
+            {
+                InputDir = PrevDir;
+            }
+            PrevTouch = InputPos;
+
+            Ray ray = Camera.main.ScreenPointToRay(InputPos);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo)))
+            {
+                Point = raycastHit.point;
+                Tag = raycastHit.transform.tag;
+                PrevPoint = Point;
+                gameObject = raycastHit.transform.gameObject;
+            }
+            else
+            {
+                gameObject = null;
+                Point = PrevPoint;
+                Tag = NULL_TAG;
+            }
+
+            TapActionInfo = TagToActionInfo(Tag);
+        }
+        public TapInfo(ActionType NowClickInfo, Vector2 InputPos)
+        {
+            InputDir = InputPos.normalized;
+            PrevTouch = InputPos;
+
+            Ray ray = Camera.main.ScreenPointToRay(InputPos);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 250f, GetMask(NowClickInfo)))
+            {
+                Point = raycastHit.point;
+                Tag = raycastHit.transform.tag;
+                PrevPoint = Point;
+                gameObject = raycastHit.transform.gameObject;
+            }
+            else
+            {
+                gameObject = null;
+                Point = PrevPoint;
+                Tag = NULL_TAG;
+            }
+
+            TapActionInfo = TagToActionInfo(Tag);
         }
     }
 }

@@ -34,8 +34,8 @@ public class Activator : MonoBehaviour
     private MeshRenderer _render;
     private bool HaveAnimator;
     [Header("Settings")]
-    [SerializeField] private Color Red;
-    [SerializeField] private Color Green;
+    [SerializeField] private Material Red;
+    [SerializeField] private Material Green;
 
     private void Init()
     {
@@ -83,12 +83,12 @@ public class Activator : MonoBehaviour
 
     public void SetRedColor()
     {
-        _render.material.color = Red;
+        _render.material = Red;
         
     }
     public void SetGreenColor()
     {
-        _render.material.color = Green;
+        _render.material = Green;
     }
 
     private void OnTriggerEnter(Collider other)

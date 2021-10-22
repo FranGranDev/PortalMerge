@@ -6,6 +6,8 @@ using DG.Tweening;
 public abstract class BarrierMove : MonoBehaviour, IActivate
 {
     [Header("Settings")]
+    [SerializeField] protected bool Sticking;
+
     [SerializeField] protected bool OneMove;
     [SerializeField] protected bool isMoveToEnd;
     [SerializeField] protected bool Activated;
@@ -120,7 +122,7 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
     }
     private IEnumerator OnEnterPlatformCour(ICube cube)
     {
-        while (cube.isNull || cube.CubeRig.angularVelocity.magnitude > 0.25f)
+        while (cube.isNull || cube.isMoving || cube.CubeRig.angularVelocity.magnitude > 0.25f)
         {
             if (cube.isNull)
             {
@@ -131,7 +133,6 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
             yield return new WaitForFixedUpdate();
         }
         yield return new WaitForFixedUpdate();
-        Debug.Log("Enter");
         cube.EnterPlatform(this);
 
         OnPlatformCoroutine.Remove(cube);
@@ -163,7 +164,6 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
             StopCoroutine(OnPlatformCoroutine[cube]);
             OnPlatformCoroutine.Remove(cube);
         }
-        Debug.Log("exit");
 
         CubesOn.Remove(cube);
         yield break;
@@ -171,6 +171,8 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
 
     private void OnTriggerStay(Collider other)
     {
+        if (!Sticking)
+            return;
         if(other.tag == "Cube")
         {
             ICube cube = other.GetComponent<ICube>();

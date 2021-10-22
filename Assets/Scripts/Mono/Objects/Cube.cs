@@ -10,7 +10,7 @@ public class Cube : MonoBehaviour, ICube
     [HideInInspector] public int Number { get => _number; private set => _number = value; }
     public bool AfterPortal { get; private set; }
     public bool NoTelepor { get; private set; }
-    private bool AfterMerge;
+    public bool AfterMerge { get; private set; }
     private Color CurrantColor;
     public Color CubeColor { get => CurrantColor; }
 
@@ -267,7 +267,8 @@ public class Cube : MonoBehaviour, ICube
     private IEnumerator AfterMergeCour()
     {
         AfterMerge = true;
-        yield return new WaitForSeconds(0.5f);
+        float Delay = GameManagement.MainData.VerticalForceOnMerge * 0.06f;
+        yield return new WaitForSeconds(Delay);
         AfterMerge = false;
         yield break;
     }
@@ -311,13 +312,14 @@ public class Cube : MonoBehaviour, ICube
     }
     public void Drag(Vector3 Point)
     {
+        Debug.Log(inAir);
         Point += Vector3.up * transform.localScale.y * CubeHeightOnMove;
         Vector3 Direction = (Point - transform.position);
         if (Direction.magnitude > MinDistanceToMove)
         {
             float AirRatio = inAir && OffGravityOnTake ? 1f : 0f;
             Vector3 NewSpeed = Direction.normalized * DragSpeed / (AirRatio + 1) * 50 + Physics.gravity * AirRatio;
-            NewSpeed = new Vector3(NewSpeed.x, AfterMerge ? _rig.velocity.y : NewSpeed.y, NewSpeed.z);
+            NewSpeed = new Vector3(NewSpeed.x, AfterMerge ? CubeRig.velocity.y : NewSpeed.y, NewSpeed.z);
             _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
         }
         else
@@ -346,11 +348,12 @@ public class Cube : MonoBehaviour, ICube
     }
     private void OnEnterGround()
     {
-        inAir = false;
+        
         if (OnLeaveGroundCoroutine != null)
         {
             StopCoroutine(OnLeaveGroundCoroutine);
         }
+        inAir = false;
     }
     private void OnLeaveGround()
     {
@@ -360,12 +363,12 @@ public class Cube : MonoBehaviour, ICube
     private IEnumerator OnLeaveGroundCour()
     {
         yield return new WaitForSeconds(0.025f);
+        inAir = true;
         if (Physics.Raycast(transform.position, Vector3.down, 5, 1 << 8)) //есть ли под нами земля?
         {
             inAir = false;
             yield break;
         }
-        inAir = true;
         if (isMoving)
         {
             CubeRig.velocity = new Vector3(CubeRig.velocity.x * 0.5f, CubeRig.velocity.y - 5, CubeRig.velocity.z * 0.5f);
@@ -452,10 +455,10 @@ public class Cube : MonoBehaviour, ICube
     {
         switch (other.tag)
         {
-            case "Ground":
+            case "Man":
                 OnEnterGround();
                 break;
-            case "Man":
+            case "Ground":
                 OnEnterGround();
                 break;
         }
@@ -529,7 +532,11 @@ public interface ICube
 
     bool AfterPortal { get; }
 
+    bool AfterMerge { get; }
+
     bool isMoving { get; }
+
+    bool inAir { get; }
 
     bool isOnPlatform { get; }
 
