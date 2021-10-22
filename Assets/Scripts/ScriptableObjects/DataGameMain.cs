@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DataGameMain", menuName = "Data/DataGameMain")]
 public class DataGameMain : ScriptableObject
 {
+    [Header("Dynamic settings")]
+    public bool MuteMusic;
+    public bool MuteEffect;
+
     [Header("Физика куба")]
     [Range(0, 1f)]
     public float SpeedSumOnMerge;
@@ -83,6 +87,7 @@ public class DataGameMain : ScriptableObject
     public ParticleSystem TurrelFire;
     public ParticleSystem BulletDestroy;
     public ParticleSystem FinalMerge;
+    public GameObject RadialShine;
     public GameObject[] Confetti;
     public GameObject GetConfetti()
     {

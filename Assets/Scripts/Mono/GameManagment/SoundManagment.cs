@@ -15,6 +15,8 @@ public class SoundManagment : MonoBehaviour
 
     [SerializeField] private Vector3 ListenerOffset;
     [SerializeField] private GameObject Listener;
+    [SerializeField] private AudioSource MusicSource;
+    private float MusicVol;
 
     private void DestroySoundOnEnd(AudioSource obj) => StartCoroutine(DestroySoundOnEndCour(obj));
     private IEnumerator DestroySoundOnEndCour(AudioSource obj)
@@ -27,9 +29,19 @@ public class SoundManagment : MonoBehaviour
         yield break;
     }
 
-
+    public static void PlayMusic()
+    {
+        Active.MusicVol = Active.MusicSource.volume;
+        Active.MusicSource.Play();
+    }
+    private void CheckMuteMusic()
+    {
+        MusicSource.volume = MusicVol * (GameManagement.MainData.MuteMusic ? 0 : 1);
+    }
     public static void PlaySound(string id, Transform obj = null)
     {
+        if (GameManagement.MainData.MuteEffect)
+            return;
         if(Active.Data.Sounds.Exists(item => item.id == id))
         {
             SoundItem ItemData = Active.Data.Sounds.Find(item => item.id == id);
@@ -64,9 +76,14 @@ public class SoundManagment : MonoBehaviour
 
     }
     private void Awake() => Init();
+    private void Start()
+    {
+        PlayMusic();
+    }
 
     private void FixedUpdate()
     {
         MoveListener();
+        CheckMuteMusic();
     }
 }

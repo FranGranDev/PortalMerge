@@ -11,7 +11,7 @@ public struct SoundItem
     [Range(0, 1)]
     public float Volume;
     [Header("Тон")]
-    [Range(0, 1)]
+    [Range(0, 2)]
     public float Pitch;
     [Header("Объемность звука(2D/3D)")]
     [Range(0, 1)]

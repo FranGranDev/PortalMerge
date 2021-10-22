@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e1717594a58846b88f961fc095638, type: 3}
   m_Name: DataGameMain
   m_EditorClassIdentifier: 
+  MuteMusic: 0
+  MuteEffect: 0
   SpeedSumOnMerge: 0.35
   VerticalForceOnMerge: 10
   VerticalForceOnFinalMerge: 25
@@ -60,6 +62,8 @@ MonoBehaviour:
   BulletDestroy: {fileID: 3145845078045133723, guid: 2f2f432c085c0ff4aad7f0651c0969b9,
     type: 3}
   FinalMerge: {fileID: 9099722521726314399, guid: a1be12d6025bbd94a880e780837bee95,
+    type: 3}
+  RadialShine: {fileID: 6734686657488560002, guid: 524b59fa60e09864cb18b134a71526ae,
     type: 3}
   Confetti:
   - {fileID: 164112, guid: a54f4434684ca0143bf644289de35374, type: 3}

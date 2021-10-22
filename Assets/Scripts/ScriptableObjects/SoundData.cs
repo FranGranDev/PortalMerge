@@ -6,6 +6,8 @@ using UnityEngine;
 public class SoundData : ScriptableObject
 {
     [SerializeField] private List<SoundItem> soundItems = new List<SoundItem>();
+    [SerializeField] private List<SoundItem> musicItems = new List<SoundItem>();
 
     public List<SoundItem> Sounds { get { return soundItems; } }
+    public List<SoundItem> Music { get { return soundItems; } }
 }

@@ -312,15 +312,19 @@ public class Cube : MonoBehaviour, ICube
     }
     private IEnumerator FinalParticleCour()
     {
-        Vector3 Offset = Vector3.down * 4;
-        ParticleSystem particle = Instantiate(GameManagement.MainData.FinalMerge, transform.position, Quaternion.identity, PrevParent);
+        Vector3 Offset = new Vector3(0f, 0, 0.1f);
+        GameObject particle = Instantiate(GameManagement.MainData.RadialShine, transform.position, Quaternion.identity, PrevParent);
+        Vector3 Scale = particle.transform.localScale;
+        Material material = particle.GetComponent<MeshRenderer>().material;
+        Color TargetColor = material.color;
+        material.color = new Color(1, 1, 1, 0);
         particle.transform.localScale = Vector3.zero;
-        var main = particle.main;
-        main.startColor = CurrantColor;
         while (!isNull)
         {
             particle.transform.position = transform.position + Vector3.down * 2;
-            particle.transform.localScale = Vector3.Lerp(particle.transform.localScale, Vector3.one, 0.025f);
+            particle.transform.Rotate(Vector3.up, 10 * Time.fixedDeltaTime);
+            particle.transform.localScale = Vector3.Lerp(particle.transform.localScale, Scale, 0.025f);
+            material.color = Color.Lerp(material.color, TargetColor, 0.02f);
             yield return new WaitForFixedUpdate();
         }
 
@@ -561,7 +565,7 @@ public class Cube : MonoBehaviour, ICube
         {
             isOutOfZone = false;
         }
-
+       
     }
 }
 
