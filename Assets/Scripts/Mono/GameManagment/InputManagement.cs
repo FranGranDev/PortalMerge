@@ -349,10 +349,10 @@ public class InputManagement : MonoBehaviour
                 case ActionType.OnSwipe:
                     return LayerMask.GetMask(new string[1] { "Camera" });
                 default:
-                    return LayerMask.GetMask(new string[3] { "Camera", "Object", "Ground" });
+                    return LayerMask.GetMask(new string[2] { "Camera", "Cube"});
             }
 
-        } //if OnSwipe, chech only "Camera" layer, if OnCube check only "Ground" layers
+        }
 
         public TapInfo(ActionType NowClickInfo)
         {
@@ -424,7 +424,14 @@ public class InputManagement : MonoBehaviour
                 Point = raycastHit.point;
                 Tag = raycastHit.transform.tag;
                 PrevPoint = Point;
-                gameObject = raycastHit.transform.gameObject;
+                if (raycastHit.transform.childCount > 0)
+                {
+                    gameObject = raycastHit.transform.GetChild(0).gameObject;
+                }
+                else
+                {
+                    gameObject = raycastHit.transform.gameObject;
+                }
             }
             else
             {
