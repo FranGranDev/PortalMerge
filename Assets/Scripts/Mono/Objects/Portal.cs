@@ -15,6 +15,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     private ICube prevCube;
     private Coroutine TeleportCoroutine;
 
+    private ISound Sound;
     private Animator _anim;
 
     public Transform PortalTransform => transform;
@@ -125,6 +126,10 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         _anim?.SetBool("Active", on);
 
         ClearPrevCube();
+        if(Sound != null)
+        {
+            Sound.Mute(!on);
+        }
     }
     private void Init()
     {
@@ -135,6 +140,12 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         TryGetComponent<Animator>(out _anim);
 
         Activate(isActive);
+
+        TryGetComponent(out Sound);
+        if (Sound != null)
+        {
+            Sound.Init(Activated);
+        }
     }
 
     private void Start()

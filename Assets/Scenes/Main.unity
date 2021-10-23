@@ -151,6 +151,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obstacle
       objectReference: {fileID: 0}
+    - target: {fileID: 6021435304807416225, guid: 229c054323ec2a84d9af54bc32ed0a8a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6402921495898266395, guid: 229c054323ec2a84d9af54bc32ed0a8a,
         type: 3}
       propertyPath: m_RootOrder
@@ -275,6 +280,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cannon
       objectReference: {fileID: 0}
+    - target: {fileID: 7023419001977672716, guid: 6d45560900b5b94408b5aa63068b4c60,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7023419001977672716, guid: 6d45560900b5b94408b5aa63068b4c60,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d45560900b5b94408b5aa63068b4c60, type: 3}
 --- !u!4 &296440393 stripped
@@ -375,6 +390,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1083038467938251670}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &490694098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4237253552761493149, guid: cb1be30a08a207f4f800548ac8242ab1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1272056025}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &517575086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -382,6 +403,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2161349633320610689, guid: f02e5a7ca72fff949bd3042cfc716141,
+        type: 3}
+      propertyPath: _target.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2161349633320610689, guid: f02e5a7ca72fff949bd3042cfc716141,
+        type: 3}
+      propertyPath: _target.Array.data[0]
+      value: 
+      objectReference: {fileID: 490694098}
+    - target: {fileID: 2161349633320610689, guid: f02e5a7ca72fff949bd3042cfc716141,
+        type: 3}
+      propertyPath: _target.Array.data[1]
+      value: 
+      objectReference: {fileID: 1466383884}
     - target: {fileID: 6261494901294852205, guid: f02e5a7ca72fff949bd3042cfc716141,
         type: 3}
       propertyPath: m_Name
@@ -395,7 +431,7 @@ PrefabInstance:
     - target: {fileID: 6750505362331874007, guid: f02e5a7ca72fff949bd3042cfc716141,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.3682923
+      value: -3.49
       objectReference: {fileID: 0}
     - target: {fileID: 6750505362331874007, guid: f02e5a7ca72fff949bd3042cfc716141,
         type: 3}
@@ -405,7 +441,7 @@ PrefabInstance:
     - target: {fileID: 6750505362331874007, guid: f02e5a7ca72fff949bd3042cfc716141,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.1094322
+      value: 7.97
       objectReference: {fileID: 0}
     - target: {fileID: 6750505362331874007, guid: f02e5a7ca72fff949bd3042cfc716141,
         type: 3}
@@ -732,6 +768,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8565877525947003775}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1466383884 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8132838896162289828, guid: e9a37403c29a3354fba491ee7903d0f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1486436468}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1475272567 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5044888272831587410, guid: fd594746437d13042980fede90c09418,
@@ -755,6 +797,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Portal_Blue (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132838896162289828, guid: e9a37403c29a3354fba491ee7903d0f4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8132838896162289829, guid: e9a37403c29a3354fba491ee7903d0f4,
         type: 3}
@@ -829,7 +876,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1486436468}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1466383884}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13dd5859793e0ef459bc6fce6f564e60, type: 3}
@@ -846,6 +893,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Portal_Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132838896162289828, guid: e9a37403c29a3354fba491ee7903d0f4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8132838896162289829, guid: e9a37403c29a3354fba491ee7903d0f4,
         type: 3}

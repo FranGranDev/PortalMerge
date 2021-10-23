@@ -3,6 +3,8 @@
 [System.Serializable]
 public struct SoundItem
 {
+    [Header("Название(для удобства)")]
+    public string name;
     [Header("ID")]
     public string id;
     [Header("Клип")]

@@ -41,6 +41,7 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
         }
     }
     private Dictionary<ICube, Coroutine> OnPlatformCoroutine = new Dictionary<ICube, Coroutine>();
+    private ISound Sound;
 
     public void Activate(bool on)
     {
@@ -94,6 +95,12 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
             EndPoint = transform;
         }
         Activate(Activated);
+
+        TryGetComponent(out Sound);
+        if (Sound != null)
+        {
+            Sound.Init(Activated);
+        }
     }
 
     private void Start()
@@ -182,7 +189,13 @@ public abstract class BarrierMove : MonoBehaviour, IActivate
             }
         }
     }
-
+    private void FixedUpdate()
+    {
+        if(Activated && Sound != null)
+        {
+            Sound.ChangeVolume(_rig.velocity.magnitude);
+        }
+    }
 
     private void Update()
     {

@@ -34,12 +34,15 @@ public class Turrel : MonoBehaviour, IActivate
     [SerializeField] private Transform MaxField42;
     [SerializeField] private Transform MaxField90;
     [SerializeField] private Transform[] FirePoint;
+    private ISound Sound;
 
     [Header("States")]
     private ICube Enemy;
     private Transform CurrantMax;
     private float Radius;
     private Coroutine MoveToCoroutine;
+    private Vector3 prevDirection;
+    private float CurrantSpeed;
 
     private bool InFieldOfView(Transform obj)
     {
@@ -52,6 +55,7 @@ public class Turrel : MonoBehaviour, IActivate
     {
         Activated = on;
     }
+
 
     private void Init()
     {
@@ -72,7 +76,15 @@ public class Turrel : MonoBehaviour, IActivate
         }
         if (_anim == null) _anim = transform.GetComponentInChildren<Animator>();
         _anim.SetFloat("Speed", AnimationSpeed);
+        Reloaded = true;
+
+        TryGetComponent(out Sound);
+        if (Sound != null)
+        {
+            Sound.Init(false);
+        }
     }
+
     private void ChangeMaterial()
     {
         switch (FieldOfView)
@@ -113,6 +125,7 @@ public class Turrel : MonoBehaviour, IActivate
         }
     }
 
+
     private void CheckForCube()
     {
         Enemy = null;
@@ -146,6 +159,7 @@ public class Turrel : MonoBehaviour, IActivate
             if(MoveToCoroutine != null)
             {
                 StopCoroutine(MoveToCoroutine);
+                MoveToCoroutine = null;
             }
             Reloaded = false;
         }
@@ -160,12 +174,20 @@ public class Turrel : MonoBehaviour, IActivate
             Vector3 Direction = (Enemy.CubeTransform.position - transform.position).normalized;
             Direction = new Vector3(Direction.x, 0, Direction.z);
             Main.transform.forward = Vector3.Lerp(Main.transform.forward, Direction, RotationSpeed * 2 * Time.deltaTime);
+            CurrantSpeed = (1 - Vector3.Dot(Main.transform.forward, prevDirection)) / Time.fixedDeltaTime * 500;
+            prevDirection = Main.transform.forward;
         }
         else
         {
             Vector3 Direction = transform.forward;
             Direction = new Vector3(Direction.x, 0, Direction.z);
-            Main.transform.forward = Vector3.Lerp(Main.transform.forward, Direction, RotationSpeed * 2 * Time.deltaTime);
+            Main.transform.forward = Vector3.Lerp(Main.transform.forward, Direction, RotationSpeed * Time.deltaTime);
+            CurrantSpeed = (1 - Vector3.Dot(Main.transform.forward, prevDirection)) / Time.fixedDeltaTime * 500;
+            prevDirection = Main.transform.forward;
+        }
+        if (Sound != null)
+        {
+            Sound.ChangeVolume(CurrantSpeed);
         }
 
         if (MoveTo && Enemy != null)
@@ -189,7 +211,7 @@ public class Turrel : MonoBehaviour, IActivate
     }
     private IEnumerator ActivateDelayed()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         MoveTo = true;
         MoveToCoroutine = null;
         yield break;

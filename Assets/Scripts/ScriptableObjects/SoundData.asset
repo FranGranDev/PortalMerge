@@ -13,86 +13,103 @@ MonoBehaviour:
   m_Name: SoundData
   m_EditorClassIdentifier: 
   soundItems:
-  - id: ui_button
+  - name: "\u041A\u043D\u043E\u043F\u043A\u0438 UI"
+    id: ui_button
     Clip: {fileID: 8300000, guid: 2332c957fd54ee54bb647874e87bd598, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 0
     MaxDistance: 100
-  - id: button
+  - name: "\u041A\u043D\u043E\u043F\u043A\u0438 \u0441\u0446\u0435\u043D\u044B"
+    id: button
     Clip: {fileID: 8300000, guid: 2332c957fd54ee54bb647874e87bd598, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: destroy_laser
+  - name: "\u0423\u043D\u0438\u0447\u0442\u043E\u0436\u0435\u043D\u0438\u0435 \u043E\u0442
+      \u043B\u0430\u0437\u0435\u0440\u0430"
+    id: destroy_laser
     Clip: {fileID: 8300000, guid: 48034c546890a6b4bb23db931804d553, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: destroy_water
+  - name: "\u0411\u0443\u043B\u044C\u043A)"
+    id: destroy_water
     Clip: {fileID: 8300000, guid: e5c1ead3d5e9ce042874a9bd719e5484, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: twirl_punch
+  - name: "\u0423\u0434\u0430\u0440 \u043A\u0440\u0443\u0442\u0438\u043B\u043A\u0430\u0439"
+    id: twirl_punch
     Clip: {fileID: 8300000, guid: 8b720a0e90e228f46863455514791836, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: gem_take
+  - name: "\u0412\u0437\u044F\u0442\u0438\u0435 \u043A\u0440\u0438\u0441\u0442\u0430\u043B\u0438\u043A\u0430"
+    id: gem_take
     Clip: {fileID: 8300000, guid: 768fc73cd459ea249a136d91a30d7f9f, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: win
+  - name: "\u041F\u041E\u0411\u0415\u0414\u0410"
+    id: win
     Clip: {fileID: 8300000, guid: 3be75b01a1e2dc34aa6c5c1c476f8ac7, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 0
     MaxDistance: 25
-  - id: merge
+  - name: "\u041C\u0435\u0440\u0434\u0436 \u043A\u0443\u0431\u0438\u043A\u043E\u0432"
+    id: merge
     Clip: {fileID: 8300000, guid: e531a148b4899c242a6305088b1af490, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: portal
+  - name: "\u0412\u0445\u043E\u0434 \u0432 \u043F\u043E\u0440\u0442\u0430\u043B"
+    id: portal
     Clip: {fileID: 8300000, guid: 5dd0c91e4465ed24180e9ac31a18b1c9, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: cannon_fire
+  - name: "\u0412\u044B\u0441\u0442\u0440\u0435\u043B \u043F\u0443\u0448\u043A\u0438"
+    id: cannon_fire
     Clip: {fileID: 8300000, guid: 4ceb694118de8db42aa3c2f7442b7203, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: destroy_fall
-    Clip: {fileID: 8300000, guid: e5c1ead3d5e9ce042874a9bd719e5484, type: 3}
+  - name: "\u0423\u043D\u0438\u0447\u0442\u043E\u0436\u0435\u043D\u0438\u0435 \u043E\u0431
+      \u043F\u043B\u0430\u0442\u0444\u043E\u0440\u043C\u0443"
+    id: destroy_fall
+    Clip: {fileID: 8300000, guid: 799be188e3dd35747a5bab7d293e5f3d, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: destroy_bullet
-    Clip: {fileID: 8300000, guid: e5c1ead3d5e9ce042874a9bd719e5484, type: 3}
+  - name: "\u0423\u043D\u0438\u0447\u0442\u043E\u0436\u0435\u043D\u0438\u0435 \u043E\u0442
+      \u043F\u0443\u0448\u043A\u0438"
+    id: destroy_bullet
+    Clip: {fileID: 8300000, guid: 799be188e3dd35747a5bab7d293e5f3d, type: 3}
     Volume: 1
     Pitch: 1
     SpatialBlend: 1
     MaxDistance: 25
-  - id: lose
-    Clip: {fileID: 8300000, guid: 3be75b01a1e2dc34aa6c5c1c476f8ac7, type: 3}
-    Volume: 1
+  - name: "\u041F\u0420\u041E\u0419\u0413\u0420\u042B\u0428"
+    id: lose
+    Clip: {fileID: 8300000, guid: 3a3e187090d40fb4e855da5500c2fea1, type: 3}
+    Volume: 0.5
     Pitch: 1
     SpatialBlend: 0
     MaxDistance: 25
   musicItems:
-  - id: music_0
+  - name: 
+    id: music_0
     Clip: {fileID: 8300000, guid: 26364aaf1f64b40c1a047b0bacfbd10e, type: 3}
     Volume: 1
     Pitch: 1

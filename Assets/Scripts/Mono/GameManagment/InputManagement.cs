@@ -18,7 +18,17 @@ public class InputManagement : MonoBehaviour
     }
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
-    public static TapInfo GetCenterPoint { get { return new TapInfo(ActionType.OnSwipe, ScreenCenter(), false); } }
+    public static Vector3 GetListenerPoint {
+        get
+        {
+            if(Active.CurrantAction == ActionType.OnCube && !Active.CurrantCube.isNull)
+            {
+                return (new TapInfo(ActionType.OnSwipe, ScreenCenter(), false).Point + Active.CurrantCube.CubeTransform.position) / 2;
+            }
+            
+            return new TapInfo(ActionType.OnSwipe, ScreenCenter(), false).Point;
+        }
+    }
     public static Vector2 ScreenCenter()
     {
         return new Vector2(Screen.width / 2, Screen.height / 2);

@@ -8,13 +8,18 @@ public class Laser : MonoBehaviour, IActivate
     [SerializeField] private float DestroyDelay;
     private ICube prevCube;
     private MeshRenderer _renderer;
-
+    private ISound Sound;
 
     public void Activate(bool on = true)
     {
         isActive = on;
 
         _renderer.enabled = on;
+
+        if (Sound != null)
+        {
+            Sound.Mute(!on);
+        }
     }
 
     private void OnCubeEntered(ICube cube)
@@ -37,6 +42,12 @@ public class Laser : MonoBehaviour, IActivate
         _renderer = GetComponent<MeshRenderer>();
         DestroyDelay = GameManagement.MainData.DestroyDelay;
         Activate(isActive);
+
+        TryGetComponent(out Sound);
+        if (Sound != null)
+        {
+            Sound.Init(isActive);
+        }
     }
     private void Start()
     {
