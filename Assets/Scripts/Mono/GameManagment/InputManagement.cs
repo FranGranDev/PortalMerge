@@ -70,12 +70,14 @@ public class InputManagement : MonoBehaviour
         bool MoveCube = true;
         Vector2 Center = ScreenCenter();
         float Offset = ((CurrantTap.InputPos - Center).y) / (Screen.height / 2);
-        float AirRatio = CurrantCube.NoInput ? 0f : 1f;
+        float AirRatio = CurrantCube.NoInput ? 0f : 0.75f;
 
+        Vector2 CenterLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2);
+        TapInfo CenterLine = new TapInfo(CurrantAction, CenterLinePos);
 
         if ((CurrantTap.InputPos - Center).y > GameManagement.MainData.FollowCubeDeadZoneUp * Screen.height / 2)
         {
-            if (CurrantTap.InputDir.normalized.y > 0f || (CurrantCube.NoInput && TapInfo.PrevDir.y > 0f))
+            if ((CurrantTap.InputDir.normalized.y > 0f || (CurrantCube.NoInput && TapInfo.PrevDir.y > 0f)) && CurrantCube.CubeTransform.position.z + 2 > CenterLine.Point.z)
             {
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset * AirRatio), CurrantTap.Point);
                 Vector2 UpLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneUp));
@@ -89,7 +91,7 @@ public class InputManagement : MonoBehaviour
         }
         else if ((CurrantTap.InputPos - Center).y * AirRatio < GameManagement.MainData.FollowCubeDeadZoneDown * Screen.height / 2)
         {
-            if (CurrantTap.InputDir.normalized.y < -0f || (CurrantCube.NoInput && TapInfo.PrevDir.y < -0f))
+            if ((CurrantTap.InputDir.normalized.y < -0f || (CurrantCube.NoInput && TapInfo.PrevDir.y < -0f)) && CurrantCube.CubeTransform.position.z - 2 < CenterLine.Point.z)
             {
                 OnCubeFollow?.Invoke(new Vector3(0, 0, Offset * AirRatio), CurrantTap.Point);
                 Vector2 DownLinePos = new Vector2(CurrantTap.InputPos.x, Screen.height / 2 * (1 + GameManagement.MainData.FollowCubeDeadZoneDown));

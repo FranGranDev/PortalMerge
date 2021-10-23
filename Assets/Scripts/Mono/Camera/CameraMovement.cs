@@ -72,12 +72,18 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraWinMove()
     {
-        StartCoroutine(MoveToOnWinCour(GameManagement.LastCube));
+        if(MoveToCoroutine != null)
+        {
+            StopCoroutine(MoveToCoroutine);
+        }
+        StartCoroutine(MoveToOnWinCour());
         StartCoroutine(ConfittiCour(GameManagement.LastCube));
     }
-    private IEnumerator MoveToOnWinCour(ICube cube)
+    private IEnumerator MoveToOnWinCour()
     {
-        while (!cube.isNull)
+        yield return new WaitForFixedUpdate();
+        ICube cube = GameManagement.LastCube;
+        while (GameManagement.isGameWin)
         {
             Vector3 newPoint = new Vector3(cube.CubeTransform.position.x, cube.CubeTransform.position.y, cube.CubeTransform.position.z) + GameManagement.MainData.CameraWinOffset;
             transform.position = Vector3.Lerp(transform.position, newPoint, GameManagement.MainData.MoveToCubeOnWinSpeed * 0.1f);
