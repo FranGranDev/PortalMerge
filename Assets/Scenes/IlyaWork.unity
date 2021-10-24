@@ -471,9 +471,6 @@ MonoBehaviour:
   - LevelPrefab: {fileID: 16718425258374908, guid: 7cf103f13b30cb34dab3bc910b638326,
       type: 3}
     SkyboxMaterial: {fileID: 0}
-  - LevelPrefab: {fileID: 16718425258374908, guid: c19836f46e3b24f438708142ce35cbd2,
-      type: 3}
-    SkyboxMaterial: {fileID: 0}
   - LevelPrefab: {fileID: 16718425258374908, guid: 68cedff4398337c479a14b7467bd7f63,
       type: 3}
     SkyboxMaterial: {fileID: 0}
@@ -518,11 +515,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2130000325}
+  - {fileID: 1929338590}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2078906562
+--- !u!1001 &1929338589
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -634,11 +631,6 @@ PrefabInstance:
       propertyPath: m_text
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 5654040446915455924, guid: c19836f46e3b24f438708142ce35cbd2,
-        type: 3}
-      propertyPath: EndDelay
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 5751336328976002732, guid: c19836f46e3b24f438708142ce35cbd2,
         type: 3}
       propertyPath: m_text
@@ -676,11 +668,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: ac90e4ea87a68ca458e86ccf18ef095e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c19836f46e3b24f438708142ce35cbd2, type: 3}
---- !u!4 &2130000325 stripped
+--- !u!4 &1929338590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4797595008712789980, guid: c19836f46e3b24f438708142ce35cbd2,
     type: 3}
-  m_PrefabInstance: {fileID: 2078906562}
+  m_PrefabInstance: {fileID: 1929338589}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2402970099542959295
 PrefabInstance:
