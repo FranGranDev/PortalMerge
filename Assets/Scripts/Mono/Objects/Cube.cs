@@ -8,12 +8,6 @@ public class Cube : MonoBehaviour, ICube
     [Header("Settings")]
     [SerializeField] private int _number;
     [HideInInspector] public int Number { get => _number; private set => _number = value; }
-    public bool AfterPortal { get; private set; }
-    public bool NoTelepor { get; private set; }
-    public bool AfterMerge { get; private set; }
-    public bool NoInput { get; private set; }
-    private Color CurrantColor;
-    public Color CubeColor { get => CurrantColor; }
     public enum DestroyType {Laser, Fall, Water, Bullet}
     private string DestroyTypeToSoundID(DestroyType type)
     {
@@ -127,6 +121,14 @@ public class Cube : MonoBehaviour, ICube
 
 
     //States
+    public bool AfterPortal { get; private set; }
+    public bool NoTelepor { get; private set; }
+    public bool AfterMerge { get; private set; }
+    public bool NoInput { get; private set; }
+    private Color CurrantColor;
+    public Color CubeColor { get => CurrantColor; }
+    public Vector3 StartScale { get; private set; }
+    public float AnimationScale;
     public bool inAir { get; private set; }
     public bool isMoving { get; private set; }
     public bool isOutOfZone { get; private set; }
@@ -263,7 +265,7 @@ public class Cube : MonoBehaviour, ICube
 
         OnCubeDestroyed?.Invoke(this);
         _animator.Play(ANIM_DIE);
-        Destroy(gameObject, Time.fixedDeltaTime);
+        Destroy(gameObject, 1f);
     }
     public void DestroyCube(DestroyType type = DestroyType.Fall)
     {
@@ -460,10 +462,20 @@ public class Cube : MonoBehaviour, ICube
         OnLeaveGroundCoroutine = null;
         yield break;
     }
+
+    private void SetScale()
+    {
+        if(_animator.enabled)
+        {
+            transform.localScale = StartScale * AnimationScale;
+        }
+    }
     #endregion
     #region Init
     private void SetComponents()
     {
+        StartScale = transform.localScale;
+        AnimationScale = 1;
         PrevParent = transform.parent;
 
         if (_rig == null)
@@ -579,6 +591,7 @@ public class Cube : MonoBehaviour, ICube
     private void Awake()
     {
         ClearCallbacks();
+        InitCube();
     }
     private void Start()
     {
@@ -600,7 +613,8 @@ public class Cube : MonoBehaviour, ICube
         {
             isOutOfZone = false;
         }
-       
+
+        SetScale();
     }
 }
 
@@ -637,6 +651,8 @@ public interface ICube
     Rigidbody CubeRig { get; }
 
     Collider CubeCol { get; }
+
+    Vector3 StartScale { get; }
 
     void SetNullParent();
 

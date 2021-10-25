@@ -30,6 +30,7 @@ public class DataGameMain : ScriptableObject
     public float MinDistanceToMove;
     public bool OffGravityOnTake;
     [Header("Физика камеры")]
+    public bool Static;
     public bool LockSideMove;
     [Range(1, 100f)]
     public float CameraFollowSpeed;

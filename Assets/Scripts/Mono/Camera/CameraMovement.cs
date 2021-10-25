@@ -35,6 +35,8 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraSwipeMove(Vector3 Point, Vector3 StartPoint)
     {
+        if (GameManagement.MainData.Static)
+            return;
         isMoving = true;
         Point = new Vector3(Point.x * SideMove(), 0, Point.z);
         StartPoint = new Vector3(StartPoint.x * SideMove(), 0, StartPoint.z);
@@ -50,6 +52,8 @@ public class CameraMovement : MonoBehaviour
     }
     private void CameraSwipeEnd(Vector3 Point, Vector3 StartPoint)
     {
+        if (GameManagement.MainData.Static)
+            return;
         isMoving = false;
         Point = new Vector3(Point.x * SideMove(), 0, Point.z);
         StartPoint = new Vector3(StartPoint.x * SideMove(), 0, StartPoint.z);
@@ -138,7 +142,9 @@ public class CameraMovement : MonoBehaviour
 
     private void MoveToCube(ICube cube)
     {
-        if(MoveToCoroutine != null)
+        if (GameManagement.MainData.Static)
+            return;
+        if (MoveToCoroutine != null)
         {
             StopCoroutine(MoveToCoroutine);
         }
@@ -173,6 +179,8 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraSimpleFollowCube(Vector3 Point, Vector3 StartPoint)
     {
+        if (GameManagement.MainData.Static)
+            return;
         Vector3 newPoint = new Vector3(0, transform.position.y, Point.z);
         transform.position = Vector3.Lerp(transform.position, newPoint, 0.05f);
 
@@ -181,6 +189,8 @@ public class CameraMovement : MonoBehaviour
 
     private void CameraFollowCube(Vector3 Speed, Vector3 Point)
     {
+        if (GameManagement.MainData.Static)
+            return;
         float StopRatio = Speed.z == 0 ? 3 : 1f;
         Velocity = Vector3.Lerp(Velocity, Speed, StopRatio * Time.deltaTime);
 
@@ -191,6 +201,8 @@ public class CameraMovement : MonoBehaviour
     }
     private void CameraStopFollowCube(Vector3 Point, Vector3 CubeDelta)
     {
+        if (GameManagement.MainData.Static)
+            return;
         if (MoveToCoroutine != null)
         {
             StopCoroutine(MoveToCoroutine);

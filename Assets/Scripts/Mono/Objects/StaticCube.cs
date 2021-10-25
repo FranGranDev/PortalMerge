@@ -8,10 +8,12 @@ public class StaticCube : MonoBehaviour
     public static void MakeCopy(ICube cube)
     {
         StaticCube Copy = Instantiate(GameManagement.MainData.CubeCopy, cube.CubeTransform.position, cube.CubeTransform.rotation, null).GetComponent<StaticCube>();
-        Copy.SetView(cube.Number);
+        Copy.SetView(cube.Number, cube);
     }
 
     private int Number;
+    public float AnimationScale;
+    private Vector3 StartScale;
     [Header("Components")]
     [SerializeField] private MeshRenderer _meshRenderer;
     private Material _material;
@@ -43,8 +45,13 @@ public class StaticCube : MonoBehaviour
         }
     }
 
-    public void SetView(int num)
+    public void SetView(int num, ICube cube = null)
     {
+        if(cube != null)
+        {
+            StartScale = cube.StartScale;
+        }
+
         Number = num;
 
         SetComponents();
@@ -55,5 +62,15 @@ public class StaticCube : MonoBehaviour
     public void DestroyCopy()
     {
         Destroy(gameObject);
+    }
+
+    private void Awake()
+    {
+        AnimationScale = 1f;
+        StartScale = transform.localScale;
+    }
+    private void FixedUpdate()
+    {
+        transform.localScale = StartScale * AnimationScale;
     }
 }

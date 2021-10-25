@@ -78,6 +78,7 @@ public class GameManagement : MonoBehaviour
             ICube cube = obj[i].GetComponent<ICube>();
             Cubes.Add(cube);
             cube.InitCube();
+            
 
             SubscribeForCube(cube);
             TargetNum += cube.Number;
