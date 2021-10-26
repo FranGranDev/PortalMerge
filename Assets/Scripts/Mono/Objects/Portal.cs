@@ -67,9 +67,9 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     }
     private IEnumerator TeleportCour(ICube cube)
     {
-        yield return new WaitForFixedUpdate();
         if (!cube.AfterPortal)
         {
+            yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
             cube.SubscribeForFailedMerge(StopTeleport);
             cube.OnEnterPortal();
             prevCube = cube;
