@@ -142,8 +142,7 @@ public class CameraMovement : MonoBehaviour
 
     private void MoveToCube(ICube cube)
     {
-        if (GameManagement.MainData.Static)
-            return;
+        
         if (MoveToCoroutine != null)
         {
             StopCoroutine(MoveToCoroutine);
