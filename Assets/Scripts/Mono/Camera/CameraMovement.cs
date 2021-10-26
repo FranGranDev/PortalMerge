@@ -21,6 +21,7 @@ public class CameraMovement : MonoBehaviour
     public const float MAX_SPEED = 100;
     private bool isMoving;
     private Vector3 PrevPos;
+    private Vector3 StartPosition;
     private Coroutine MoveToCoroutine;
 
     private void ApplySettings()
@@ -129,7 +130,7 @@ public class CameraMovement : MonoBehaviour
         }
         if(cube != null && !cube.isNull && !cube.isDestroyed)
         {
-            MoveToCube(cube);
+            StartCoroutine(MoveToCenterCour());
         }
         else
         {
@@ -138,17 +139,28 @@ public class CameraMovement : MonoBehaviour
 
         yield break;
     }
-
+    private IEnumerator MoveToCenterCour()
+    {
+        while((transform.position - StartPosition).magnitude > 0.1f)
+        {
+            transform.position = Vector3.Lerp(transform.position, StartPosition, 0.075f);
+            yield return new WaitForFixedUpdate();
+        }
+        transform.position = StartPosition;
+        yield break;
+    }
 
     private void MoveToCube(ICube cube)
     {
-        
+        if (GameManagement.MainData.Static)
+            return;
         if (MoveToCoroutine != null)
         {
             StopCoroutine(MoveToCoroutine);
         }
         MoveToCoroutine = StartCoroutine(MoveToCour(cube));
     }
+
     private IEnumerator MoveToCour(ICube cube)
     {
         Vector3 newPoint = new Vector3(GameManagement.MainData.LockSideMove ? 0 : cube.CubeTransform.position.x, transform.position.y, cube.CubeTransform.position.z);
@@ -233,9 +245,15 @@ public class CameraMovement : MonoBehaviour
         CalculateSpeed();   
     }
 
-    private void Awake()
+    private void Init()
     {
         active = this;
+        StartPosition = transform.position;
+    }
+
+    private void Awake()
+    {
+        Init();
     }
     private void Start()
     {

@@ -214,13 +214,13 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 TryTakeCube(CurrantTap.gameObject);
-                CurrantTap = new TapInfo(ActionType.OnSwipe);//Íîâûé TapInfo äåëàåòñÿ äëÿ òîãî, ÷òîáû Raycast áûë òîëüêî ïî ïîâåðõíîñòè "Camera"
+                CurrantTap = new TapInfo(ActionType.OnSwipe);
                 StartTapPoint = CurrantTap.Point;
 
                 OnTakeCube?.Invoke();
                 break;
             case ActionType.OnSwipe:
-                CurrantTap = new TapInfo(ActionType.OnSwipe);//Íîâûé TapInfo äåëàåòñÿ äëÿ òîãî, ÷òîáû Raycast áûë òîëüêî ïî ïîâåðõíîñòè "Camera"
+                CurrantTap = new TapInfo(ActionType.OnSwipe);
                 StartTapPoint = CurrantTap.Point;
 
                 prevCube = null;
@@ -369,7 +369,7 @@ public class InputManagement : MonoBehaviour
             switch (info)
             {
                 case ActionType.OnCube:
-                    return LayerMask.GetMask(new string[1] { "Camera" });
+                    return LayerMask.GetMask(new string[2] { "Camera", "Ground" });
                 case ActionType.OnSwipe:
                     return LayerMask.GetMask(new string[1] { "Camera" });
                 default:

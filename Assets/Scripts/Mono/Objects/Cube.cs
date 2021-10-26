@@ -380,7 +380,8 @@ public class Cube : MonoBehaviour, ICube
         if (Direction.magnitude > MinDistanceToMove)
         {
             Vector3 NewSpeed = Direction.normalized * DragSpeed * 50;
-            NewSpeed = new Vector3(NewSpeed.x, inAir ? CubeRig.velocity.y : NewSpeed.y, NewSpeed.z);
+            float DragY = (NewSpeed.y > 0) ? 0 : NewSpeed.y;
+            NewSpeed = new Vector3(NewSpeed.x, inAir ? CubeRig.velocity.y : DragY, NewSpeed.z);
             _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
         }
         else

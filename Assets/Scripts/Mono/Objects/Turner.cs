@@ -57,8 +57,58 @@ public class Turner : MonoBehaviour, IInteract
     {
         Turned = !Turned;
         isRotating = false;
+
+        StartCoroutine(ChangeClockCour());
+    }
+    private IEnumerator ChangeClockCour()
+    {
         Circle1.SetActive(ClockRotation ? Turned : !Turned);
         Circle2.SetActive(ClockRotation ? !Turned : Turned);
+        Circle1.transform.localScale = Vector3.zero;
+        Circle2.transform.localScale = Vector3.zero;
+        if(Circle1.activeSelf)
+        {
+            Circle1.transform.localScale = Vector3.one;
+            while (Circle1.transform.localScale.magnitude > 0.05f)
+            {
+                Circle1.transform.localScale = Vector3.Lerp(Circle1.transform.localScale, Vector3.zero, 0.1f);
+                yield return new WaitForFixedUpdate();
+            }
+            yield return new WaitForSeconds(0.1f);
+            Circle2.transform.localScale = Vector3.zero;
+            while (Circle2.transform.localScale.magnitude < 0.95f)
+            {
+                Circle2.transform.localScale = Vector3.Lerp(Circle2.transform.localScale, Vector3.one, 0.1f);
+                yield return new WaitForFixedUpdate();
+            }
+        }
+        else
+        {
+            Circle2.transform.localScale = Vector3.one;
+            while (Circle2.transform.localScale.magnitude > 0.05f)
+            {
+                Circle2.transform.localScale = Vector3.Lerp(Circle2.transform.localScale, Vector3.zero, 0.1f);
+                yield return new WaitForFixedUpdate();
+            }
+            yield return new WaitForSeconds(0.1f);
+            Circle1.transform.localScale = Vector3.zero;
+            while (Circle1.transform.localScale.magnitude < 0.95f)
+            {
+                Circle1.transform.localScale = Vector3.Lerp(Circle1.transform.localScale, Vector3.one, 0.1f);
+                yield return new WaitForFixedUpdate();
+            }
+        }
+        if (ClockRotation ? Turned : !Turned)
+        {
+            
+        }
+        else
+        {
+            
+            
+            
+        }
+        yield break;
     }
 
     private void Init()
