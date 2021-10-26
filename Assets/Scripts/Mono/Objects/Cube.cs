@@ -212,6 +212,9 @@ public class Cube : MonoBehaviour, ICube
         }
         OnLeaveZoneCoroutine = StartCoroutine(OnLeaveZoneCour());
 
+        DestroyCubeAura();
+        
+
         SoundManagment.PlaySound("twirl_punch", transform);   
     }
     private Coroutine OnLeaveZoneCoroutine;
@@ -528,7 +531,7 @@ public class Cube : MonoBehaviour, ICube
     private IEnumerator AuraParticleCour()
     {
 
-        ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity);
+        ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity, PrevParent);
         Aura = CubeAura;
         CubeAura.transform.localScale = Vector3.zero;
         var main = CubeAura.main;
