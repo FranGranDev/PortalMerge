@@ -62,21 +62,20 @@ public class Turner : MonoBehaviour, IInteract
     }
     private IEnumerator ChangeClockCour()
     {
-        Circle1.SetActive(ClockRotation ? Turned : !Turned);
-        Circle2.SetActive(ClockRotation ? !Turned : Turned);
         Circle1.transform.localScale = Vector3.zero;
         Circle2.transform.localScale = Vector3.zero;
         if(Circle1.activeSelf)
         {
             Circle1.transform.localScale = Vector3.one;
-            while (Circle1.transform.localScale.magnitude > 0.05f)
+            while (Circle1.transform.localScale.x > 0.05f)
             {
                 Circle1.transform.localScale = Vector3.Lerp(Circle1.transform.localScale, Vector3.zero, 0.1f);
                 yield return new WaitForFixedUpdate();
             }
-            yield return new WaitForSeconds(0.1f);
+            Circle1.SetActive(false);
+            Circle2.SetActive(true);
             Circle2.transform.localScale = Vector3.zero;
-            while (Circle2.transform.localScale.magnitude < 0.95f)
+            while (Circle2.transform.localScale.x < 0.95f)
             {
                 Circle2.transform.localScale = Vector3.Lerp(Circle2.transform.localScale, Vector3.one, 0.1f);
                 yield return new WaitForFixedUpdate();
@@ -85,28 +84,19 @@ public class Turner : MonoBehaviour, IInteract
         else
         {
             Circle2.transform.localScale = Vector3.one;
-            while (Circle2.transform.localScale.magnitude > 0.05f)
+            while (Circle2.transform.localScale.x > 0.05f)
             {
                 Circle2.transform.localScale = Vector3.Lerp(Circle2.transform.localScale, Vector3.zero, 0.1f);
                 yield return new WaitForFixedUpdate();
             }
-            yield return new WaitForSeconds(0.1f);
+            Circle2.SetActive(false);
+            Circle1.SetActive(true);
             Circle1.transform.localScale = Vector3.zero;
-            while (Circle1.transform.localScale.magnitude < 0.95f)
+            while (Circle1.transform.localScale.x < 0.95f)
             {
                 Circle1.transform.localScale = Vector3.Lerp(Circle1.transform.localScale, Vector3.one, 0.1f);
                 yield return new WaitForFixedUpdate();
             }
-        }
-        if (ClockRotation ? Turned : !Turned)
-        {
-            
-        }
-        else
-        {
-            
-            
-            
         }
         yield break;
     }
@@ -114,7 +104,6 @@ public class Turner : MonoBehaviour, IInteract
     private void Init()
     {
         ClockRotation = Rotation2.localRotation.y < Rotation1.localRotation.y;
-        Debug.Log(ClockRotation);
         Circle1.SetActive(!ClockRotation);
         Circle2.SetActive(ClockRotation);
     }
