@@ -69,7 +69,6 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     {
         if (!cube.AfterPortal)
         {
-            yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
             cube.SubscribeForFailedMerge(StopTeleport);
             cube.OnEnterPortal();
             prevCube = cube;

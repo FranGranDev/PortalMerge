@@ -126,3 +126,7 @@ public interface IActivate
 {
     void Activate(bool on = true);
 }
+public interface IInteract
+{
+    void DoAction();
+}

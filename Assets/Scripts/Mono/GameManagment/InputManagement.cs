@@ -14,6 +14,7 @@ public class InputManagement : MonoBehaviour
     {
         NotStarted,
         OnCube,
+        Interact,
         OnSwipe
     }
     [SerializeField] private ActionType CurrantAction;
@@ -137,6 +138,15 @@ public class InputManagement : MonoBehaviour
         }
     }
 
+    private void TryInteract(GameObject obj)
+    {
+        IInteract interact = obj.GetComponent<IInteract>();
+        if(interact != null)
+        {
+            interact.DoAction();
+        }
+    }
+
     private void TryFollowCubeOnPlatform()
     {
         if (prevCube != null && !prevCube.isNull && prevCube.isOnPlatform)
@@ -198,6 +208,9 @@ public class InputManagement : MonoBehaviour
         {
             case ActionType.NotStarted:
 
+                break;
+            case ActionType.Interact:
+                TryInteract(CurrantTap.gameObject);
                 break;
             case ActionType.OnCube:
                 TryTakeCube(CurrantTap.gameObject);
@@ -345,6 +358,8 @@ public class InputManagement : MonoBehaviour
                     return ActionType.NotStarted;
                 case "Cube":
                     return ActionType.OnCube;
+                case "CameraInteract":
+                    return ActionType.Interact;
                 default:
                     return ActionType.OnSwipe;
             }
@@ -358,7 +373,7 @@ public class InputManagement : MonoBehaviour
                 case ActionType.OnSwipe:
                     return LayerMask.GetMask(new string[1] { "Camera" });
                 default:
-                    return LayerMask.GetMask(new string[2] { "Camera", "Cube" });
+                    return LayerMask.GetMask(new string[3] { "Camera", "Cube", "Object" });
             }
 
         }
