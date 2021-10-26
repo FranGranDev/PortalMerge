@@ -41,9 +41,10 @@ GameObject:
   - component: {fileID: 4028064166338242730}
   - component: {fileID: 9133519631889784511}
   - component: {fileID: 1561838283723578262}
-  m_Layer: 0
+  - component: {fileID: 3055824788435242259}
+  m_Layer: 9
   m_Name: Head_04
-  m_TagString: Untagged
+  m_TagString: Traps
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,6 +110,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &3055824788435242259
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236856174741713156}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4264501725318869519, guid: 200d7fbe048014548b6313657deb8bd8, type: 3}
 --- !u!1 &3335661867222058820
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,9 +425,10 @@ GameObject:
   - component: {fileID: 6334645428289802462}
   - component: {fileID: 1804877909355967618}
   - component: {fileID: 2074426741641009043}
-  m_Layer: 0
+  - component: {fileID: 7248689567171935436}
+  m_Layer: 9
   m_Name: Head_02
-  m_TagString: Untagged
+  m_TagString: Traps
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -478,6 +494,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &7248689567171935436
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6623613268233644707}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4987699016765851095, guid: 200d7fbe048014548b6313657deb8bd8, type: 3}
 --- !u!1 &8742056057433282852
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,7 +560,7 @@ MonoBehaviour:
   RotationTime: 1
   Rotation1: {fileID: 5843864258618780232}
   Rotation2: {fileID: 2382191062601775756}
-  StartEase: 4
+  Ease: 4
   Main: {fileID: 3538986758611902102}
   Circle1: {fileID: 4399080580146444965}
   Circle2: {fileID: 4489314707126950536}
