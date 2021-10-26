@@ -538,7 +538,7 @@ public class Cube : MonoBehaviour, ICube
             RaycastHit hit;
             Ray ray = new Ray(transform.position, Vector3.down);
             Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
-            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
+            if (Physics.Raycast(ray, out hit, 10, 1 << 8))
             {
                 Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
             }
@@ -552,7 +552,7 @@ public class Cube : MonoBehaviour, ICube
             RaycastHit hit;
             Ray ray = new Ray(transform.position, Vector3.down);
             Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
-            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
+            if (Physics.Raycast(ray, out hit, 10, 1 << 8))
             {
                 Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
             }
