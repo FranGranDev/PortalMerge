@@ -43,6 +43,10 @@ public class GameManagement : MonoBehaviour
     
     #endregion
 
+    public static Vector3 RandomVector()
+    {
+        return new Vector3(RandomOne(), RandomOne(), RandomOne());
+    }
     public static float RandomOne()
     {
         return Random.Range(0, 2) == 0 ? 1 : -1 * (Random.Range(0.5f, 1f));
@@ -146,7 +150,7 @@ public class GameManagement : MonoBehaviour
         {
             Cubes.Remove(cube);
         }
-        Destroy(cube.CubeObject);
+        cube.ForceDestroy();
     }
     private void OnCubeDestroyed(ICube cube)
     {
@@ -164,11 +168,13 @@ public class GameManagement : MonoBehaviour
 
     private void OnCubesMerge(ICube cube1, ICube cube2)
     {
+        //StartCoroutine(OnCubesMergeCour(cube1, cube2));
+        //return;
         int CubeSum = cube1.Number + cube2.Number;
         Vector3 CubePosition = (cube1.CubeTransform.position + cube2.CubeTransform.position) / 2;
         Vector3 CubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
         CubeImpulse += Vector3.up * MainData.VerticalForceOnMerge;
-        Vector3 CubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
+        Vector3 CubeAngular = MainData.RotationOnMerge * RandomVector();
 
         ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
         newCube.InitCube(CubeSum, CubeImpulse, CubeAngular, cube1.AfterPortal || cube2.AfterPortal);
@@ -182,7 +188,7 @@ public class GameManagement : MonoBehaviour
         {
             Vector3 WinCubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
             WinCubeImpulse += Vector3.up * MainData.VerticalForceOnFinalMerge;
-            Vector3 WinCubeAngular = MainData.RotationOnMerge * new Vector3(RandomOne(), RandomOne(), RandomOne());
+            Vector3 WinCubeAngular = MainData.RotationOnMerge * RandomVector();
             newCube.SetImpulse(WinCubeImpulse, WinCubeAngular);
             newCube.StartFinalMerge();
 
@@ -192,7 +198,43 @@ public class GameManagement : MonoBehaviour
         DestroyCube(cube1);
         DestroyCube(cube2);
     }
+    private IEnumerator OnCubesMergeCour(ICube cube1, ICube cube2)
+    {
+        int CubeSum = cube1.Number + cube2.Number;
 
+
+        cube1.AddImpulse(Vector3.up * MainData.VerticalForceOnMerge * 1.5f);
+        cube2.AddImpulse(Vector3.up * MainData.VerticalForceOnMerge * 1.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        Vector3 CubePosition = (cube1.CubeTransform.position + cube2.CubeTransform.position) / 2;
+        Vector3 CubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) / 2;
+       
+        Vector3 CubeAngular = MainData.RotationOnMerge * RandomVector();
+
+        ICube newCube = Instantiate(MainData.Cube, CubePosition, cube1.CubeTransform.rotation, GetLevelTransform).GetComponent<ICube>();
+        newCube.InitCube(CubeSum, CubeImpulse, CubeAngular, cube1.AfterPortal || cube2.AfterPortal);
+        newCube.CreateMergeParticle();
+        Cubes.Add(newCube);
+        SubscribeForCube(newCube);
+        LastCube = newCube;
+
+        InputManagement.Active.SubscribeForCube(newCube);
+        if (newCube.Number == TargetNum)
+        {
+            Vector3 WinCubeImpulse = (cube1.CubeRig.velocity + cube2.CubeRig.velocity) * MainData.SpeedSumOnMerge;
+            WinCubeImpulse += Vector3.up * MainData.VerticalForceOnFinalMerge;
+            Vector3 WinCubeAngular = MainData.RotationOnMerge * RandomVector();
+            newCube.SetImpulse(WinCubeImpulse, WinCubeAngular);
+            newCube.StartFinalMerge();
+
+            GameWin();
+        }
+
+        DestroyCube(cube1);
+        DestroyCube(cube2);
+        yield break;
+    }
 
     private void OnGemCollected(ICollected gem)
     {

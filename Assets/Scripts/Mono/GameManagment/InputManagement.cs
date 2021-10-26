@@ -18,17 +18,14 @@ public class InputManagement : MonoBehaviour
     }
     [SerializeField] private ActionType CurrantAction;
     private TapInfo CurrantTap;
-    public static Vector3 GetListenerPoint
+    public static Vector3 GetListenerPoint()
     {
-        get
+        if (Active.prevCube != null && !Active.prevCube.isNull)
         {
-            if (Active.prevCube != null && !Active.prevCube.isNull)
-            {
-                return Active.prevCube.CubeTransform.position;
-            }
-
-            return new TapInfo(ActionType.OnSwipe, ScreenCenter(), false).Point;
+            return Active.prevCube.CubeTransform.position;
         }
+
+        return new TapInfo(ActionType.OnSwipe, ScreenCenter(), false).Point;
     }
     public static Vector2 ScreenCenter()
     {
@@ -230,7 +227,7 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 OnCubeThrow?.Invoke(CurrantTap.Point, TakeDelta);
-                if (CurrantCube != null)
+                if (CurrantCube != null && !CurrantCube.isNull)
                 {
                     CurrantCube.Throw();
                 }

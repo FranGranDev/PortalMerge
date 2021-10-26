@@ -5,7 +5,10 @@ using UnityEngine;
 public class Portal : MonoBehaviour, IPortal, IActivate
 {
     [Header("Settings")]
-    [SerializeField] private float ExtraForce;
+    [SerializeField] private Transform ExitPoint;
+    [SerializeField] private AnimationCurve HorizontalMove;
+    [SerializeField] private AnimationCurve VirticalMove;
+    [SerializeField] private float TimeMove;
     [Header("Pair")]
     [SerializeField] private Portal SecondPortal;
     [SerializeField] private IPortal PairPortal => SecondPortal;
@@ -67,21 +70,32 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         yield return new WaitForFixedUpdate();
         if (!cube.AfterPortal)
         {
+            //float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
+            //cube.CubeRig.velocity *= 0.25f;
+            //yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
+            //cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.25f).normalized * (PrevCubeVelocity *
+            //GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
+            //Vector3 CubeAngular = GameManagement.MainData.AddRotationOnExitPortal * new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne());
+            //cube.CubeRig.angularVelocity += CubeAngular;
             cube.OnEnterPortal();
             prevCube = cube;
-            float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
-            cube.CubeRig.velocity *= 0.25f;
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
-            cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.25f).normalized * (PrevCubeVelocity *
-            GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal + ExtraForce);
-            Vector3 CubeAngular = GameManagement.MainData.AddRotationOnExitPortal * new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne());
-            cube.CubeRig.angularVelocity += CubeAngular;
-            cube.CubeTransform.position = transform.position + Vector3.up * 3f;
-            prevCube.SetNullParent();
+            cube.CubeTransform.position = transform.position;
             prevCube.OnExitPortal();
 
+            float CurrantTime = 0;
+            while(CurrantTime < TimeMove)
+            {
 
-            OnTeleported(prevCube);
+                CurrantTime += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+
+            prevCube.SetNullParent();
+            ClearPrevCube();
+            PairPortal.ClearPrevCube();
+
+            //OnTeleported(prevCube);
         }
             
         

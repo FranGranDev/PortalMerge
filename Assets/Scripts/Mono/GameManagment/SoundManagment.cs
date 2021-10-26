@@ -76,8 +76,8 @@ public class SoundManagment : MonoBehaviour
 
     private void MoveListener()
     {
-        Vector3 Position = InputManagement.GetListenerPoint + ListenerOffset;
-        Listener.transform.position = Position;
+        Vector3 Position = InputManagement.GetListenerPoint() + ListenerOffset;
+        Listener.transform.position = Vector3.Lerp(Listener.transform.position, Position, 0.1f);
     }
 
     private void Init()

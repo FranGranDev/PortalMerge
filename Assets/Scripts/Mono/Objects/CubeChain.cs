@@ -1,29 +1,28 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class Cube : MonoBehaviour, ICube
+public class CubeChain : MonoBehaviour, ICube
 {
     [Header("Settings")]
     [SerializeField] private int _number;
     [HideInInspector] public int Number { get => _number; private set => _number = value; }
-    public enum DestroyType {Laser, Fall, Water, Bullet}
-    private string DestroyTypeToSoundID(DestroyType type)
+    private string DestroyTypeToSoundID(Cube.DestroyType type)
     {
         switch (type)
         {
-            case DestroyType.Fall:
+            case Cube.DestroyType.Fall:
                 return "destroy_fall";
-            case DestroyType.Laser:
+            case Cube.DestroyType.Laser:
                 return "destroy_laser";
-            case DestroyType.Water:
+            case Cube.DestroyType.Water:
                 return "destroy_water";
-            case DestroyType.Bullet:
+            case Cube.DestroyType.Bullet:
                 return "destroy_bullet";
             default:
                 return "destroy_fall";
         }
-        
+
     }
 
     [Header("Physics")]
@@ -34,15 +33,14 @@ public class Cube : MonoBehaviour, ICube
     private bool OffGravityOnTake;
 
     #region Callbacks
-    public delegate void OnCubeAction(ICube cube);
-    public OnCubeAction OnCubeDestroyed;
-    public OnCubeAction OnCubeEnterPortal;
-    public OnCubeAction OnCubeExitPortal;
-    public OnCubeAction OnCubeLeaveGround;
-    public delegate void OnCubeMergeAction(ICube cube1, ICube cube2);
-    public OnCubeMergeAction OnCubesMerge;
 
-    public void SubscribeForDestroyed(OnCubeAction action, bool Unsubscribe = false)
+    public Cube.OnCubeAction OnCubeDestroyed;
+    public Cube.OnCubeAction OnCubeEnterPortal;
+    public Cube.OnCubeAction OnCubeExitPortal;
+    public Cube.OnCubeAction OnCubeLeaveGround;
+    public Cube.OnCubeMergeAction OnCubesMerge;
+
+    public void SubscribeForDestroyed(Cube.OnCubeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
         {
@@ -54,7 +52,7 @@ public class Cube : MonoBehaviour, ICube
         }
 
     }
-    public void SubscribeForEnterPortal(OnCubeAction action, bool Unsubscribe = false)
+    public void SubscribeForEnterPortal(Cube.OnCubeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
         {
@@ -65,7 +63,7 @@ public class Cube : MonoBehaviour, ICube
             OnCubeEnterPortal += action;
         }
     }
-    public void SubscribeForExitPortal(OnCubeAction action, bool Unsubscribe = false)
+    public void SubscribeForExitPortal(Cube.OnCubeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
         {
@@ -76,7 +74,7 @@ public class Cube : MonoBehaviour, ICube
             OnCubeExitPortal += action;
         }
     }
-    public void SubscribeForLeaveGround(OnCubeAction action, bool Unsubscribe = false)
+    public void SubscribeForLeaveGround(Cube.OnCubeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
         {
@@ -87,7 +85,7 @@ public class Cube : MonoBehaviour, ICube
             OnCubeLeaveGround += action;
         }
     }
-    public void SubscribeForMerge(OnCubeMergeAction action, bool Unsubscribe = false)
+    public void SubscribeForMerge(Cube.OnCubeMergeAction action, bool Unsubscribe = false)
     {
         if (Unsubscribe)
         {
@@ -107,6 +105,8 @@ public class Cube : MonoBehaviour, ICube
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Collider _collider;
     [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _mainchain;
+    [SerializeField] private GameObject[] _chains;
     private const string ANIM_ENTER = "EnterPortal";
     private const string ANIM_EXIT = "ExitPortal";
     private const string ANIM_DIE = "EnterWater";
@@ -188,7 +188,7 @@ public class Cube : MonoBehaviour, ICube
         }
         OnLeaveZoneCoroutine = StartCoroutine(OnLeaveZoneCour());
 
-        SoundManagment.PlaySound("twirl_punch", transform);   
+        SoundManagment.PlaySound("twirl_punch", transform);
     }
     private Coroutine OnLeaveZoneCoroutine;
     private IEnumerator OnLeaveZoneCour()
@@ -251,6 +251,22 @@ public class Cube : MonoBehaviour, ICube
         _animator.enabled = true;
     }
 
+    private void RemoveChains()
+    {
+        for (int i = 0; i < _chains.Length; i++)
+        {
+            _chains[i].transform.parent = PrevParent;
+            Rigidbody ChainRig = _chains[i].GetComponent<Rigidbody>();
+            ChainRig.isKinematic = false;
+            Vector3 Direction = (_chains[i].transform.position - transform.position).normalized;
+            Direction += new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 0.25f;
+            Direction += Vector3.up * 2;
+            ChainRig.velocity += Direction.normalized * GameManagement.MainData.ChainImpulse;
+            ChainRig.angularVelocity += GameManagement.RandomVector() * 100;
+            Destroy(_chains[i].gameObject, 3f);
+        }
+    }
+
     public void SetNullParent()
     {
         transform.parent = PrevParent;
@@ -262,14 +278,14 @@ public class Cube : MonoBehaviour, ICube
         isDestroyed = true;
         CreateWaterParticle();
 
-        SoundManagment.PlaySound(DestroyTypeToSoundID(DestroyType.Water), transform);
+        SoundManagment.PlaySound(DestroyTypeToSoundID(Cube.DestroyType.Water), transform);
 
         OnCubeDestroyed?.Invoke(this);
         _animator.Play(ANIM_DIE);
         Destroy(gameObject, 1f);
         DestroyCubeAura();
     }
-    public void DestroyCube(DestroyType type = DestroyType.Fall)
+    public void DestroyCube(Cube.DestroyType type = Cube.DestroyType.Fall)
     {
         if (isDestroyed || GameManagement.isGameWin)
             return;
@@ -284,6 +300,7 @@ public class Cube : MonoBehaviour, ICube
     }
     public void ForceDestroy()
     {
+        RemoveChains();
         isDestroyed = true;
         DestroyCubeAura();
         Destroy(gameObject);
@@ -375,30 +392,32 @@ public class Cube : MonoBehaviour, ICube
 
         yield break;
     }
+    private Coroutine AuraParticleCoroutine;
     private void CreateAuraParticle()
     {
-        StartCoroutine(AuraParticleCour());
+        if(AuraParticleCoroutine != null)
+        {
+            StopCoroutine(AuraParticleCoroutine);
+        }
+        AuraParticleCoroutine = StartCoroutine(AuraParticleCour());
     }
-    private Coroutine AuraParticleCoroutine;
     private IEnumerator AuraParticleCour()
     {
-        
         ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity);
         Aura = CubeAura;
-        CubeAura.transform.localScale = Vector3.zero;
+        CubeAura.transform.localScale = Vector3.one;
         var main = CubeAura.main;
         main.startColor = CurrantColor;
-        while(!isNull && CubeAura != null && isMoving)
+        while (!isNull && CubeAura != null && isMoving)
         {
             RaycastHit hit;
             Ray ray = new Ray(transform.position, Vector3.down);
             Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
-            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
+            if (Physics.Raycast(ray, out hit, 6, 1 << 8))
             {
                 Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
             }
             CubeAura.transform.position = Point;
-            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.one, 0.1f);
             yield return new WaitForFixedUpdate();
         }
 
@@ -407,23 +426,70 @@ public class Cube : MonoBehaviour, ICube
             RaycastHit hit;
             Ray ray = new Ray(transform.position, Vector3.down);
             Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
-            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
+            if (Physics.Raycast(ray, out hit, 6, 1 << 8))
             {
                 Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
             }
             CubeAura.transform.position = Point;
-            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.zero, 0.1f);
+            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.zero, 0.075f);
             yield return new WaitForFixedUpdate();
         }
-        if (CubeAura != null)
+        if (CubeAura != null && AuraParticleCoroutine != null)
         {
             Destroy(CubeAura.gameObject);
+        }
+        AuraParticleCoroutine = null;
+        yield break;
+    }
+    private void BlastAuraParticle()
+    {
+        if(AuraParticleCoroutine != null)
+        {
+            StopCoroutine(AuraParticleCoroutine);
+            AuraParticleCoroutine = null;
+        }
+        
+        AuraParticleCoroutine = StartCoroutine(BlastAuraParticleCour());
+
+    }
+    private IEnumerator BlastAuraParticleCour()
+    {
+        ParticleSystem CubeAura = Aura;
+        while (!isNull && CubeAura != null && CubeAura.transform.localScale.magnitude < 2.9f)
+        {
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, Vector3.down);
+            Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
+            if (Physics.Raycast(ray, out hit, 6, 1 << 8))
+            {
+                Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
+            }
+            CubeAura.transform.position = Point;
+            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.one * 3, 0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+        while (!isNull && CubeAura != null && CubeAura.transform.localScale.magnitude > 0.1f)
+        {
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, Vector3.down);
+            Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
+            if (Physics.Raycast(ray, out hit, 6, 1 << 8))
+            {
+                Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
+            }
+            CubeAura.transform.position = Point;
+            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.zero, 0.075f);
+            yield return new WaitForFixedUpdate();
+        }
+        if (Aura != null)
+        {
+            Destroy(Aura.gameObject);
         }
         yield break;
     }
     public void DestroyCubeAura()
     {
-        if(Aura != null)
+        if (Aura != null)
         {
             Destroy(Aura);
         }
@@ -438,30 +504,51 @@ public class Cube : MonoBehaviour, ICube
         {
             ExitPlatform();
         }
-        if (OffGravityOnTake)
+
+        if(TakeCoroutine == null && !inAir)
         {
-            _rig.useGravity = false;
+            TakeCoroutine = StartCoroutine(TakeCour());
         }
+    }
+    private Coroutine TakeCoroutine;
+    private IEnumerator TakeCour()
+    {
+        float TimeOffser = 0;
+        bool TimeOut = false;
 
         CreateAuraParticle();
+        Vector3 StartPos = transform.position;
+        Vector3 EndPos = transform.position + Vector3.up * 3f;
+        Vector3 CurrantPos = transform.position;
+        while(!isNull && isMoving && !TimeOut)
+        {
+            CurrantPos = Vector3.Lerp(CurrantPos, EndPos, 0.05f);
+            transform.position = CurrantPos + GameManagement.RandomVector() * 0.05f;
+            TimeOffser += Time.fixedDeltaTime;
+            TimeOut = TimeOffser > 1.5f;
+            yield return new WaitForFixedUpdate();
+        }
+        if (TimeOut)
+        {
+            BlastAuraParticle();
+        }
+        Throw();
+        transform.position = EndPos;
+        while (!isNull && (transform.position - StartPos).magnitude > 0.05f)
+        {
+            CurrantPos = Vector3.Lerp(CurrantPos, StartPos, 0.1f);
+            transform.position = CurrantPos;
+            yield return new WaitForFixedUpdate();
+        }
+        transform.position = StartPos;
+        TakeCoroutine = null;
+        yield break;
     }
+
+
     public void Drag(Vector3 Point)
     {
-        if (inAir)
-            return;
-        Point += Vector3.up * transform.localScale.y * CubeHeightOnMove;
-        Vector3 Direction = (Point - transform.position);
-        if (Direction.magnitude > MinDistanceToMove)
-        {
-            Vector3 NewSpeed = Direction.normalized * DragSpeed * 50;
-            NewSpeed = new Vector3(NewSpeed.x, inAir ? CubeRig.velocity.y : NewSpeed.y, NewSpeed.z);
-            _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
-        }
-        else
-        {
-            Vector3 NewSpeed = Physics.gravity;
-            _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, 25 * Time.deltaTime);
-        }
+        
     }
     public void Throw()
     {
@@ -488,15 +575,15 @@ public class Cube : MonoBehaviour, ICube
     }
     private void CheckBelowScene()
     {
-        if(InputManagement.Active.BelowGameZone(transform))
+        if (InputManagement.Active.BelowGameZone(transform))
         {
-            DestroyCube(DestroyType.Fall);
+            DestroyCube(Cube.DestroyType.Fall);
         }
     }
     private void OnEnterGround()
     {
-        
-        if(OnEnterGroundCoroutine == null)
+
+        if (OnEnterGroundCoroutine == null)
         {
             OnEnterGroundCoroutine = StartCoroutine(OnEnterGroundCour());
         }
@@ -504,8 +591,8 @@ public class Cube : MonoBehaviour, ICube
     private Coroutine OnEnterGroundCoroutine;
     private IEnumerator OnEnterGroundCour()
     {
-        yield return new WaitForSeconds(0.25f);
-        if (!Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //åñòü ëè ïîä íàìè çåìëÿ?
+        yield return new WaitForSeconds(0.05f);
+        if (!Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //ÐµÑÑ‚ÑŒ Ð»Ð¸ Ð¿Ð¾Ð´ Ð½Ð°Ð¼Ð¸ Ð·ÐµÐ¼Ð»Ñ?
         {
             inAir = true;
             OnEnterGroundCoroutine = null;
@@ -517,7 +604,7 @@ public class Cube : MonoBehaviour, ICube
     }
     private void OnLeaveGround()
     {
-        if(OnEnterGroundCoroutine != null)
+        if (OnEnterGroundCoroutine != null)
         {
             StopCoroutine(OnEnterGroundCoroutine);
             OnEnterGroundCoroutine = null;
@@ -532,7 +619,7 @@ public class Cube : MonoBehaviour, ICube
     {
         yield return new WaitForSeconds(0.05f);
         inAir = true;
-        if (Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //åñòü ëè ïîä íàìè çåìëÿ?
+        if (Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //ÐµÑÑ‚ÑŒ Ð»Ð¸ Ð¿Ð¾Ð´ Ð½Ð°Ð¼Ð¸ Ð·ÐµÐ¼Ð»Ñ?
         {
             inAir = false;
             OnLeaveGroundCoroutine = null;
@@ -551,7 +638,7 @@ public class Cube : MonoBehaviour, ICube
 
     private void SetScale()
     {
-        if(_animator.enabled)
+        if (_animator.enabled)
         {
             transform.localScale = StartScale * AnimationScale;
         }
@@ -704,101 +791,4 @@ public class Cube : MonoBehaviour, ICube
 
         SetScale();
     }
-}
-
-public interface ICube
-{
-    bool isNull { get; }
-
-    bool isDestroyed { get; }
-
-    bool NoTelepor { get; }
-
-    int Number { get; }
-
-    bool AfterPortal { get; }
-
-    bool AfterMerge { get; }
-
-    bool NoInput { get; }
-
-    
-
-    bool isMoving { get; }
-
-    bool inAir { get; }
-
-    bool isOnPlatform { get; }
-
-    Color CubeColor { get; }
-
-    Transform CubeTransform { get; }
-
-    GameObject CubeObject { get; }
-
-    Rigidbody CubeRig { get; }
-
-    Collider CubeCol { get; }
-
-    Vector3 StartScale { get; }
-
-    void SetNullParent();
-
-    void Take();
-
-    void Drag(Vector3 Point);
-
-    void Throw();
-
-    void ForceDestroy();
-
-    void DestroyCube(Cube.DestroyType type = Cube.DestroyType.Fall);
-
-    void DestroyCubeAura();
-
-    void OnEnterPortal();
-
-    void OnFailedEnterPortal();
-
-    void OnExitPortal();
-
-    void OnTeleportWait();
-
-    void OnEnterTrap();
-
-
-    void EnterPlatform(BarrierMove platform);
-
-    void ExitPlatform();
-
-    void StartFinalMerge();
-
-    void CreateMergeParticle();
-
-    void CreateDestroyParticle();
-
-    void AddImpulse(Vector3 Impulse);
-
-    void AddImpulse(Vector3 Impulse, Vector3 Angular);
-
-    void SetImpulse(Vector3 Impulse, Vector3 Angular);
-
-    void InitCube();
-
-    void InitCube(int num);
-
-    void InitCube(int num, Vector3 Impulse, Vector3 Angular, bool AfterMerge = false);
-
-    ICube PrevCube { get; set; }
-
-    void SubscribeForDestroyed(Cube.OnCubeAction action, bool Unsubscribe = false);
-
-    void SubscribeForEnterPortal(Cube.OnCubeAction action, bool Unsubscribe = false);
-
-    void SubscribeForLeaveGround(Cube.OnCubeAction action, bool Unsubscribe = false);
-
-    void SubscribeForMerge(Cube.OnCubeMergeAction action, bool Unsubscribe = false);
-
-    void SubscribeForExitPortal(Cube.OnCubeAction action, bool Unsubscribe = false);
-
 }

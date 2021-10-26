@@ -19,11 +19,13 @@ MonoBehaviour:
   VerticalForceOnFinalMerge: 25
   RotationOnMerge: 15
   CubeDragSpeed: 0.75
-  CubeDragAcceleration: 0.25
+  CubeDragAcceleration: 1
+  CubeAngulartVelocity: 720
   CubeFriction: 0.5
-  CubeHeightOnMove: 0.6
-  MinDistanceToMove: 0.5
-  OffGravityOnTake: 0
+  CubeHeightOnMove: 1
+  MinDistanceToMove: 1
+  OffGravityOnTake: 1
+  ChainImpulse: 7
   Static: 1
   LockSideMove: 1
   CameraFollowSpeed: 10
@@ -62,7 +64,7 @@ MonoBehaviour:
     type: 3}
   BulletDestroy: {fileID: 3145845078045133723, guid: 2f2f432c085c0ff4aad7f0651c0969b9,
     type: 3}
-  FinalMerge: {fileID: 9099722521726314399, guid: a1be12d6025bbd94a880e780837bee95,
+  CubeAura: {fileID: 5518175412909130351, guid: 796fcb15ed440b248a194089963ffa22,
     type: 3}
   RadialShine: {fileID: 6734686657488560002, guid: 524b59fa60e09864cb18b134a71526ae,
     type: 3}

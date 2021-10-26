@@ -20,15 +20,20 @@ public class DataGameMain : ScriptableObject
     public float RotationOnMerge;
     [Range(0.1f, 1f)]
     public float CubeDragSpeed;
-    [Range(0.1f, 1f)]
+    [Range(0.1f, 2f)]
     public float CubeDragAcceleration;
+    [Range(0f, 720f)]
+    public float CubeAngulartVelocity;
     [Range(0.1f, 1f)]
     public float CubeFriction;
-    [Range(0, 0.6f)] 
+    [Range(0, 01f)] 
     public float CubeHeightOnMove; //Если куб будет слишком высоко, то код будет сличтать, что он в воздухе и отпускать его, поэтому ограничение 0.6
     [Range(0, 1f)]
     public float MinDistanceToMove;
     public bool OffGravityOnTake;
+    [Header("Настройка куба в цепях")]
+    [Range(0, 25f)]
+    public float ChainImpulse;
     [Header("Физика камеры")]
     public bool Static;
     public bool LockSideMove;
@@ -87,7 +92,7 @@ public class DataGameMain : ScriptableObject
     public ParticleSystem GemCollected;
     public ParticleSystem TurrelFire;
     public ParticleSystem BulletDestroy;
-    public ParticleSystem FinalMerge;
+    public ParticleSystem CubeAura;
     public GameObject RadialShine;
     public GameObject[] Confetti;
     public GameObject GetConfetti()
