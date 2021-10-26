@@ -7,7 +7,8 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     [Header("Settings")]
     [SerializeField] private Transform ExitPoint;
     [SerializeField] private AnimationCurve HorizontalMove;
-    [SerializeField] private AnimationCurve VirticalMove;
+    [SerializeField] private AnimationCurve VerticalMove;
+    [SerializeField] private float Height;
     [SerializeField] private float TimeMove;
     [Header("Pair")]
     [SerializeField] private Portal SecondPortal;
@@ -16,7 +17,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     [SerializeField] private bool isActive = true;
     public bool Activated { get => isActive; }
     private ICube prevCube;
-    private Coroutine TeleportCoroutine;
+    private Dictionary<ICube, Coroutine> TeleportCoroutine = new Dictionary<ICube, Coroutine>();
 
     private ISound Sound;
     private Animator _anim;
@@ -34,7 +35,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             return;
         if(PairPortal != null)
         {
-            if ((prevCube == null || cube != prevCube) && !cube.NoTelepor && PairPortal.Activated)
+            if ((prevCube == null || cube != prevCube) && PairPortal.Activated)
             {
                 PairPortal.Teleport(cube);
             }
@@ -59,70 +60,78 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void Teleport(ICube cube)
     {
-        if(TeleportCoroutine == null)
+        if(!TeleportCoroutine.ContainsKey(cube))
         {
-            TeleportCoroutine = StartCoroutine(TeleportCour(cube));
+            TeleportCoroutine[cube] = StartCoroutine(TeleportCour(cube));
         }
-        
     }
     private IEnumerator TeleportCour(ICube cube)
     {
         yield return new WaitForFixedUpdate();
         if (!cube.AfterPortal)
         {
-            //float PrevCubeVelocity = cube.CubeRig.velocity.magnitude;
-            //cube.CubeRig.velocity *= 0.25f;
-            //yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
-            //cube.CubeRig.velocity = (transform.forward + Vector3.up * 0.25f).normalized * (PrevCubeVelocity *
-            //GameManagement.MainData.SaveVelocityOnExitPortal + GameManagement.MainData.AddVelocityOnExitPortal);
-            //Vector3 CubeAngular = GameManagement.MainData.AddRotationOnExitPortal * new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne());
-            //cube.CubeRig.angularVelocity += CubeAngular;
+            cube.SubscribeForFailedMerge(StopTeleport);
             cube.OnEnterPortal();
             prevCube = cube;
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
             cube.CubeTransform.position = transform.position;
+
             prevCube.OnExitPortal();
 
             float CurrantTime = 0;
-            while(CurrantTime < TimeMove)
+            Vector3 OffsetY = Vector3.zero;
+            Vector3 CurrantPoint = transform.position;
+            Vector3 PrevPoint = CurrantPoint;
+            Vector3 EndPoint = ExitPoint.position;
+            while (CurrantTime < TimeMove * 0.95f)
             {
-
+                if(cube.isNull || !cube.isPortalMoving)
+                {
+                    yield break;
+                }
+                OffsetY = Vector3.up * Height * (VerticalMove.Evaluate(CurrantTime / TimeMove));
+                CurrantPoint = Vector3.Lerp(transform.position, EndPoint, HorizontalMove.Evaluate(CurrantTime / TimeMove));
+                cube.CubeRig.position = CurrantPoint + OffsetY;
+                cube.CubeRig.velocity = (CurrantPoint - PrevPoint) / Time.fixedDeltaTime;
+                PrevPoint = CurrantPoint;
                 CurrantTime += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
 
-            prevCube.SetNullParent();
+            cube.SubscribeForFailedMerge(StopTeleport, true);
+            cube.OnExitPortalMoveEnd();
+
             ClearPrevCube();
             PairPortal.ClearPrevCube();
-
-            //OnTeleported(prevCube);
         }
             
         
-        TeleportCoroutine = null;
+        TeleportCoroutine.Remove(cube);
         yield break;
     }
 
-    private void OnTeleported(ICube cube)
+    public void StopTeleport(ICube cube, ICube other)
     {
-        if(TeleportCoroutine != null)
-        {
-            StopCoroutine(TeleportCoroutine);
-        }
-        TeleportCoroutine = StartCoroutine(OnTeleportedCour(cube));
+        StartCoroutine(StopTeleportCour(cube));
     }
-    private IEnumerator OnTeleportedCour(ICube cube)
+    private IEnumerator StopTeleportCour(ICube cube)
     {
-        float Lenght = (transform.position - cube.CubeTransform.position).magnitude;
-        while (!cube.isNull && (transform.position - cube.CubeTransform.position).magnitude < Lenght)
+        if (TeleportCoroutine.ContainsKey(cube))
         {
-            yield return new WaitForFixedUpdate();
+            StopCoroutine(TeleportCoroutine[cube]);
+            TeleportCoroutine.Remove(cube);
         }
-        ClearPrevCube();
-        PairPortal.ClearPrevCube();
-        
+        if (cube == prevCube)
+        {
+            cube.SubscribeForFailedMerge(StopTeleport, true);
+            prevCube.OnExitPortalMoveEnd();
+            
 
-        TeleportCoroutine = null;
+            ClearPrevCube();
+            PairPortal.ClearPrevCube();
+        }
+
+        
         yield break;
     }
 

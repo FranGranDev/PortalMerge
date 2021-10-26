@@ -30,7 +30,6 @@ public class DataGameMain : ScriptableObject
     public float CubeHeightOnMove; //Если куб будет слишком высоко, то код будет сличтать, что он в воздухе и отпускать его, поэтому ограничение 0.6
     [Range(0, 1f)]
     public float MinDistanceToMove;
-    public bool OffGravityOnTake;
     [Header("Настройка куба в цепях")]
     [Range(0, 25f)]
     public float ChainImpulse;

@@ -30,7 +30,6 @@ public class CubeChain : MonoBehaviour, ICube
     private float DragAcceleration;
     private float MinDistanceToMove = 0.5f;
     private float CubeHeightOnMove = 0.5f;
-    private bool OffGravityOnTake;
 
     #region Callbacks
 
@@ -39,6 +38,7 @@ public class CubeChain : MonoBehaviour, ICube
     public Cube.OnCubeAction OnCubeExitPortal;
     public Cube.OnCubeAction OnCubeLeaveGround;
     public Cube.OnCubeMergeAction OnCubesMerge;
+    public Cube.OnCubeMergeAction OnCubesFailedMerge;
 
     public void SubscribeForDestroyed(Cube.OnCubeAction action, bool Unsubscribe = false)
     {
@@ -97,7 +97,18 @@ public class CubeChain : MonoBehaviour, ICube
         }
 
     }
+    public void SubscribeForFailedMerge(Cube.OnCubeMergeAction action, bool Unsubscribe = false)
+    {
+        if (Unsubscribe)
+        {
+            OnCubesFailedMerge -= action;
+        }
+        else
+        {
+            OnCubesFailedMerge += action;
+        }
 
+    }
     #endregion
 
     [Header("Components")]
@@ -131,6 +142,7 @@ public class CubeChain : MonoBehaviour, ICube
     public float AnimationScale;
     public bool inAir { get; private set; }
     public bool isMoving { get; private set; }
+    public bool isPortalMoving { get; private set; }
     public bool isOutOfZone { get; private set; }
     public bool isOnPlatform { get; private set; }
     private Transform PrevParent;
@@ -177,6 +189,10 @@ public class CubeChain : MonoBehaviour, ICube
         OnTeleportWait();
 
         SoundManagment.PlaySound("portal", transform);
+    }
+    public void OnExitPortalMoveEnd()
+    {
+
     }
     public void OnEnterTrap()
     {
@@ -553,11 +569,6 @@ public class CubeChain : MonoBehaviour, ICube
     public void Throw()
     {
         isMoving = false;
-
-        if (OffGravityOnTake)
-        {
-            _rig.useGravity = true;
-        }
     }
     public void AddImpulse(Vector3 Impulse)
     {
@@ -671,7 +682,6 @@ public class CubeChain : MonoBehaviour, ICube
         DragSpeed = GameManagement.MainData.CubeDragSpeed;
         DragAcceleration = GameManagement.MainData.CubeDragAcceleration;
         MinDistanceToMove = GameManagement.MainData.MinDistanceToMove;
-        OffGravityOnTake = GameManagement.MainData.OffGravityOnTake;
         CubeHeightOnMove = GameManagement.MainData.CubeHeightOnMove;
     }
     public void SetNumbers()

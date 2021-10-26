@@ -31,7 +31,6 @@ public class Cube : MonoBehaviour, ICube
     private float DragAcceleration;
     private float MinDistanceToMove = 0.5f;
     private float CubeHeightOnMove = 0.5f;
-    private bool OffGravityOnTake;
 
     #region Callbacks
     public delegate void OnCubeAction(ICube cube);
@@ -41,6 +40,8 @@ public class Cube : MonoBehaviour, ICube
     public OnCubeAction OnCubeLeaveGround;
     public delegate void OnCubeMergeAction(ICube cube1, ICube cube2);
     public OnCubeMergeAction OnCubesMerge;
+    public OnCubeMergeAction OnCubesFailedMerge;
+
 
     public void SubscribeForDestroyed(OnCubeAction action, bool Unsubscribe = false)
     {
@@ -99,7 +100,18 @@ public class Cube : MonoBehaviour, ICube
         }
 
     }
+    public void SubscribeForFailedMerge(OnCubeMergeAction action, bool Unsubscribe = false)
+    {
+        if (Unsubscribe)
+        {
+            OnCubesFailedMerge -= action;
+        }
+        else
+        {
+            OnCubesFailedMerge += action;
+        }
 
+    }
     #endregion
 
     [Header("Components")]
@@ -131,6 +143,7 @@ public class Cube : MonoBehaviour, ICube
     public float AnimationScale;
     public bool inAir { get; private set; }
     public bool isMoving { get; private set; }
+    public bool isPortalMoving { get; private set; }
     public bool isOutOfZone { get; private set; }
     public bool isOnPlatform { get; private set; }
     private Transform PrevParent;
@@ -151,18 +164,24 @@ public class Cube : MonoBehaviour, ICube
                 OnCubesMerge?.Invoke(this, other); //OnCubesMerge(ICube cube1, ICube cube2) in GameManager
             }
         }
+        else
+        {
+            OnCubesFailedMerge?.Invoke(this, other);
+        }
 
     }
     private void MakeCopy() => StaticCube.MakeCopy(this);
     public void OnEnterPortal()
     {
+        isPortalMoving = true;
+
         MakeCopy();
 
         OnCubeEnterPortal?.Invoke(this);
 
         _animator.SetTrigger(ANIM_ENTER);
 
-        //SoundManagment.PlaySound("portal", transform);
+        DestroyCubeAura();
     }
     public void OnFailedEnterPortal()
     {
@@ -177,6 +196,11 @@ public class Cube : MonoBehaviour, ICube
         OnTeleportWait();
 
         SoundManagment.PlaySound("portal", transform);
+    }
+    public void OnExitPortalMoveEnd()
+    {
+        isPortalMoving = false;
+        SetNullParent();
     }
     public void OnEnterTrap()
     {
@@ -334,101 +358,7 @@ public class Cube : MonoBehaviour, ICube
     }
 
     #endregion
-    #region Particle
-    public void CreateWaterParticle()
-    {
-        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeWater, transform.position, Quaternion.identity);
-        partilce.transform.localScale = Vector3.one * GameManagement.MainData.WaterParticleSize;
-    }
-    public void CreateDestroyParticle()
-    {
-        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeDestroyed, transform.position, transform.rotation);
-        ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
-        partilceRender.material.color = CurrantColor;
-        partilce.transform.localScale = transform.localScale * GameManagement.MainData.DestroyParticleSize;
-    }
-    public void CreateMergeParticle()
-    {
-        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubesMerge, transform.position, transform.rotation, transform);
-        ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
-        partilceRender.material.color = CurrantColor;
-        partilce.transform.localScale = transform.localScale * GameManagement.MainData.MergeParticleSize;
 
-    }
-    private IEnumerator FinalParticleCour()
-    {
-        Vector3 Offset = new Vector3(0f, 0, 0.1f);
-        GameObject particle = Instantiate(GameManagement.MainData.RadialShine, transform.position, Quaternion.identity, PrevParent);
-        Vector3 Scale = particle.transform.localScale;
-        Material material = particle.GetComponent<MeshRenderer>().material;
-        Color TargetColor = material.color;
-        material.color = new Color(1, 1, 1, 0);
-        particle.transform.localScale = Vector3.zero;
-        while (!isNull)
-        {
-            particle.transform.position = transform.position + Vector3.down * 2;
-            particle.transform.Rotate(Vector3.up, 10 * Time.fixedDeltaTime);
-            particle.transform.localScale = Vector3.Lerp(particle.transform.localScale, Scale, 0.025f);
-            material.color = Color.Lerp(material.color, TargetColor, 0.02f);
-            yield return new WaitForFixedUpdate();
-        }
-
-        yield break;
-    }
-    private void CreateAuraParticle()
-    {
-        StartCoroutine(AuraParticleCour());
-    }
-    private Coroutine AuraParticleCoroutine;
-    private IEnumerator AuraParticleCour()
-    {
-        
-        ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity);
-        Aura = CubeAura;
-        CubeAura.transform.localScale = Vector3.zero;
-        var main = CubeAura.main;
-        main.startColor = CurrantColor;
-        while(!isNull && CubeAura != null && isMoving)
-        {
-            RaycastHit hit;
-            Ray ray = new Ray(transform.position, Vector3.down);
-            Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
-            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
-            {
-                Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
-            }
-            CubeAura.transform.position = Point;
-            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.one, 0.1f);
-            yield return new WaitForFixedUpdate();
-        }
-
-        while (!isNull && CubeAura != null && CubeAura.transform.localScale.magnitude > 0.1f)
-        {
-            RaycastHit hit;
-            Ray ray = new Ray(transform.position, Vector3.down);
-            Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
-            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
-            {
-                Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
-            }
-            CubeAura.transform.position = Point;
-            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.zero, 0.1f);
-            yield return new WaitForFixedUpdate();
-        }
-        if (CubeAura != null)
-        {
-            Destroy(CubeAura.gameObject);
-        }
-        yield break;
-    }
-    public void DestroyCubeAura()
-    {
-        if(Aura != null)
-        {
-            Destroy(Aura);
-        }
-    }
-    #endregion
     #region Movement
     public void Take()
     {
@@ -437,10 +367,6 @@ public class Cube : MonoBehaviour, ICube
         if (isOnPlatform)
         {
             ExitPlatform();
-        }
-        if (OffGravityOnTake)
-        {
-            _rig.useGravity = false;
         }
 
         CreateAuraParticle();
@@ -466,11 +392,6 @@ public class Cube : MonoBehaviour, ICube
     public void Throw()
     {
         isMoving = false;
-
-        if (OffGravityOnTake)
-        {
-            _rig.useGravity = true;
-        }
     }
     public void AddImpulse(Vector3 Impulse)
     {
@@ -557,6 +478,101 @@ public class Cube : MonoBehaviour, ICube
         }
     }
     #endregion
+    #region Particle
+    public void CreateWaterParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeWater, transform.position, Quaternion.identity);
+        partilce.transform.localScale = Vector3.one * GameManagement.MainData.WaterParticleSize;
+    }
+    public void CreateDestroyParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubeDestroyed, transform.position, transform.rotation);
+        ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
+        partilceRender.material.color = CurrantColor;
+        partilce.transform.localScale = transform.localScale * GameManagement.MainData.DestroyParticleSize;
+    }
+    public void CreateMergeParticle()
+    {
+        ParticleSystem partilce = Instantiate(GameManagement.MainData.CubesMerge, transform.position, transform.rotation, transform);
+        ParticleSystemRenderer partilceRender = partilce.GetComponent<ParticleSystemRenderer>();
+        partilceRender.material.color = CurrantColor;
+        partilce.transform.localScale = transform.localScale * GameManagement.MainData.MergeParticleSize;
+
+    }
+    private IEnumerator FinalParticleCour()
+    {
+        Vector3 Offset = new Vector3(0f, 0, 0.1f);
+        GameObject particle = Instantiate(GameManagement.MainData.RadialShine, transform.position, Quaternion.identity, PrevParent);
+        Vector3 Scale = particle.transform.localScale;
+        Material material = particle.GetComponent<MeshRenderer>().material;
+        Color TargetColor = material.color;
+        material.color = new Color(1, 1, 1, 0);
+        particle.transform.localScale = Vector3.zero;
+        while (!isNull)
+        {
+            particle.transform.position = transform.position + Vector3.down * 2;
+            particle.transform.Rotate(Vector3.up, 10 * Time.fixedDeltaTime);
+            particle.transform.localScale = Vector3.Lerp(particle.transform.localScale, Scale, 0.025f);
+            material.color = Color.Lerp(material.color, TargetColor, 0.02f);
+            yield return new WaitForFixedUpdate();
+        }
+
+        yield break;
+    }
+    private void CreateAuraParticle()
+    {
+        StartCoroutine(AuraParticleCour());
+    }
+    private Coroutine AuraParticleCoroutine;
+    private IEnumerator AuraParticleCour()
+    {
+
+        ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity);
+        Aura = CubeAura;
+        CubeAura.transform.localScale = Vector3.zero;
+        var main = CubeAura.main;
+        main.startColor = CurrantColor;
+        while (!isNull && CubeAura != null && isMoving)
+        {
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, Vector3.down);
+            Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
+            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
+            {
+                Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
+            }
+            CubeAura.transform.position = Point;
+            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.one, 0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+
+        while (!isNull && CubeAura != null && CubeAura.transform.localScale.magnitude > 0.1f)
+        {
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, Vector3.down);
+            Vector3 Point = transform.position - Vector3.down * transform.localScale.y;
+            if (Physics.Raycast(ray, out hit, 3, 1 << 8))
+            {
+                Point = new Vector3(transform.position.x, hit.point.y + 0.1f, transform.position.z);
+            }
+            CubeAura.transform.position = Point;
+            CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.zero, 0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+        if (CubeAura != null)
+        {
+            Destroy(CubeAura.gameObject);
+        }
+        yield break;
+    }
+    public void DestroyCubeAura()
+    {
+        if (Aura != null)
+        {
+            Destroy(Aura);
+        }
+    }
+    #endregion
     #region Init
     private void SetComponents()
     {
@@ -584,7 +600,6 @@ public class Cube : MonoBehaviour, ICube
         DragSpeed = GameManagement.MainData.CubeDragSpeed;
         DragAcceleration = GameManagement.MainData.CubeDragAcceleration;
         MinDistanceToMove = GameManagement.MainData.MinDistanceToMove;
-        OffGravityOnTake = GameManagement.MainData.OffGravityOnTake;
         CubeHeightOnMove = GameManagement.MainData.CubeHeightOnMove;
     }
     public void SetNumbers()
@@ -722,7 +737,7 @@ public interface ICube
 
     bool NoInput { get; }
 
-    
+    bool isPortalMoving { get; }
 
     bool isMoving { get; }
 
@@ -762,6 +777,8 @@ public interface ICube
 
     void OnExitPortal();
 
+    void OnExitPortalMoveEnd();
+
     void OnTeleportWait();
 
     void OnEnterTrap();
@@ -794,6 +811,8 @@ public interface ICube
     void SubscribeForDestroyed(Cube.OnCubeAction action, bool Unsubscribe = false);
 
     void SubscribeForEnterPortal(Cube.OnCubeAction action, bool Unsubscribe = false);
+
+    void SubscribeForFailedMerge(Cube.OnCubeMergeAction action, bool Unsubscribe = false);
 
     void SubscribeForLeaveGround(Cube.OnCubeAction action, bool Unsubscribe = false);
 

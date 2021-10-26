@@ -9657,10 +9657,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7612254121110798785}
   - component: {fileID: 7612254121110798789}
-  - component: {fileID: 8907960743180350847}
   - component: {fileID: 4716222745211055617}
   - component: {fileID: 6424443731564438251}
   - component: {fileID: 39222991018187044}
+  - component: {fileID: 908864869001659041}
   m_Layer: 9
   m_Name: Portal_Purple
   m_TagString: Portal
@@ -9695,22 +9695,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13dd5859793e0ef459bc6fce6f564e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExtraForce: 0
+  ExitPoint: {fileID: 0}
+  HorizontalMove:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  VerticalMove:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.0039847
+      outSlope: 2.0039847
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49906313
+      value: 1.0001149
+      inSlope: 0.0035194159
+      outSlope: 0.0035194159
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.00022888184
+      inSlope: -1.9969459
+      outSlope: -1.9969459
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  Height: 3
+  TimeMove: 1
   SecondPortal: {fileID: 0}
   isActive: 1
---- !u!65 &8907960743180350847
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7612254121110798784}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 0}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &4716222745211055617
 Animator:
   serializedVersion: 3
@@ -9838,3 +9884,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c4af934b3ccfe46afb853f52d12130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &908864869001659041
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7612254121110798784}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
