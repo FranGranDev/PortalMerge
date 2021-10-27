@@ -59,6 +59,7 @@ public class InputManagement : MonoBehaviour
     public static OnSwipeInput OnSwipeEnd;
     public delegate void OnTouchAction();
     public OnTouchAction OnTakeCube;
+    public OnTouchAction OnInteract;
     #endregion
 
     private ICube CurrantCube;
@@ -144,6 +145,7 @@ public class InputManagement : MonoBehaviour
         if(interact != null)
         {
             interact.DoAction();
+            OnInteract?.Invoke();
         }
     }
 

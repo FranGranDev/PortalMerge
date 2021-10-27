@@ -455,7 +455,7 @@ public class Cube : MonoBehaviour, ICube
     private Coroutine OnLeaveGroundCoroutine;
     private IEnumerator OnLeaveGroundCour()
     {
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.025f);
         inAir = true;
         if (Physics.Raycast(transform.position, Vector3.down, 3, 1 << 8)) //есть ли под нами земля?
         {
@@ -465,7 +465,7 @@ public class Cube : MonoBehaviour, ICube
         }
         if (isMoving)
         {
-            CubeRig.velocity = new Vector3(CubeRig.velocity.x * 0.5f, CubeRig.velocity.y, CubeRig.velocity.z * 0.5f);
+            CubeRig.velocity = new Vector3(CubeRig.velocity.x * 0.4f, CubeRig.velocity.y * 1.25f, CubeRig.velocity.z * 0.4f);
             isMoving = false;
         }
         CubeRig.useGravity = true;

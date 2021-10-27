@@ -15,6 +15,10 @@ public class TutorialManager : MonoBehaviour
     {
         EndTutor();
     }
+    private void OnInteract()
+    {
+        EndTutor();
+    }
 
     private void StartTutor()
     {
@@ -29,10 +33,12 @@ public class TutorialManager : MonoBehaviour
     {
         GameManagement.OnGameStarted += OnGameStart;
         InputManagement.Active.OnTakeCube += OnCubeTaken;
+        InputManagement.Active.OnInteract += OnInteract;
     }
     private void OnDisable()
     {
         GameManagement.OnGameStarted -= OnGameStart;
         InputManagement.Active.OnTakeCube -= OnCubeTaken;
+        InputManagement.Active.OnInteract -= OnInteract;
     }
 }
