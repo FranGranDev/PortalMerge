@@ -16,6 +16,7 @@ public class TwistPaddle : MonoBehaviour
             Vector3 Direction = (-Normal.up + Vector3.up * 0.25f).normalized;
             cube.AddImpulse(Direction * TwistParent.Impulse());
             cube.OnEnterTrap();
+            TwistParent.ReduseSpeed(0.5f);
 
             prevCube = cube;
         }

@@ -32,6 +32,10 @@ public class Twist : MonoBehaviour, IActivate
             Sound.ChangeVolume(CurrantRotationSpeed / RotationSpeed);
         }
     }
+    public void ReduseSpeed(float Procent)
+    {
+        CurrantRotationSpeed *= (1 - Procent);
+    }
 
     private void Awake() => Init();
 
