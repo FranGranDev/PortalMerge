@@ -17,29 +17,58 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     [SerializeField] private bool isActive = true;
     public bool Activated { get => isActive; }
     private Dictionary<ICube, Coroutine> TeleportCoroutine = new Dictionary<ICube, Coroutine>();
+    private Dictionary<ICube, bool> CubeTeleporting = new Dictionary<ICube, bool>();
     public int Count { get => TeleportCoroutine.Count;}
+    public int dadad;
 
     public bool HaveCube(ICube cube)
     {
         return TeleportCoroutine.ContainsKey(cube);
     }
+    private bool CubeTeleportaing(ICube cube)
+    {
+        if (CubeTeleporting.ContainsKey(cube))
+        {
+            return CubeTeleporting[cube];
+        }
+        else
+        {
+            return false;
+        }
+            
+    }
+    private void StopSetCubeTeleporting(ICube cube)
+    {
+        if (CubeTeleporting.ContainsKey(cube))
+        {
+            CubeTeleporting[cube] = false;
+        }
+        else
+        {
+            Debug.Log("Error!");
+        }
+    }
     private void AddCube(ICube cube)
     {
-        if (!HaveCube(cube) && !PrevPortal.HaveCube(cube))
+        if (!HaveCube(cube) && !PrevPortal.HaveCube(cube) && !cube.AfterPortal)
         {
             TeleportCoroutine.Add(cube, StartCoroutine(TeleportCour(cube)));
+            CubeTeleporting.Add(cube, true);
         }
     }
     private void RemoveCube(ICube cube)
     {
         ClearCube(cube);
         PrevPortal.ClearCube(cube);
+        cube.SubscribeForFailedMerge(StopTeleport, true);
+        cube.OnExitPortalMoveEnd();
     }
     public void ClearCube(ICube cube)
     {
         if (HaveCube(cube))
         {
             TeleportCoroutine.Remove(cube);
+            CubeTeleporting.Remove(cube);
         }
     }
 
@@ -88,40 +117,32 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     }
     private IEnumerator TeleportCour(ICube cube)
     {
-        if (!cube.AfterPortal)
+        cube.SubscribeForFailedMerge(StopTeleport);
+        cube.OnEnterPortal();
+
+        yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
+        cube.CubeTransform.position = transform.position;
+
+        cube.OnExitPortal();
+
+        float CurrantTime = 0;
+        Vector3 OffsetY = Vector3.zero;
+        Vector3 CurrantPoint = transform.position;
+        Vector3 PrevPoint = CurrantPoint;
+        Vector3 EndPoint = ExitPoint.position;
+        while (CurrantTime < TimeMove * 0.95f)
         {
-            cube.SubscribeForFailedMerge(StopTeleport);
-            cube.OnEnterPortal();
-
-            yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
-            cube.CubeTransform.position = transform.position;
-
-            cube.OnExitPortal();
-
-            float CurrantTime = 0;
-            Vector3 OffsetY = Vector3.zero;
-            Vector3 CurrantPoint = transform.position;
-            Vector3 PrevPoint = CurrantPoint;
-            Vector3 EndPoint = ExitPoint.position;
-            while (CurrantTime < TimeMove * 0.95f)
+            if (cube.isNull || (!CubeTeleporting[cube] && CurrantTime > TimeMove * 0.5f))
             {
-                if (cube.isNull || !cube.isPortalMoving || !HaveCube(cube))
-                {
-                    cube.SubscribeForFailedMerge(StopTeleport, true);
-                    RemoveCube(cube);
-                    yield break;
-                }
-                OffsetY = Vector3.up * Height * (VerticalMove.Evaluate(CurrantTime / TimeMove));
-                CurrantPoint = Vector3.Lerp(transform.position, EndPoint, HorizontalMove.Evaluate(CurrantTime / TimeMove));
-                cube.CubeRig.position = CurrantPoint + OffsetY;
-                cube.CubeRig.velocity = (CurrantPoint - PrevPoint) / Time.fixedDeltaTime;
-                PrevPoint = CurrantPoint;
-                CurrantTime += Time.fixedDeltaTime;
-                yield return new WaitForFixedUpdate();
+                break;
             }
-
-            cube.SubscribeForFailedMerge(StopTeleport, true);
-            cube.OnExitPortalMoveEnd();
+            OffsetY = Vector3.up * Height * (VerticalMove.Evaluate(CurrantTime / TimeMove));
+            CurrantPoint = Vector3.Lerp(transform.position, EndPoint, HorizontalMove.Evaluate(CurrantTime / TimeMove));
+            cube.CubeRig.position = CurrantPoint + OffsetY;
+            cube.CubeRig.velocity = (CurrantPoint - PrevPoint) / Time.fixedDeltaTime;
+            PrevPoint = CurrantPoint;
+            CurrantTime += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
 
         RemoveCube(cube);
@@ -130,12 +151,8 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void StopTeleport(ICube cube, ICube other)
     {
-        if (Count <= 1)
-        {
-            RemoveCube(cube);
-            cube.SubscribeForFailedMerge(StopTeleport, true);
-            cube.OnExitPortalMoveEnd();
-        }
+        StopSetCubeTeleporting(cube);
+        //cube.OnExitPortalMoveEnd();
     }
 
     public void Activate(bool on = true)
@@ -170,12 +187,23 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     {
         Init();
     }
+    private void Update()
+    {
+        dadad = Count;
+    }
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Cube")
         {
             ICube cube = other.GetComponent<ICube>();
             OnCubeEntered(cube);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Cube")
+        {
+            ICube cube = other.GetComponent<ICube>();
         }
     }
 }

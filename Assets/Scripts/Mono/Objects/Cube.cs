@@ -195,6 +195,8 @@ public class Cube : MonoBehaviour, ICube
 
         OnTeleportWait();
 
+        DestroyCubeAura();
+
         SoundManagment.PlaySound("portal", transform);
     }
     public void OnExitPortalMoveEnd()
@@ -330,7 +332,7 @@ public class Cube : MonoBehaviour, ICube
     private IEnumerator OnTeleportWaitCour()
     {
         AfterPortal = true;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.1f);
         AfterPortal = false;
         OnTeleportWaitCoroutine = null;
         yield break;
@@ -373,8 +375,6 @@ public class Cube : MonoBehaviour, ICube
         {
             ExitPlatform();
         }
-
-        CreateAuraParticle();
     }
     public void Drag(Vector3 Point)
     {
@@ -393,6 +393,11 @@ public class Cube : MonoBehaviour, ICube
         {
             Vector3 NewSpeed = Physics.gravity;
             _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, 25 * Time.deltaTime);
+        }
+
+        if (Aura == null && !isPortalMoving)
+        {
+            CreateAuraParticle();
         }
     }
     public void Throw()
@@ -568,6 +573,7 @@ public class Cube : MonoBehaviour, ICube
         if (CubeAura != null)
         {
             Destroy(CubeAura.gameObject);
+            Aura = null;
         }
         yield break;
     }
@@ -576,6 +582,7 @@ public class Cube : MonoBehaviour, ICube
         if (Aura != null)
         {
             Destroy(Aura);
+            Aura = null;
         }
     }
     #endregion

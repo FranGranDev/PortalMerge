@@ -119,7 +119,7 @@ public class InputManagement : MonoBehaviour
     private void TryTakeCube(GameObject obj)
     {
         CurrantCube = obj.GetComponent<ICube>();
-        if (CurrantCube != null && !CurrantCube.isPortalMoving)
+        if (CurrantCube != null)
         {
             CurrantCube.Take();
             SubscribeForCube();
@@ -238,7 +238,7 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 OnCubeThrow?.Invoke(CurrantTap.Point, TakeDelta);
-                if (!CurrantCube.isNull)
+                if (CurrantCube != null && !CurrantCube.isNull)
                 {
                     CurrantCube.Throw();
                 }
