@@ -737,17 +737,17 @@ PrefabInstance:
     - target: {fileID: 2943503493053249385, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.53
+      value: 5.45
       objectReference: {fileID: 0}
     - target: {fileID: 2943503493053249385, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.35
+      value: -0.07
       objectReference: {fileID: 0}
     - target: {fileID: 2943503493053249385, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4361056160674708452, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
@@ -812,7 +812,7 @@ PrefabInstance:
     - target: {fileID: 9074584007741162263, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
       propertyPath: Height
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9074584007741162263, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
@@ -1119,12 +1119,12 @@ PrefabInstance:
     - target: {fileID: 2943503493053249385, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.29
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2943503493053249385, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2943503493053249385, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
@@ -1190,6 +1190,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Portal_Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 5923318709519566663, guid: 27799ead7eafc2847b60fb3d8573de4b,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 9074584007741162263, guid: 27799ead7eafc2847b60fb3d8573de4b,
+        type: 3}
+      propertyPath: Height
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9074584007741162263, guid: 27799ead7eafc2847b60fb3d8573de4b,
         type: 3}
@@ -3195,7 +3206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &6046695650270543195
 PrefabInstance:
   m_ObjectHideFlags: 0

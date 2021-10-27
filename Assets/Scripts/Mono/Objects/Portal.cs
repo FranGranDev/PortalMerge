@@ -16,8 +16,34 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     private IPortal PrevPortal;
     [SerializeField] private bool isActive = true;
     public bool Activated { get => isActive; }
-    private ICube prevCube;
     private Dictionary<ICube, Coroutine> TeleportCoroutine = new Dictionary<ICube, Coroutine>();
+    public int Count { get => TeleportCoroutine.Count;}
+
+    public bool HaveCube(ICube cube)
+    {
+        return TeleportCoroutine.ContainsKey(cube);
+    }
+    private void AddCube(ICube cube)
+    {
+        if (!HaveCube(cube) && !PrevPortal.HaveCube(cube))
+        {
+            Debug.Log(name + " " + cube.CubeTransform.name);
+            TeleportCoroutine.Add(cube, StartCoroutine(TeleportCour(cube)));
+        }
+    }
+    private void RemoveCube(ICube cube)
+    {
+        ClearCube(cube);
+        PrevPortal.ClearCube(cube);
+    }
+    public void ClearCube(ICube cube)
+    {
+        if (HaveCube(cube))
+        {
+            TeleportCoroutine.Remove(cube);
+        }
+    }
+
 
     private ISound Sound;
     private Animator _anim;
@@ -33,9 +59,9 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     {
         if (!isActive)
             return;
-        if(PairPortal != null)
+        if (PairPortal != null)
         {
-            if ((prevCube == null || cube != prevCube) && PairPortal.Activated)
+            if (PairPortal.Activated)
             {
                 PairPortal.Teleport(cube);
             }
@@ -45,7 +71,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             DontLetCube(cube);
             Debug.Log("Нет ссылки на парный портал!");
         }
-        
+
     }
 
     private void DontLetCube(ICube cube)
@@ -55,15 +81,11 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         Vector3 CubeImpulse = Vector3.up * 5;
         Vector3 CubeAngular = new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 5;
         cube.AddImpulse(CubeImpulse, CubeAngular);
-        ClearPrevCube();
     }
 
     public void Teleport(ICube cube)
     {
-        if(!TeleportCoroutine.ContainsKey(cube))
-        {
-            TeleportCoroutine[cube] = StartCoroutine(TeleportCour(cube));
-        }
+        AddCube(cube);
     }
     private IEnumerator TeleportCour(ICube cube)
     {
@@ -71,7 +93,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         {
             cube.SubscribeForFailedMerge(StopTeleport);
             cube.OnEnterPortal();
-            prevCube = cube;
+
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
             cube.CubeTransform.position = transform.position;
 
@@ -84,8 +106,10 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             Vector3 EndPoint = ExitPoint.position;
             while (CurrantTime < TimeMove * 0.95f)
             {
-                if(cube.isNull || !cube.isPortalMoving)
+                if (cube.isNull || !cube.isPortalMoving || !HaveCube(cube))
                 {
+                    cube.SubscribeForFailedMerge(StopTeleport, true);
+                    RemoveCube(cube);
                     yield break;
                 }
                 OffsetY = Vector3.up * Height * (VerticalMove.Evaluate(CurrantTime / TimeMove));
@@ -99,47 +123,21 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
             cube.SubscribeForFailedMerge(StopTeleport, true);
             cube.OnExitPortalMoveEnd();
-
-            ClearPrevCube();
-            PairPortal.ClearPrevCube();
         }
-            
-        
-        TeleportCoroutine.Remove(cube);
+
+        RemoveCube(cube);
         yield break;
     }
 
     public void StopTeleport(ICube cube, ICube other)
     {
-        StartCoroutine(StopTeleportCour(cube));
-    }
-    private IEnumerator StopTeleportCour(ICube cube)
-    {
-        if (TeleportCoroutine.ContainsKey(cube))
+        if (Count <= 1)
         {
-            StopCoroutine(TeleportCoroutine[cube]);
-            TeleportCoroutine.Remove(cube);
-        }
-        if (cube == prevCube)
-        {
+            RemoveCube(cube);
             cube.SubscribeForFailedMerge(StopTeleport, true);
-            prevCube.OnExitPortalMoveEnd();
-            
-
-            ClearPrevCube();
-            PairPortal.ClearPrevCube();
+            cube.OnExitPortalMoveEnd();
         }
-
-        
-        yield break;
     }
-
-    public void ClearPrevCube()
-    {
-        prevCube = null;
-    }
-
-
 
     public void Activate(bool on = true)
     {
@@ -147,8 +145,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
         _anim?.SetBool("Active", on);
 
-        ClearPrevCube();
-        if(Sound != null)
+        if (Sound != null)
         {
             Sound.Mute(!on);
         }
@@ -174,24 +171,13 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     {
         Init();
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Cube")
         {
             ICube cube = other.GetComponent<ICube>();
             OnCubeEntered(cube);
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        //if(other.tag == "Cube")
-        //{
-        //    ICube cube = other.GetComponent<ICube>();
-        //    if(cube == prevCube)
-        //    {
-        //        OnTeleported(cube);
-        //    }
-        //}
     }
 }
 public interface IPortal
@@ -202,9 +188,13 @@ public interface IPortal
 
     void Teleport(ICube cube);
 
-    bool Activated { get; }
+    bool HaveCube(ICube cube);
 
-    void ClearPrevCube();
+    void ClearCube(ICube cube);
+
+    int Count { get; }
+
+    bool Activated { get; }
 
     void SetPair(Portal portal);
 }
