@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     private const string GEM_COLLECTED = "GemCollected";
     private const string ANIM_ID = "State";
     private const string ANIM_COMBO = "Combo";
-    private const string ANIM_TUTOR = "ShowTutor";
+    private const string ANIM_TUTOR = "TutorNum";
     private int GemCollected;
     private int GemCollectedInRow;
 
@@ -65,9 +65,9 @@ public class UIManager : MonoBehaviour
         SoundManagment.PlaySound("ui_button");
     }
 
-    public void TurnTutor(bool on)
+    public void TurnTutor(int num)
     {
-        _animator.SetBool(ANIM_TUTOR, on);
+        _animator.SetInteger(ANIM_TUTOR, num);
     }
 
     private void OnGameStarted()
@@ -163,7 +163,7 @@ public class UIManager : MonoBehaviour
         SetGemNum();
         GemCollectedInRow = 0;
 
-        TurnTutor(false);
+        TurnTutor(-1);
     }
 
     private void Awake()

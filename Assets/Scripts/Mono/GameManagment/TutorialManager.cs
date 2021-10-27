@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] private int TutorNum;
+
     private void OnGameStart()
     {
         StartTutor();
@@ -15,11 +18,11 @@ public class TutorialManager : MonoBehaviour
 
     private void StartTutor()
     {
-        UIManager.Active.TurnTutor(true);
+        UIManager.Active.TurnTutor(TutorNum);
     }
     private void EndTutor()
     {
-        UIManager.Active.TurnTutor(false);
+        UIManager.Active.TurnTutor(-1);
     }
 
     private void Start()
