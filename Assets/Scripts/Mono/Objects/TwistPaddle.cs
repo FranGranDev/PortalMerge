@@ -5,19 +5,19 @@ using UnityEngine;
 public class TwistPaddle : MonoBehaviour
 {
     [SerializeField] private Twist TwistParent;
-    private MeshCollider _collider;
     private Transform Normal;
     private bool NoAction;
+    private ICube prevCube;
 
     private void OnCubeEntered(ICube cube)
     {
-        if(!NoAction)
+        if(!NoAction && prevCube != cube)
         {
             Vector3 Direction = (-Normal.up + Vector3.up * 0.25f).normalized;
             cube.AddImpulse(Direction * TwistParent.Impulse());
             cube.OnEnterTrap();
 
-            StartCoroutine(Delay(cube.CubeCol));
+            prevCube = cube;
         }
     }
     private void OnManEntered(IMan man)
@@ -28,22 +28,8 @@ public class TwistPaddle : MonoBehaviour
             man.AddImpulse(Direction * TwistParent.Impulse());
             man.TurnRagdollOn();
 
-            StartCoroutine(Delay(man.ManCollider));
+            //StartCoroutine(Delay(man.ManCollider));
         }
-    }
-    private IEnumerator Delay(Collider Col)
-    {
-        NoAction = true;
-        Physics.IgnoreCollision(Col, _collider, true);
-        yield return new WaitForSeconds(0.25f);
-        NoAction = false;
-
-        if(Col != null)
-        {
-            Physics.IgnoreCollision(Col, _collider, false);
-        }
-        
-        yield break;
     }
     private void Init()
     {
@@ -52,14 +38,13 @@ public class TwistPaddle : MonoBehaviour
             TwistParent = transform.parent.parent.GetComponent<Twist>();
         }
         Normal = transform.GetChild(0);
-        _collider = GetComponent<MeshCollider>();
     }
 
     private void Start()
     {
         Init();
     }
-
+   
     private void OnTriggerEnter(Collider collider)
     {
         if(collider.tag == "Cube")
@@ -67,10 +52,16 @@ public class TwistPaddle : MonoBehaviour
             ICube cube = collider.GetComponent<ICube>();
             OnCubeEntered(cube);
         }
-        else if (collider.tag == "Man")
+    }
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.tag == "Cube")
         {
-            IMan man = collider.GetComponent<IMan>();
-            OnManEntered(man);
+            ICube cube = collider.GetComponent<ICube>();
+            if(cube == prevCube)
+            {
+                prevCube = null;
+            }
         }
     }
 }

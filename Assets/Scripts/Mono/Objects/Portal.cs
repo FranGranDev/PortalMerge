@@ -27,7 +27,6 @@ public class Portal : MonoBehaviour, IPortal, IActivate
     {
         if (!HaveCube(cube) && !PrevPortal.HaveCube(cube))
         {
-            Debug.Log(name + " " + cube.CubeTransform.name);
             TeleportCoroutine.Add(cube, StartCoroutine(TeleportCour(cube)));
         }
     }
@@ -68,7 +67,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
         }
         else
         {
-            DontLetCube(cube);
+            //DontLetCube(cube);
             Debug.Log("Нет ссылки на парный портал!");
         }
 

@@ -100,13 +100,13 @@ public class CameraMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         int ConfittiNum = Random.Range(20, 25);
-        for (int i = 0; i < ConfittiNum && !cube.isNull; i++)
+        for (int i = 0; i < ConfittiNum && !cube.isNull && GameManagement.isGameWin; i++)
         {
             float Lenght = Random.Range(3f, 6f);
             Vector3 Direction = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
             Vector3 Position = cube.CubeTransform.position + Direction * Lenght + Vector3.up * 2;
 
-            GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, null);
+            GameObject particle = Instantiate(GameManagement.MainData.GetConfetti(), Position, Quaternion.identity, GameManagement.Active.GetLevelTransform);
             particle.transform.localScale = Vector3.one * GameManagement.MainData.ConfittiParticleSize;
             yield return new WaitForSeconds(Random.Range(0.025f, 0.15f));
         }

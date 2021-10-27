@@ -280,6 +280,8 @@ public class Cube : MonoBehaviour, ICube
 
     public void SetNullParent()
     {
+        if (isNull)
+            return;
         transform.parent = PrevParent;
     }
     public void OnWaterEntered()

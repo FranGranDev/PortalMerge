@@ -11,7 +11,7 @@ public class GameManagement : MonoBehaviour
     [SerializeField] private Transform _level;
     public Transform LevelTransform { get => _level; }
     [SerializeField] private LevelManagement levelManagement;
-    private Transform GetLevelTransform => _level.GetChild(0);
+    public Transform GetLevelTransform => _level.GetChild(0);
     public static DataGameMain MainData {get => Active._data; }
     [SerializeField]private List<ICube> Cubes;
     [SerializeField] private List<ICollected> Gems;
