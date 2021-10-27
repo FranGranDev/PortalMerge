@@ -414,12 +414,14 @@ public class CubeChain : MonoBehaviour, ICube
         if(AuraParticleCoroutine != null)
         {
             StopCoroutine(AuraParticleCoroutine);
+            if (Aura != null)
+                Destroy(Aura.gameObject);
         }
         AuraParticleCoroutine = StartCoroutine(AuraParticleCour());
     }
     private IEnumerator AuraParticleCour()
     {
-        ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity);
+        ParticleSystem CubeAura = Instantiate(GameManagement.MainData.CubeAura, transform.position, Quaternion.identity, PrevParent);
         Aura = CubeAura;
         CubeAura.transform.localScale = Vector3.one;
         var main = CubeAura.main;
@@ -450,10 +452,7 @@ public class CubeChain : MonoBehaviour, ICube
             CubeAura.transform.localScale = Vector3.Lerp(CubeAura.transform.localScale, Vector3.zero, 0.075f);
             yield return new WaitForFixedUpdate();
         }
-        if (CubeAura != null && AuraParticleCoroutine != null)
-        {
-            Destroy(CubeAura.gameObject);
-        }
+        Destroy(CubeAura.gameObject);
         AuraParticleCoroutine = null;
         yield break;
     }
