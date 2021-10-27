@@ -56,7 +56,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
 
     public void OnCubeEntered(ICube cube)
     {
-        if (!isActive)
+        if (!isActive || !GameManagement.isGameStarted)
             return;
         if (PairPortal != null)
         {
