@@ -91,8 +91,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.7475767, y: 0.62943697, z: 3}
-  m_Center: {x: 2.3296804, y: -0.00000006702046, z: 0}
+  m_Size: {x: 4.7475767, y: 0.62943697, z: 2.06}
+  m_Center: {x: 2.3296804, y: -0.00000006702046, z: 0.78}
 --- !u!1 &4399080580146444965
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,8 +444,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.4522133, y: 0.59027755, z: 3}
-  m_Center: {x: -2.184743, y: -0.00000006702046, z: 0}
+  m_Size: {x: 4.4522133, y: 0.59027755, z: 2.06}
+  m_Center: {x: -2.184743, y: -0.00000006702046, z: 0.78}
 --- !u!1 &8742056057433282852
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +519,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.2293258
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.74, z: 0}
 --- !u!23 &5727564501321017156
 MeshRenderer:
   m_ObjectHideFlags: 0
