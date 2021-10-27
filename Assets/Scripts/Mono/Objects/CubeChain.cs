@@ -278,7 +278,7 @@ public class CubeChain : MonoBehaviour, ICube
             Direction += new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 0.25f;
             Direction += Vector3.up * 2;
             ChainRig.velocity += Direction.normalized * GameManagement.MainData.ChainImpulse;
-            ChainRig.angularVelocity += GameManagement.RandomVector() * 100;
+            ChainRig.angularVelocity = GameManagement.RandomVector().normalized * 1;
             Destroy(_chains[i].gameObject, 3f);
         }
     }
@@ -532,9 +532,14 @@ public class CubeChain : MonoBehaviour, ICube
         float TimeOffser = 0;
         bool TimeOut = false;
 
+        _mainchain.transform.parent = null;
+        for (int i = 0; i < _chains.Length; i++)
+        {
+            _chains[i].transform.parent = null;
+        }
         CreateAuraParticle();
         Vector3 StartPos = transform.position;
-        Vector3 EndPos = transform.position + Vector3.up * 3f;
+        Vector3 EndPos = transform.position;
         Vector3 CurrantPos = transform.position;
         while(!isNull && isMoving && !TimeOut)
         {
@@ -557,6 +562,11 @@ public class CubeChain : MonoBehaviour, ICube
             yield return new WaitForFixedUpdate();
         }
         transform.position = StartPos;
+        _mainchain.transform.parent = transform;
+        for (int i = 0; i < _chains.Length; i++)
+        {
+            _chains[i].transform.parent = transform;
+        }
         TakeCoroutine = null;
         yield break;
     }
