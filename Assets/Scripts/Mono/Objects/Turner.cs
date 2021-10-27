@@ -7,8 +7,10 @@ public class Turner : MonoBehaviour, IInteract
 {
     [Header("Settings")]
     public float RotationTime;
-    [SerializeField] private Transform Rotation1;
-    [SerializeField] private Transform Rotation2;
+    public float RotationAngle;
+    public Vector3 Rotation1 { get => StartRotation; }
+    public Vector3 Rotation2 { get => StartRotation + Vector3.up * RotationAngle; }
+    private Vector3 StartRotation;
     [SerializeField] private Ease Ease = Ease.InOutSine;
     public bool Turned { get; private set; }
     private bool ClockRotation;
@@ -36,7 +38,7 @@ public class Turner : MonoBehaviour, IInteract
     private void RotateToEnd()
     {
         Main
-        .DORotate(Rotation2.rotation.eulerAngles, RotationTime)
+        .DORotate(Rotation2, RotationTime)
         .SetEase(Ease)
         .OnComplete(() => {
             OnRotatingEnd();
@@ -46,7 +48,7 @@ public class Turner : MonoBehaviour, IInteract
     private void RotateToStart()
     {
         Main
-        .DORotate(Rotation1.rotation.eulerAngles, RotationTime)
+        .DORotate(Rotation1, RotationTime)
         .SetEase(Ease)
         .OnComplete(() => {
             OnRotatingEnd();
@@ -108,7 +110,8 @@ public class Turner : MonoBehaviour, IInteract
 
     private void Init()
     {
-        ClockRotation = Rotation2.localRotation.y < Rotation1.localRotation.y;
+        StartRotation = transform.rotation.eulerAngles;
+        ClockRotation = RotationAngle < 0;
         Circle1.SetActive(!ClockRotation);
         Circle2.SetActive(ClockRotation);
     }
