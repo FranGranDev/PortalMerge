@@ -75,7 +75,7 @@ public class Portal : MonoBehaviour, IPortal, IActivate
             yield return new WaitForSeconds(GameManagement.MainData.TeleportTime);
             cube.CubeTransform.position = transform.position;
 
-            prevCube.OnExitPortal();
+            cube.OnExitPortal();
 
             float CurrantTime = 0;
             Vector3 OffsetY = Vector3.zero;
