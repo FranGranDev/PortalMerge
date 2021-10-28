@@ -21,7 +21,11 @@ public class InputManagement : MonoBehaviour
     private TapInfo CurrantTap;
     public static Vector3 GetListenerPoint()
     {
-        if (Active.prevCube != null && !Active.prevCube.isNull)
+        if (Active.CurrantCube != null && !Active.CurrantCube.isNull)
+        {
+            return Active.CurrantCube.CubeTransform.position;
+        }
+        else if(Active.prevCube != null && !Active.prevCube.isNull)
         {
             return Active.prevCube.CubeTransform.position;
         }
