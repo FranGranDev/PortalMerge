@@ -116,8 +116,10 @@ public class CubeChain : MonoBehaviour, ICube
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Collider _collider;
     [SerializeField] private Animator _animator;
-    [SerializeField] private GameObject _mainchain;
-    [SerializeField] private GameObject[] _chains;
+    [SerializeField] private Transform[] _staticchains;
+    private Vector3[] MainChainStartPos;
+    private Rigidbody[] _chains;
+    [SerializeField] private ConfigurableJoint[] _chainsJoins;
     private const string ANIM_ENTER = "EnterPortal";
     private const string ANIM_EXIT = "ExitPortal";
     private const string ANIM_DIE = "EnterWater";
@@ -278,7 +280,7 @@ public class CubeChain : MonoBehaviour, ICube
             Direction += new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 0.25f;
             Direction += Vector3.up * 2;
             ChainRig.velocity += Direction.normalized * GameManagement.MainData.ChainImpulse;
-            ChainRig.angularVelocity = GameManagement.RandomVector().normalized * 1;
+            ChainRig.angularVelocity = GameManagement.RandomVector().normalized * 180;
             Destroy(_chains[i].gameObject, 3f);
         }
     }
@@ -531,21 +533,24 @@ public class CubeChain : MonoBehaviour, ICube
         float TimeOffser = 0;
         bool TimeOut = false;
 
-        _mainchain.transform.parent = null;
-        for (int i = 0; i < _chains.Length; i++)
-        {
-            _chains[i].transform.parent = null;
-        }
+        
         CreateAuraParticle();
+        
         Vector3 StartPos = transform.position;
-        Vector3 EndPos = transform.position;
+        float Height = 2.5f;
+        Vector3 EndPos = transform.position + Vector3.up * Height;
         Vector3 CurrantPos = transform.position;
         while(!isNull && isMoving && !TimeOut)
         {
             CurrantPos = Vector3.Lerp(CurrantPos, EndPos, 0.05f);
-            transform.position = CurrantPos + GameManagement.RandomVector() * 0.05f;
+            transform.position = CurrantPos + GameManagement.RandomVector() * 0.025f;
             TimeOffser += Time.fixedDeltaTime;
             TimeOut = TimeOffser > 1.5f;
+            for (int i = 0; i < MainChainStartPos.Length; i++)
+            {
+                _staticchains[i].transform.position = MainChainStartPos[i];
+            }
+            //SetTension((CurrantPos - StartPos).y / 7);
             yield return new WaitForFixedUpdate();
         }
         if (TimeOut)
@@ -558,18 +563,27 @@ public class CubeChain : MonoBehaviour, ICube
         {
             CurrantPos = Vector3.Lerp(CurrantPos, StartPos, 0.1f);
             transform.position = CurrantPos;
+            for (int i = 0; i < MainChainStartPos.Length; i++)
+            {
+                _staticchains[i].transform.position = MainChainStartPos[i];
+            }
+            //SetTension((CurrantPos - StartPos).y);
             yield return new WaitForFixedUpdate();
         }
         transform.position = StartPos;
-        _mainchain.transform.parent = transform;
-        for (int i = 0; i < _chains.Length; i++)
-        {
-            _chains[i].transform.parent = transform;
-        }
         TakeCoroutine = null;
         yield break;
     }
 
+    private void SetTension(float Tension)
+    {
+        for(int i = 0; i < _chainsJoins.Length; i++)
+        {
+            SoftJointLimit limit = new SoftJointLimit();
+            limit.limit = Tension;
+            _chainsJoins[i].linearLimit = limit;
+        }
+    }
 
     public void Drag(Vector3 Point)
     {
@@ -700,6 +714,17 @@ public class CubeChain : MonoBehaviour, ICube
             TextNumber[i].text = _number.ToString();
         }
     }
+    private void SetChains()
+    {
+        _chains = transform.GetComponentsInChildren<Rigidbody>();
+        _chainsJoins = transform.GetComponentsInChildren<ConfigurableJoint>();
+        MainChainStartPos = new Vector3[_staticchains.Length];
+        for (int i = 0; i < MainChainStartPos.Length; i++)
+        {
+            MainChainStartPos[i] = _staticchains[i].transform.position;
+        }
+        //SetTension(0f);
+    }
 
     private void ClearCallbacks()
     {
@@ -716,6 +741,7 @@ public class CubeChain : MonoBehaviour, ICube
         SetView();
         ApplySettings();
         SetNumbers();
+        SetChains();
     }
     public void InitCube(int num)
     {
