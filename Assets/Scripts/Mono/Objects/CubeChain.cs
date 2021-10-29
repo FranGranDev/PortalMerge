@@ -120,6 +120,7 @@ public class CubeChain : MonoBehaviour, ICube
     private Vector3[] MainChainStartPos;
     private Rigidbody[] _chains;
     [SerializeField] private ConfigurableJoint[] _chainsJoins;
+    [SerializeField] private Collider[] _chainsCols;
     private const string ANIM_ENTER = "EnterPortal";
     private const string ANIM_EXIT = "ExitPortal";
     private const string ANIM_DIE = "EnterWater";
@@ -271,8 +272,13 @@ public class CubeChain : MonoBehaviour, ICube
 
     private void RemoveChains()
     {
+        for(int i = 0; i < _chainsCols.Length; i++)
+        {
+            _chainsCols[i].isTrigger = true;
+        }
         for (int i = 0; i < _chains.Length; i++)
         {
+            
             _chains[i].transform.parent = PrevParent;
             Rigidbody ChainRig = _chains[i].GetComponent<Rigidbody>();
             ChainRig.isKinematic = false;
@@ -537,7 +543,7 @@ public class CubeChain : MonoBehaviour, ICube
         CreateAuraParticle();
         
         Vector3 StartPos = transform.position;
-        float Height = 2.5f;
+        float Height = 2f;
         Vector3 EndPos = transform.position + Vector3.up * Height;
         Vector3 CurrantPos = transform.position;
         while(!isNull && isMoving && !TimeOut)
@@ -718,6 +724,7 @@ public class CubeChain : MonoBehaviour, ICube
     {
         _chains = transform.GetComponentsInChildren<Rigidbody>();
         _chainsJoins = transform.GetComponentsInChildren<ConfigurableJoint>();
+        _chainsCols = transform.GetComponentsInChildren<Collider>();
         MainChainStartPos = new Vector3[_staticchains.Length];
         for (int i = 0; i < MainChainStartPos.Length; i++)
         {
