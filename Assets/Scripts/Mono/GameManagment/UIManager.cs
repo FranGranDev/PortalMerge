@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     private const string ANIM_ID = "State";
     private const string ANIM_COMBO = "Combo";
     private const string ANIM_TUTOR = "TutorNum";
+    private const string ANIM_CURSORSHOW = "ShowCursor";
+    private const string ANIM_CURSORCLICK = "ClickCursor";
     private int GemCollected;
     private int GemCollectedInRow;
 
@@ -25,6 +27,8 @@ public class UIManager : MonoBehaviour
     [Header("Components")]
     [SerializeField] private RectTransform GemIcon;
     [SerializeField] private RectTransform PlusIcon;
+    [SerializeField] private RectTransform Cursor;
+    [SerializeField] private RectTransform CursorHand;
     private Animator _animator;
 
     private Coroutine ShowComboCoroutine;
@@ -55,6 +59,16 @@ public class UIManager : MonoBehaviour
         SetState(UIState.Start);
         SoundManagment.PlaySound("ui_button");
     }
+    public void GameRestart()
+    {
+        if (CurrantState != UIState.InGame)
+            return;
+        LevelManagement.Default.RestartLevel();
+        GameManagement.isGameStarted = false;
+        TurnTutor(-1);
+        SetState(UIState.Start);
+        SoundManagment.PlaySound("ui_button");
+    }
     public void Next()
     {
         if (CurrantState != UIState.Done)
@@ -70,16 +84,40 @@ public class UIManager : MonoBehaviour
         _animator.SetInteger(ANIM_TUTOR, num);
     }
 
+    private void OnTakeCube()
+    {
+        _animator.SetBool(ANIM_CURSORSHOW, true);
+    }
+    private void OnThrowCube()
+    {
+        _animator.SetBool(ANIM_CURSORSHOW, false);
+    }
+    private void OnInteract()
+    {
+        _animator.SetTrigger(ANIM_CURSORCLICK);
+    }
+    private void SetCursorPosition()
+    {
+        if(GameManagement.MainData.ShowHandCursor)
+        {
+            Cursor.position = InputManagement.GetCursorPoint();
+        }
+    }
+
     private void OnGameStarted()
     {
         SetState(UIState.InGame);
     }
     private void OnGameFailed()
     {
+        OnThrowCube();
+
         SetState(UIState.Failed);
     }
     private void OnGameDone()
     {
+        OnThrowCube();
+
         SetState(UIState.Done);
     }
 
@@ -139,13 +177,27 @@ public class UIManager : MonoBehaviour
         GameManagement.OnGameFailed += OnGameFailed;
         GameManagement.OnGameWin += OnGameDone;
         GameManagement.OnGameStarted += OnGameStarted;
+        if(GameManagement.MainData.ShowHandCursor)
+        {
+            InputManagement.Active.SubscibeForInteract(OnInteract);
+            InputManagement.Active.SubscibeForLostInput(OnThrowCube);
+            InputManagement.Active.SubscibeForTakeCube(OnTakeCube);
+        }
     }
     private void UnsubscribeForAction()
     {
         GameManagement.OnGameFailed -= OnGameFailed;
         GameManagement.OnGameWin -= OnGameDone;
         GameManagement.OnGameStarted -= OnGameStarted;
+        if (GameManagement.MainData.ShowHandCursor)
+        {
+            InputManagement.Active.SubscibeForInteract(OnInteract, true);
+            InputManagement.Active.SubscibeForLostInput(OnThrowCube, true);
+            InputManagement.Active.SubscibeForTakeCube(OnTakeCube, true);
+        }
     }
+
+
 
     public void SetLevelText() //Calls from NULL_State in animations
     {
@@ -166,6 +218,10 @@ public class UIManager : MonoBehaviour
         TurnTutor(-1);
     }
 
+    private void FixedUpdate()
+    {
+        SetCursorPosition();
+    }
     private void Awake()
     {
         Init();

@@ -32,6 +32,14 @@ public class InputManagement : MonoBehaviour
 
         return new TapInfo(ActionType.OnSwipe, ScreenCenter(), false).Point;
     }
+    public static Vector2 GetCursorPoint()
+    {
+        if(Active.CurrantTap == null)
+        {
+            return ScreenCenter();
+        }
+        return Active.CurrantTap.InputPos;
+    }
     public static Vector2 ScreenCenter()
     {
         return new Vector2(Screen.width / 2, Screen.height / 2);
@@ -62,8 +70,9 @@ public class InputManagement : MonoBehaviour
     public static OnSwipeInput OnSwipeMove;
     public static OnSwipeInput OnSwipeEnd;
     public delegate void OnTouchAction();
-    public OnTouchAction OnTakeCube;
-    public OnTouchAction OnInteract;
+    private OnTouchAction OnTakeCube;
+    private OnTouchAction OnInteract;
+    private OnTouchAction OnLostInput;
     #endregion
 
     private ICube CurrantCube;
@@ -176,6 +185,7 @@ public class InputManagement : MonoBehaviour
         yield break;
     }
 
+
     private void SubscribeForCube()
     {
         if (CurrantCube != null)
@@ -199,13 +209,49 @@ public class InputManagement : MonoBehaviour
     {
         CurrantCube = null;
         CurrantAction = ActionType.NotStarted;
+
+        OnLostInput?.Invoke();
     }
     private void OnLostCube(ICube cube1, ICube cube2)
     {
         CurrantCube = null;
         CurrantAction = ActionType.NotStarted;
-    }
 
+        OnLostInput?.Invoke();
+    }
+    public void SubscibeForTakeCube(OnTouchAction action, bool unsubscribe = false)
+    {
+        if(unsubscribe)
+        {
+            OnTakeCube -= action;
+        }
+        else
+        {
+            OnTakeCube += action;
+        }
+    }
+    public void SubscibeForInteract(OnTouchAction action, bool unsubscribe = false)
+    {
+        if (unsubscribe)
+        {
+            OnInteract -= action;
+        }
+        else
+        {
+            OnInteract += action;
+        }
+    }
+    public void SubscibeForLostInput(OnTouchAction action, bool unsubscribe = false)
+    {
+        if (unsubscribe)
+        {
+            OnLostInput -= action;
+        }
+        else
+        {
+            OnLostInput += action;
+        }
+    }
 
     private void OnTap()
     {
@@ -242,6 +288,7 @@ public class InputManagement : MonoBehaviour
                 break;
             case ActionType.OnCube:
                 OnCubeThrow?.Invoke(CurrantTap.Point, TakeDelta);
+                OnLostInput?.Invoke();
                 if (CurrantCube != null && !CurrantCube.isNull)
                 {
                     CurrantCube.Throw();

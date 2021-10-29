@@ -32,13 +32,13 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         GameManagement.OnGameStarted += OnGameStart;
-        InputManagement.Active.OnTakeCube += OnCubeTaken;
-        InputManagement.Active.OnInteract += OnInteract;
+        InputManagement.Active.SubscibeForTakeCube(OnCubeTaken);
+        InputManagement.Active.SubscibeForInteract(OnInteract);
     }
     private void OnDisable()
     {
         GameManagement.OnGameStarted -= OnGameStart;
-        InputManagement.Active.OnTakeCube -= OnCubeTaken;
-        InputManagement.Active.OnInteract -= OnInteract;
+        InputManagement.Active.SubscibeForTakeCube(OnCubeTaken, true);
+        InputManagement.Active.SubscibeForInteract(OnInteract, true);
     }
 }

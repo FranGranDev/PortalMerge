@@ -24,6 +24,9 @@ public class CubeChain : MonoBehaviour, ICube
         }
 
     }
+    [SerializeField] private Vector3 DragOffset;
+    private Quaternion StartRotation;
+    private Vector3 StartPosition;
 
     [Header("Physics")]
     private float DragSpeed;
@@ -117,7 +120,7 @@ public class CubeChain : MonoBehaviour, ICube
     [SerializeField] private Collider _collider;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform[] _staticchains;
-    private Vector3[] MainChainStartPos;
+
     private Rigidbody[] _chains;
     [SerializeField] private ConfigurableJoint[] _chainsJoins;
     [SerializeField] private Collider[] _chainsCols;
@@ -286,8 +289,9 @@ public class CubeChain : MonoBehaviour, ICube
             Direction += new Vector3(GameManagement.RandomOne(), GameManagement.RandomOne(), GameManagement.RandomOne()) * 0.25f;
             Direction += Vector3.up * 2;
             ChainRig.velocity += Direction.normalized * GameManagement.MainData.ChainImpulse;
+            
             ChainRig.angularVelocity = GameManagement.RandomVector().normalized * 180;
-            Destroy(_chains[i].gameObject, 3f);
+            Destroy(_chains[i].gameObject, 5f);
         }
     }
 
@@ -528,10 +532,17 @@ public class CubeChain : MonoBehaviour, ICube
             ExitPlatform();
         }
 
-        if(TakeCoroutine == null && !inAir)
+        //if(TakeCoroutine == null && !inAir)
+        //{
+        //    TakeCoroutine = StartCoroutine(TakeCour());
+        //}
+
+        for (int i = 0; i < _staticchains.Length; i++)
         {
-            TakeCoroutine = StartCoroutine(TakeCour());
+            _staticchains[i].transform.parent = PrevParent;
         }
+
+        CreateAuraParticle();
     }
     private Coroutine TakeCoroutine;
     private IEnumerator TakeCour()
@@ -539,23 +550,19 @@ public class CubeChain : MonoBehaviour, ICube
         float TimeOffser = 0;
         bool TimeOut = false;
 
-        
+
         CreateAuraParticle();
-        
+
         Vector3 StartPos = transform.position;
         float Height = 2f;
         Vector3 EndPos = transform.position + Vector3.up * Height;
         Vector3 CurrantPos = transform.position;
-        while(!isNull && isMoving && !TimeOut)
+        while (!isNull && isMoving && !TimeOut)
         {
             CurrantPos = Vector3.Lerp(CurrantPos, EndPos, 0.05f);
             transform.position = CurrantPos + GameManagement.RandomVector() * 0.025f;
             TimeOffser += Time.fixedDeltaTime;
             TimeOut = TimeOffser > 1.5f;
-            for (int i = 0; i < MainChainStartPos.Length; i++)
-            {
-                _staticchains[i].transform.position = MainChainStartPos[i];
-            }
             //SetTension((CurrantPos - StartPos).y / 7);
             yield return new WaitForFixedUpdate();
         }
@@ -569,10 +576,6 @@ public class CubeChain : MonoBehaviour, ICube
         {
             CurrantPos = Vector3.Lerp(CurrantPos, StartPos, 0.1f);
             transform.position = CurrantPos;
-            for (int i = 0; i < MainChainStartPos.Length; i++)
-            {
-                _staticchains[i].transform.position = MainChainStartPos[i];
-            }
             //SetTension((CurrantPos - StartPos).y);
             yield return new WaitForFixedUpdate();
         }
@@ -593,8 +596,48 @@ public class CubeChain : MonoBehaviour, ICube
 
     public void Drag(Vector3 Point)
     {
-        
+        Point += Vector3.up * transform.localScale.y * CubeHeightOnMove;
+        Vector3 Direction = (Point - transform.position);
+        if (Direction.magnitude > MinDistanceToMove)
+        {
+            Vector3 NewSpeed = Direction.normalized * DragSpeed * 50;
+            NewSpeed = new Vector3(NewSpeed.x, 0, NewSpeed.z);
+            _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, DragAcceleration * 10 * Time.deltaTime);
+        }
+        else
+        {
+            Vector3 NewSpeed = Physics.gravity;
+            _rig.velocity = Vector3.Lerp(_rig.velocity, NewSpeed, 25 * Time.deltaTime);
+        }
     }
+    private void CheckBound()
+    {
+        Vector3 Offset = (transform.position - StartPosition);
+
+        if (Offset.x > DragOffset.x)
+        {
+            transform.position = new Vector3(StartPosition.x + DragOffset.x, transform.position.y, transform.position.z);
+            CubeRig.velocity = new Vector3(0, 0, CubeRig.velocity.z);
+        }
+        else if (Offset.x < -DragOffset.x)
+        {
+            transform.position = new Vector3(StartPosition.x - DragOffset.x, transform.position.y, transform.position.z);
+            CubeRig.velocity = new Vector3(0, 0, CubeRig.velocity.z);
+        }
+        if (Offset.z > DragOffset.z)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, StartPosition.z + DragOffset.z);
+            CubeRig.velocity = new Vector3(CubeRig.velocity.x, 0, 0);
+        }
+        else if (Offset.z < -DragOffset.z)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, StartPosition.z - DragOffset.z);
+            CubeRig.velocity = new Vector3(CubeRig.velocity.x, 0, 0);
+        }
+
+        transform.rotation = StartRotation;
+    }
+
     public void Throw()
     {
         isMoving = false;
@@ -712,6 +755,7 @@ public class CubeChain : MonoBehaviour, ICube
         DragAcceleration = GameManagement.MainData.CubeDragAcceleration;
         MinDistanceToMove = GameManagement.MainData.MinDistanceToMove;
         CubeHeightOnMove = GameManagement.MainData.CubeHeightOnMove;
+       
     }
     public void SetNumbers()
     {
@@ -725,11 +769,7 @@ public class CubeChain : MonoBehaviour, ICube
         _chains = transform.GetComponentsInChildren<Rigidbody>();
         _chainsJoins = transform.GetComponentsInChildren<ConfigurableJoint>();
         _chainsCols = transform.GetComponentsInChildren<Collider>();
-        MainChainStartPos = new Vector3[_staticchains.Length];
-        for (int i = 0; i < MainChainStartPos.Length; i++)
-        {
-            MainChainStartPos[i] = _staticchains[i].transform.position;
-        }
+        
         //SetTension(0f);
     }
 
@@ -817,6 +857,8 @@ public class CubeChain : MonoBehaviour, ICube
 
     private void Awake()
     {
+        StartPosition = transform.position;
+        StartRotation = transform.rotation;
         ClearCallbacks();
         InitCube();
     }
@@ -827,7 +869,8 @@ public class CubeChain : MonoBehaviour, ICube
 
     private void Update()
     {
-
+        SetScale();
+        CheckBound();
     }
     private void FixedUpdate()
     {
@@ -841,6 +884,5 @@ public class CubeChain : MonoBehaviour, ICube
             isOutOfZone = false;
         }
 
-        SetScale();
     }
 }
