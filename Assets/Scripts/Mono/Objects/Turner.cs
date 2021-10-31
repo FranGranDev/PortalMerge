@@ -20,11 +20,13 @@ public class Turner : MonoBehaviour, IInteract
     [SerializeField] private Rigidbody Main;
     [SerializeField] private GameObject Circle1;
     [SerializeField] private GameObject Circle2;
+    private SoundHolder Sound;
 
     public void DoAction()
     {
         if (isRotating)
             return;
+        Sound.ChangeVolume(1);
         if(Turned)
         {
             RotateToStart();
@@ -63,7 +65,7 @@ public class Turner : MonoBehaviour, IInteract
         {
             ChangeClockCoroutine = StartCoroutine(ChangeClockCour());
         }
-       
+        Sound.ChangeVolume(0);
     }
     private Coroutine ChangeClockCoroutine;
     private IEnumerator ChangeClockCour()
@@ -114,6 +116,13 @@ public class Turner : MonoBehaviour, IInteract
         ClockRotation = RotationAngle < 0;
         Circle1.SetActive(!ClockRotation);
         Circle2.SetActive(ClockRotation);
+
+
+        TryGetComponent(out Sound);
+        if (Sound != null)
+        {
+            Sound.Init(false);
+        }
     }
 
     private void Awake()

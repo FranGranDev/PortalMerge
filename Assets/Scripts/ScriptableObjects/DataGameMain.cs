@@ -8,7 +8,8 @@ public class DataGameMain : ScriptableObject
     [Header("Dynamic settings")]
     public bool MuteMusic;
     public bool MuteEffect;
-
+    [Header("Настройка UI")]
+    public bool ShowHandCursor;
     [Header("Физика куба")]
     [Range(0, 1f)]
     public float SpeedSumOnMerge;

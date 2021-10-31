@@ -553,7 +553,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0.3}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.052999996, y: -0.00000022724271, z: -0.14719999}
+  m_ConnectedAnchor: {x: -0.05300012, y: -0.000000022351742, z: -0.14719985}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -595,18 +595,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -746,7 +746,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.17287791, y: 0.05962789, z: 0.17287934}
+  m_ConnectedAnchor: {x: 0.17287791, y: 0.05962789, z: 0.17287898}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -788,18 +788,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -1058,7 +1058,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000029429788, y: -0.0000004470351, z: -0.28999966}
+  m_ConnectedAnchor: {x: 0.000000070780516, y: -0.000000037252935, z: -0.2899999}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1100,18 +1100,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -1308,18 +1308,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -1830,7 +1830,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000003725292, y: 0.00000021979264, z: -0.28999946}
+  m_ConnectedAnchor: {x: -0.00000014901151, y: 0.00000021979238, z: -0.28999946}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1872,18 +1872,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -2283,7 +2283,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000016763796, y: 0.00000036880385, z: -0.28999957}
+  m_ConnectedAnchor: {x: 0.000000037252963, y: 0.0000002570451, z: -0.28999972}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2325,18 +2325,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -2490,7 +2490,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.17287803, y: 0.05962789, z: -0.17287803}
+  m_ConnectedAnchor: {x: -0.17287791, y: 0.05962789, z: -0.17287827}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2532,18 +2532,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -2698,7 +2698,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000014901187, y: 0.00000021979221, z: -0.2899997}
+  m_ConnectedAnchor: {x: 0.00000022351759, y: 0.000000070780345, z: -0.2899997}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2740,18 +2740,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -2906,7 +2906,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.000000074505934, y: 0.00000014528635, z: -0.2899998}
+  m_ConnectedAnchor: {x: -0.00000022351759, y: 0.00000007078073, z: -0.2899997}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2948,18 +2948,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -3113,7 +3113,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0.3}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.052999996, y: 0.00000024214387, z: -0.14719999}
+  m_ConnectedAnchor: {x: -0.05300012, y: 0.000000037252903, z: -0.14719985}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -3155,18 +3155,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -3552,7 +3552,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000037252552, y: -0.00000007450584, z: -0.2899997}
+  m_ConnectedAnchor: {x: -0.00000014528646, y: -0.00000007450576, z: -0.2899997}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -3594,18 +3594,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -3760,7 +3760,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000037251486, y: -0.00000022351756, z: -0.2899997}
+  m_ConnectedAnchor: {x: 0.0000000037252925, y: -2.220446e-15, z: -0.28999993}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -3802,18 +3802,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -3968,7 +3968,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000001676382, y: 0.00000036880382, z: -0.28999957}
+  m_ConnectedAnchor: {x: -0.00000003725285, y: 0.0000002570451, z: -0.28999972}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -4010,18 +4010,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -4176,7 +4176,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000026077055, y: -0.00000010803336, z: -0.28999975}
+  m_ConnectedAnchor: {x: -0.00000007450586, y: -0.0000000335276, z: -0.28999987}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -4218,18 +4218,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -4648,18 +4648,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -4814,7 +4814,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000022351759, y: 0.0000003688038, z: -0.2899996}
+  m_ConnectedAnchor: {x: 0.00000001862651, y: 0.0000002570451, z: -0.28999972}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -4856,18 +4856,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -5133,7 +5133,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000002942982, y: 0.00000044703492, z: -0.28999966}
+  m_ConnectedAnchor: {x: 0.00000007078056, y: 0.00000003725289, z: -0.2899999}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -5175,18 +5175,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -5341,7 +5341,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000029429796, y: -0.0000003352763, z: -0.2899996}
+  m_ConnectedAnchor: {x: 0.00000007078056, y: 0.0000000745058, z: -0.2899999}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -5383,18 +5383,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -5549,7 +5549,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000026077032, y: -0.00000010803359, z: -0.28999975}
+  m_ConnectedAnchor: {x: 0.000000074505806, y: -0.000000033527655, z: -0.28999987}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -5591,18 +5591,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -5933,18 +5933,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -6098,7 +6098,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0.3}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.052999996, y: -0.0000001899898, z: -0.14719999}
+  m_ConnectedAnchor: {x: -0.05300012, y: 0.000000018626451, z: -0.14719987}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -6140,18 +6140,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -6334,18 +6334,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -6500,7 +6500,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000014528635, y: 0.00000007450591, z: -0.2899997}
+  m_ConnectedAnchor: {x: 0.0000000037252925, y: -2.220446e-15, z: -0.28999993}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -6542,18 +6542,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -6842,7 +6842,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000022351767, y: 0.00000014528625, z: -0.2899997}
+  m_ConnectedAnchor: {x: 0.00000014901187, y: 0.00000021979221, z: -0.28999946}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -6884,18 +6884,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -7050,7 +7050,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000014528682, y: 0.000000521541, z: -0.37399924}
+  m_ConnectedAnchor: {x: 0.00000021979253, y: 0.0000002980232, z: -0.37399924}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -7092,18 +7092,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -7411,18 +7411,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -7577,7 +7577,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000014528594, y: -0.00000052154104, z: -0.37399924}
+  m_ConnectedAnchor: {x: 0.00000021979216, y: -0.00000029802362, z: -0.37399924}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -7619,18 +7619,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -7831,7 +7831,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000002942981, y: 0.0000003352761, z: -0.2899996}
+  m_ConnectedAnchor: {x: 0.00000007078052, y: -0.00000007450585, z: -0.2899999}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -7873,18 +7873,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -8149,7 +8149,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.17287791, y: 0.05962789, z: -0.17287803}
+  m_ConnectedAnchor: {x: 0.17287791, y: 0.05962789, z: -0.17287827}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -8191,18 +8191,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -8622,7 +8622,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.17287803, y: 0.05962789, z: 0.17287934}
+  m_ConnectedAnchor: {x: -0.17287791, y: 0.05962789, z: 0.17287898}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -8664,18 +8664,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -8911,6 +8911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _number: 2
+  DragOffset: {x: 1, y: 0, z: 1}
   _rig: {fileID: 5318219275046538068}
   _meshRenderer: {fileID: 1539275547535191154}
   _collider: {fileID: 6441648831750171965}
@@ -8989,7 +8990,7 @@ Rigidbody:
   m_Drag: 1
   m_AngularDrag: 0.25
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -9147,7 +9148,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0.3}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.052999996, y: 0.00000020489097, z: -0.14719999}
+  m_ConnectedAnchor: {x: -0.05300012, y: -0.0000000037252903, z: -0.14719987}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -9189,18 +9190,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -9452,7 +9453,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000022351733, y: 0.0000003688039, z: -0.2899996}
+  m_ConnectedAnchor: {x: -0.000000018626396, y: 0.0000002570451, z: -0.28999972}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -9494,18 +9495,18 @@ ConfigurableJoint:
   m_TargetVelocity: {x: 0, y: 0, z: 0}
   m_XDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 10000
+    positionDamper: 1000
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
