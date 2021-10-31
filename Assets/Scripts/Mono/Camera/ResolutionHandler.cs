@@ -1,29 +1,40 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class ResolutionHandler : MonoBehaviour
 {
     public static ResolutionHandler Active;
+
+    private readonly Vector2 ScreenMatchXTablet = new Vector2(1500, 1920);
+    private readonly Vector2 ScreenMatchXPhone = new Vector2(1080, 1920);
 
     public ResolutionHandler()
     {
         Active = this;
     }
 
-    private void Awake()
+    private void Start()
     {
         SetFieldOfView();
     }
 
     public void SetFieldOfView()
     {
-        float screenRatio = (1.0f * Screen.height) / (1.0f * Screen.width);
-        if (1.7f < screenRatio && screenRatio < 1.8f)
+        float screenRatio = ((float)Screen.height) / ((float)Screen.width);
+        if(screenRatio < 1.5f)
         {
             Camera.main.fieldOfView = 60;
+            UIManager.Active.canvasScaler.referenceResolution = ScreenMatchXTablet;
         }
-        if (2.1f < screenRatio && screenRatio < 2.2f)
+        else if (screenRatio < 1.8f)
+        {
+            Camera.main.fieldOfView = 60;
+            UIManager.Active.canvasScaler.referenceResolution = ScreenMatchXPhone;
+        }
+        else
         {
             Camera.main.fieldOfView = 75;
+            UIManager.Active.canvasScaler.referenceResolution = ScreenMatchXPhone;
         }
     }
 }

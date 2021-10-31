@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform PlusIcon;
     [SerializeField] private RectTransform Cursor;
     [SerializeField] private RectTransform CursorHand;
+    public CanvasScaler canvasScaler;
     private Animator _animator;
 
     private Coroutine ShowComboCoroutine;
