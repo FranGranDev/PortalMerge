@@ -128,7 +128,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1
+  bundleVersion: 2
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -174,7 +174,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.butchersgames.portalmerge3d
   buildNumber: {}
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 30
   AndroidPreferredInstallLocation: 1
@@ -260,7 +260,7 @@ PlayerSettings:
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
-  androidUseCustomKeystore: 0
+  androidUseCustomKeystore: 1
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -680,8 +680,8 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: UNITY_POST_PROCESSING_STACK_V2
-    4: UNITY_POST_PROCESSING_STACK_V2
-    7: UNITY_POST_PROCESSING_STACK_V2
+    4: UNITY_POST_PROCESSING_STACK_V2;TTP_ANALYTICS;TTP_APPSFLYER;TTP_REWARDED_INTERSTITIALS;TTP_REWARDED_ADS;TTP_GAMEPROGRESSION;TTP_RATEUS;TTP_BANNERS;TTP_INTERSTITIALS;TTP_PRIVACY_SETTINGS;TTP_PROMOTION;TTP_OPENADS;TTP_CRASHTOOL;TTP_POPUPMGR
+    7: UNITY_POST_PROCESSING_STACK_V2;TTP_ANALYTICS;TTP_APPSFLYER;TTP_REWARDED_INTERSTITIALS;TTP_REWARDED_ADS;TTP_GAMEPROGRESSION;TTP_RATEUS;TTP_BANNERS;TTP_INTERSTITIALS;TTP_PRIVACY_SETTINGS;TTP_PROMOTION;TTP_OPENADS;TTP_CRASHTOOL;TTP_POPUPMGR
     13: UNITY_POST_PROCESSING_STACK_V2
     14: UNITY_POST_PROCESSING_STACK_V2
     19: UNITY_POST_PROCESSING_STACK_V2
